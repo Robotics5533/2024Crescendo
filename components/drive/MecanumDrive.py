@@ -2,7 +2,7 @@ import ctre
 
 from components.drive.Drive import Drive
 
-class MecanumDrive(Drive):
+class MecanumDrive:
     """
     top_left -> Top left Motor on the bot
     top_right -> Top right Motor on the bot

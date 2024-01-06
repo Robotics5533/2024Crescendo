@@ -6,5 +6,8 @@ Robot = FormatDictionary({
         "driver": {
             "joystick": 0
         },
+    },
+    "directories": {
+        "code": "/home/lvuser/py"
     }
 })

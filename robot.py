@@ -3,24 +3,22 @@ from components.drive.MecanumDrive import MecanumDrive
 from constants import Robot
 import wpilib
 import wpilib.drive
-
+import os
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
         self.drive = MecanumDrive(1, 2, 3, 4)
-        self.stick = wpilib.Joystick(Robot.controllers.driver.joystick)
-        # self.PathPlanner = PathPlanner("paths/Cube.json")
+        self.stick = wpilib.Joystick(0)
+        self.timer = wpilib.Timer()
+        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Cube.json", self.timer)
 
     def autonomousInit(self):
         self.timer.reset()
         self.timer.start()
-        # self.PathPlanner.run(self.drive)
 
     def autonomousPeriodic(self):
-        if self.timer.get() < 2.0:
-            self.drive.move(self.stick.getRawAxis(0), self.stick.getRawAxis(1))
-        else:
-            self.drive.move(0, 0)
+        self.PathPlanner.run(self.drive)
+
     def teleopPeriodic(self):
         x, y, z = (
             self.stick.getX(),
