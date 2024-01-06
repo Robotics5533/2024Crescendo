@@ -2,6 +2,10 @@ from components.drive.Drive import Drive
 
 
 class TankDrive(Drive):
+    """
+    left_motors -> List of left motor controllers
+    right_motors -> List of right motor controllers
+    """
     def __init__(self, left_motors: [], right_motors: []):
         self.left_motors = left_motors
         self.right_motors = right_motors
@@ -11,13 +15,18 @@ class TankDrive(Drive):
             
         for i in range(len(self.right_motors)):
             self.__dict__[f"right_motor_{i + 1}"] = self.right_motors[i]
-
+    """
+    Using x, y, and z calculate the correct direction based on if it's the left or right motors
+    """
     @staticmethod
     def calculate_direction(type: int, x: int, y: int, z: int) -> int:
         if type == 0:
             return -(x + -y + -z)
         else:
             return -(x + y + -z)
+    """
+    *args -> Do the math for a deadzone with any amount of args as possible
+    """
     @staticmethod
     def deadzone(*args):
         for value in args:
@@ -25,7 +34,11 @@ class TankDrive(Drive):
                 return True
         return False
     
-    
+    """
+    x -> Give the horizontal data for the bot
+    y -> Give the vertical data for the bot
+    z -> Give the rotational data for the bot
+    """
     def move(self, x: int = 0, y: int = 0, z: int = 0):  
         x *= 0.5
         y *= 0.5

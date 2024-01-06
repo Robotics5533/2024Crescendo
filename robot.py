@@ -7,16 +7,14 @@ import wpilib.drive
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
-        current_auton = open("paths/Cube.json", "r")
         self.drive = MecanumDrive(1, 2, 3, 4)
         self.stick = wpilib.Joystick(Robot.controllers.driver.joystick)
-        self.auton = current_auton.read()
-        self.PathPlanner = PathPlanner("paths/Cube.json")
+        # self.PathPlanner = PathPlanner("paths/Cube.json")
 
     def autonomousInit(self):
         self.timer.reset()
         self.timer.start()
-        self.PathPlanner.run(self.drive)
+        # self.PathPlanner.run(self.drive)
 
     def autonomousPeriodic(self):
         if self.timer.get() < 2.0:
