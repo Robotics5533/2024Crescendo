@@ -1,3 +1,3 @@
 class Drive:
-    def drive(self):
+    def move(self):
         pass

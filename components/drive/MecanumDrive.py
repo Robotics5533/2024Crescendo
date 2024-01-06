@@ -34,7 +34,7 @@ class MecanumDrive(Drive):
         x *= 0.5
         y *= 0.5
         z *= 0.5
-        self.top_left_motor.set(-(-x + y + -z))
+        self.top_left_motor.set(-(-x + y + -z)) 
         self.top_right_motor.set(x + y + z)
-        self.bottom_left_motor.set(-x + y + z) 
+        self.bottom_left_motor.set(-x + y + z ) 
         self.bottom_right_motor.set(-(x + y + -z))
