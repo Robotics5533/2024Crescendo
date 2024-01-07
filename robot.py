@@ -10,7 +10,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.drive = MecanumDrive(1, 2, 3, 4)
         self.stick = wpilib.Joystick(0)
         self.timer = wpilib.Timer()
-        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Cube.json", self.timer)
+        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Forwardybackwardy.json", self.timer)
 
     def autonomousInit(self):
         self.timer.reset()
