@@ -23,12 +23,13 @@ class PathPlanner:
     def run(self, driveType: Drive):
         keyframes_list = self._keyframes["keyframes"]
         i = self.index
+        unit = self._keyframes["unit"]
         keyframe = keyframes_list[i]
         if i >= len(keyframes_list) or i + 1 >= len(keyframes_list):
             return
         next_keyframe = keyframes_list[i + 1]
         delta_time_absolute = self.timer.get() - self.previous_time
-        delta_time_relative = next_keyframe["frame_time"] - keyframe["frame_time"]
+        delta_time_relative = (next_keyframe["frame_time"] - keyframe["frame_time"]) * unit
         length = self.calculate(
             keyframe["position"],
             next_keyframe["position"],
