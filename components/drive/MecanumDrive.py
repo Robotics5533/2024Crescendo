@@ -10,6 +10,7 @@ class MecanumDrive:
     bottom_right -> Bottom right Motor on the bot
     """
     def __init__(self, top_left: int, top_right: int, bottom_left: int, bottom_right: int):
+        # ctre._ctre.ControlMode, float, https://robotpy.readthedocs.io/projects/ctre/en/stable/ctre/TalonSRX.html
         self.top_left_motor = ctre.WPI_TalonSRX(top_left)
         self.top_right_motor = ctre.WPI_TalonSRX(top_right)
         self.bottom_left_motor = ctre.WPI_TalonSRX(bottom_left)
