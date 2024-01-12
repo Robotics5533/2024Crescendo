@@ -11,3 +11,7 @@ Robot = FormatDictionary({
         "code": "/home/lvuser/py"
     }
 })
+
+class ButtonInputs:
+    follow_limelight_btnid = 0
+
