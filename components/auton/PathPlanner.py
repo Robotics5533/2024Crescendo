@@ -29,7 +29,7 @@ class PathPlanner:
             return
         next_keyframe = keyframes_list[i + 1]
         delta_time_absolute = self.timer.get() - self.previous_time
-        delta_time_relative = (next_keyframe["frame_time"] - keyframe["frame_time"]) * unit
+        delta_time_relative = (next_keyframe["frame_time"] - keyframe["frame_time"]) * 1000
         length = self.calculate(
             keyframe["position"],
             next_keyframe["position"],
