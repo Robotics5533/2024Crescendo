@@ -11,6 +11,3 @@ class DriveSubSystem(commands2.SubsystemBase):
         
         self.drive = MecanumDrive(ctre.WPI_TalonSRX(Robot.motors.front_left), ctre.WPI_TalonSRX(
             Robot.motors.front_right), ctre.WPI_TalonSRX(Robot.motors.back_left), ctre.WPI_TalonSRX(Robot.motors.back_right))
-        
-    def driveUwU(self, x: float, y: float, z: float):
-        self.drive.move(x, y, z)

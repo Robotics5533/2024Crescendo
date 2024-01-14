@@ -32,6 +32,9 @@ class MecanumDrive:
     z -> Give the rotational data for the bot
     """
     def move(self, x: int, y: int, z: int):
+        t = x
+        x = y
+        y = t
         x *= 0.1
         y *= 0.1
         z *= 0.1
