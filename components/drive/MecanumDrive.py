@@ -11,7 +11,9 @@ class MecanumDrive:
         self.front_left_motor = front_left
         self.front_right_motor = front_right
         self.back_left_motor = back_left
-        self.back_right_motor = back_left
+        self.back_right_motor = back_right
+        self.back_left_motor.setInverted(True)
+        self.back_right_motor.setInverted(True)
         
     
     """
@@ -30,10 +32,10 @@ class MecanumDrive:
     z -> Give the rotational data for the bot
     """
     def move(self, x: int, y: int, z: int):
-        x *= 0.15
-        y *= 0.15
-        z *= 0.15
-        self.front_left_motor.set(-(-x + y + -z)) 
+        x *= 0.1
+        y *= 0.1
+        z *= 0.1
+        self.front_left_motor.set((-x + y + z)) 
         self.front_right_motor.set(x + y + z)
-        self.back_left_motor.set(-x + y + z ) 
-        self.back_right_motor.set(-(x + y + -z))
+        self.back_left_motor.set(x + y + -z ) 
+        self.back_right_motor.set((-x + y + -z))

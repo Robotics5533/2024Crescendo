@@ -32,7 +32,11 @@
 #     wpilib.run(Arpeggio)
 import wpilib
 from robotcontainer import RobotContainer
-
-class Arpeggio(wpilib.TimedRobot):
+from commands2 import TimedCommandRobot
+class Arpeggio(TimedCommandRobot):
     def robotInit(self):
         self.container = RobotContainer()
+    def teleopPeriodic(self) -> None:
+        """return super().teleopPeriodic()"""
+if __name__ == "__main__":
+    wpilib.run(Arpeggio)
