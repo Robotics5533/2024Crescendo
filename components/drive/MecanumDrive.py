@@ -1,20 +1,18 @@
 import ctre
+from typing import Union
+
+import wpilib
 
 from components.drive.Drive import Drive
 
 class MecanumDrive:
-    """
-    top_left -> Top left Motor on the bot
-    top_right -> Top right Motor on the bot
-    bottom_left -> Bottom left Motor on the bot
-    bottom_right -> Bottom right Motor on the bot
-    """
-    def __init__(self, top_left: int, top_right: int, bottom_left: int, bottom_right: int):
+    def __init__(self, front_left: Union[ctre.WPI_TalonSRX, wpilib.PWMSparkMax], front_right: Union[ctre.WPI_TalonSRX, wpilib.PWMSparkMax], back_right: Union[ctre.WPI_TalonSRX, wpilib.PWMSparkMax], back_left: Union[ctre.WPI_TalonSRX, wpilib.PWMSparkMax]):
         # ctre._ctre.ControlMode, float, https://robotpy.readthedocs.io/projects/ctre/en/stable/ctre/TalonSRX.html
-        self.top_left_motor = ctre.WPI_TalonSRX(top_left)
-        self.top_right_motor = ctre.WPI_TalonSRX(top_right)
-        self.bottom_left_motor = ctre.WPI_TalonSRX(bottom_left)
-        self.bottom_right_motor = ctre.WPI_TalonSRX(bottom_right)
+        self.front_left_motor = front_left
+        self.front_right_motor = front_right
+        self.back_left_motor = back_left
+        self.back_right_motor = back_left
+        
     
     """
     *args -> Do the math for a deadzone with any amount of args as possible
@@ -35,7 +33,7 @@ class MecanumDrive:
         x *= 0.15
         y *= 0.15
         z *= 0.15
-        # self.top_left_motor.set(-(-x + y + -z)) 
-        self.top_right_motor.set(x + y + z)
-        # self.bottom_left_motor.set(-x + y + z ) 
-        # self.bottom_right_motor.set(-(x + y + -z))
+        self.front_left_motor.set(-(-x + y + -z)) 
+        self.front_right_motor.set(x + y + z)
+        self.back_left_motor.set(-x + y + z ) 
+        self.back_right_motor.set(-(x + y + -z))
