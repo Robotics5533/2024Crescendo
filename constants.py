@@ -19,6 +19,9 @@ class Robot:
         code = "/home/lvuser/py"
     class ButtonInputs:
         follow_limelight_btnid = 1
+        limelight_rotate = 2
+        add_speed = 12
+        remove_speed = 11
     class motors:
         front_left = 1
         front_right = 2

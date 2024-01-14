@@ -25,24 +25,14 @@ class TankDrive(Drive):
         else:
             return -(x + y + -z)
     """
-    *args -> Do the math for a deadzone with any amount of args as possible
-    """
-    @staticmethod
-    def deadzone(*args):
-        for value in args:
-            if value < -0.3 or value > 0.3:
-                return True
-        return False
-    
-    """
     x -> Give the horizontal data for the bot
     y -> Give the vertical data for the bot
     z -> Give the rotational data for the bot
     """
     def move(self, x: int = 0, y: int = 0, z: int = 0):  
-        x *= 0.5
-        y *= 0.5
-        z *= 0.5
+        x *= self.speed
+        y *= self.speed
+        z *= self.speed
         for motor in self.left_motors:
             motor.set(self.calculate_direction(1, x, y, z))
         for motor in self.right_motors:
