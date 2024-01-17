@@ -36,7 +36,9 @@ from commands2 import TimedCommandRobot
 class Arpeggio(TimedCommandRobot):
     def robotInit(self):
         self.container = RobotContainer()
+        self.gyro = wpilib.AnalogGyro(1)
     def teleopPeriodic(self) -> None:
         """return super().teleopPeriodic()"""
+        print("angle:"+str(self.gyro.getAngle()))
 if __name__ == "__main__":
     wpilib.run(Arpeggio)
