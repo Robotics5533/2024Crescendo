@@ -1,4 +1,4 @@
-from phoenix5 import hardware, controls
+from phoenix6 import hardware, controls
 from typing import Union
 
 import wpilib
@@ -32,22 +32,20 @@ class MecanumDrive(Drive):
     z -> Give the rotational data for the bot
     """
     def move(self, x: int, y: int, z: int):
-        t = x
-        x = y
-        y = t
+
         x *= self.speed
         y *= self.speed
         z *= self.speed
         
-        self.duty_output_front_left.output = (-x + y + z)        
+        self.duty_output_front_left.output = (y-z-x)        
         self.front_left_motor.set_control(self.duty_output_front_left)
         
-        self.duty_output_front_right.output = (x + y + z)        
+        self.duty_output_front_right.output = (y+z+x)        
         self.front_right_motor.set_control(self.duty_output_front_right)
-        
-        self.duty_output_back_left.output = (x + y + -z)         
+        #
+        self.duty_output_back_left.output = (y-z+x)         
         self.back_left_motor.set_control(self.duty_output_back_left)
-        
-        self.duty_output_back_right.output = (-x + y + -z)       
-        self.back_right_motor.set_control(self.duty_output_back_left)
+        #
+        self.duty_output_back_right.output = (y+z-x)   
+        self.back_right_motor.set_control(self.duty_output_back_right)
         
