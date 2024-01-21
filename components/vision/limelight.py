@@ -17,11 +17,11 @@ class Limelight:
             #            return [self.get_limelight_arg("tx"), self.get_limelight_arg("ty"), self.apply_turning_error()]
             #            return [self.get_limelight_arg("tx")/27, self.AreaToDifference(self.get_limelight_arg('ta'))/50, 0/100] # division values come from limelight docs page 12
             # division values come from limelight docs page 12
-            return [-(self.get_limelight_arg("tx")/27), (1/self.get_limelight_arg('ta')*5), -(self.get_limelight_arg("tx")/27)]
+            return [(self.get_limelight_arg("tx")/27), 1-(self.get_limelight_arg('ta'))/100, (self.get_limelight_arg("tx")/27)]
         
         
         
         
     def getError(self):
         x, y, z = self.getoffset()
-        return [x, y*(1-abs(x)), z]
+        return [x, -y*(1-abs(x)), z]
