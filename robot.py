@@ -6,6 +6,8 @@ from components.vision.limelight import Limelight
 from constants import Robot
 from phoenix6 import hardware
 
+from systems.Climb import Climb
+
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
@@ -17,6 +19,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.timer = wpilib.Timer()
 #        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Forwardybackwardy.json", self.timer)
         self.limelight=Limelight()
+        self.climb = Climb(hardware.TalonFX(Robot.motors.climb))
 
     def autonomousInit(self):
         self.timer.reset()
@@ -27,16 +30,19 @@ class Arpeggio(wpilib.TimedRobot):
         pass
 
     def teleopPeriodic(self):
-        if self.stick.getRawButton(1):
-            offset = self.limelight.getError()
-            self.drive.move(offset[0]*.5, offset[1], offset[2]*.5)
-        else:
-            x, y, z = (
-            self.stick.getX(),
-            self.stick.getY(),
-            self.stick.getZ(),
-            )
-            self.drive.move(x, y, z)
+        self.climb.run()
+        # if self.stick.getRawButton(1):
+        #     offset = self.limelight.getError()
+        #     self.drive.move(offset[0]*.5, offset[1], offset[2]*.5)
+        # elif self.stick.getRawButton(2):
+        #     self.climb.run()
+        # else:
+        #     x, y, z = (
+        #     self.stick.getX(),
+        #     self.stick.getY(),
+        #     self.stick.getZ(),
+        #     )
+        #     self.drive.move(x, y, z)
 
 
 if __name__ == "__main__":
