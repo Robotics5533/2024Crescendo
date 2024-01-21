@@ -36,6 +36,14 @@ from commands2 import TimedCommandRobot
 class Arpeggio(TimedCommandRobot):
     def robotInit(self):
         self.container = RobotContainer()
+    #     self.timer = wpilib.Timer()
+
+    # def autonomousInit(self) -> None:
+    #     self.timer.reset()
+    #     self.timer.start()
+    # def autonomousPeriodic(self) -> None:
+    #     if self.timer.get() <= 5:
+    #         self.container.drive_subsystem.drive.move(0.5, 0, 0)
     def teleopPeriodic(self) -> None:
         """return super().teleopPeriodic()"""
 if __name__ == "__main__":
