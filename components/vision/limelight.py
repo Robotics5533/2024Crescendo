@@ -22,6 +22,11 @@ class Limelight:
         
         
         
-    def getError(self):
+    def getError(self,close_enough_y = .7):
         x, y, z = self.getoffset()
-        return [x, -y*(1-abs(x)), z]
+        print(y)
+        ret_y = -y*(1-abs(x))
+        if y < close_enough_y:
+            ret_y = 0
+            
+        return [x, ret_y, z]
