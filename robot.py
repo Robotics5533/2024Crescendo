@@ -29,7 +29,7 @@ class Arpeggio(wpilib.TimedRobot):
     def teleopPeriodic(self):
         
         if self.stick.getRawButton(1):
-            offset = self.limelight.getoffset()
+            offset = self.limelight.getError()
             self.drive.move(-offset[0]*.5, -offset[1]*.5, -offset[2]*.5)
         else:
             x, y, z = (

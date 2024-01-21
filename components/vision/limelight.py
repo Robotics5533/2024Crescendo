@@ -22,4 +22,6 @@ class Limelight:
         
         
         
-#    def getError
+    def getError(self):
+        x, y, z = self.getoffset()
+        return [x, y*(1-abs(x)), z]
