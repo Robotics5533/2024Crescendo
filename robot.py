@@ -26,25 +26,38 @@
 #             self.stick.getZ(),
 #         )
 #         self.drive.move(x, y, z)
-     
+
 
 # if __name__ == "__main__":
 #     wpilib.run(Arpeggio)
 import wpilib
 from robotcontainer import RobotContainer
 from commands2 import TimedCommandRobot
+
+from utils.context import Context
+from utils.follower import Follower
+
+
 class Arpeggio(TimedCommandRobot):
     def robotInit(self):
         self.container = RobotContainer()
+        self.context = Context(
+            self,
+            2500,
+        )
+        self.follower = Follower(self.context)
+
     #     self.timer = wpilib.Timer()
 
     # def autonomousInit(self) -> None:
     #     self.timer.reset()
     #     self.timer.start()
-    # def autonomousPeriodic(self) -> None:
-    #     if self.timer.get() <= 5:
-    #         self.container.drive_subsystem.drive.move(0.5, 0, 0)
+    def autonomousPeriodic(self) -> None:
+        self.follower.update()
+
     def teleopPeriodic(self) -> None:
         """return super().teleopPeriodic()"""
+
+
 if __name__ == "__main__":
     wpilib.run(Arpeggio)
