@@ -14,17 +14,18 @@ robotpy_extras = [
     # "all"
     # "apriltag"
     # "commands2"
-    # "cscore"
+    "cscore",
     "navx",
     "pathplannerlib",
     "phoenix5",
     "phoenix6",
     # "playingwithfusion"
-    "rev"
+    "rev",
+    "wpilib"
     # "romi"
     # "sim"
     # "xrp"
 ]
 
 # Other pip packages to install
-requires = ["robotpy-commands-v2==2024.0.0b4"]
+requires = []# ["robotpy-commands-v2==2024.0.0b4"]
