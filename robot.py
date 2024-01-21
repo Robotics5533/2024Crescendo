@@ -6,15 +6,15 @@ from components.vision.limelight import Limelight
 from constants import Robot
 from phoenix6 import hardware
 
-from systems.Climb import Climb
+from components.systems.Climb import Climb
 
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
-        self.drive = MecanumDrive(hardware.TalonFX(Robot.motors.front_left),
-                                  hardware.TalonFX(Robot.motors.front_right),
-                                  hardware.TalonFX(Robot.motors.back_left),
-                                  hardware.TalonFX(Robot.motors.back_right))
+        # self.drive = MecanumDrive(hardware.TalonFX(Robot.motors.front_left),
+        #                           hardware.TalonFX(Robot.motors.front_right),
+        #                           hardware.TalonFX(Robot.motors.back_left),
+        #                           hardware.TalonFX(Robot.motors.back_right))
         self.stick = wpilib.Joystick(0)
         self.timer = wpilib.Timer()
 #        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Forwardybackwardy.json", self.timer)
@@ -30,19 +30,20 @@ class Arpeggio(wpilib.TimedRobot):
         pass
 
     def teleopPeriodic(self):
-        self.climb.run()
-        # if self.stick.getRawButton(1):
-        #     offset = self.limelight.getError()
-        #     self.drive.move(offset[0]*.5, offset[1], offset[2]*.5)
-        # elif self.stick.getRawButton(2):
-        #     self.climb.run()
-        # else:
-        #     x, y, z = (
-        #     self.stick.getX(),
-        #     self.stick.getY(),
-        #     self.stick.getZ(),
-        #     )
-        #     self.drive.move(x, y, z)
+        if self.stick.getRawButton(1):
+            offset = self.limelight.getError()
+            self.drive.move(offset[0]*.5, offset[1], offset[2]*.5)
+        elif self.stick.getRawButton(2):
+            self.climb.run(-self.stick.getY())
+        else:
+            self.climb.run(0)
+            # x, y, z = (
+            # self.stick.getX(),
+            # self.stick.getY(),
+            # self.stick.getZ(),
+            # )
+            # self.drive.move(x, y, z)
+       
 
 
 if __name__ == "__main__":
