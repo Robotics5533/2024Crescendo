@@ -4,6 +4,7 @@ from constants import Robot
 from subsystems.index import SubSystems
 from utils.context import Context
 from utils.follower import Follower
+from utils.math.Vector import Vector
 
 
 class Arpeggio(wpilib.TimedRobot):
@@ -18,7 +19,7 @@ class Arpeggio(wpilib.TimedRobot):
     
     def limelight_subsystem(self):
         offset = self.subsystems.limelight.getError()
-        self.subsystems.drive.move(offset[0] * 0.5, offset[1], offset[2] * 0.5)
+        self.subsystems.drive.move(Vector(offset[0] * 0.5, offset[1], offset[2] * 0.5))
 
     def autonomousPeriodic(self):
         self.follower.update()
@@ -35,7 +36,7 @@ class Arpeggio(wpilib.TimedRobot):
                 self.stick.getY(),
                 self.stick.getZ(),
             )
-            self.subsytems.drive.move(x, y, z)
+            self.subsytems.drive.move(Vector(x, y, z))
 
 
 if __name__ == "__main__":

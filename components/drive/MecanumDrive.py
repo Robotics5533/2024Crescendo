@@ -3,6 +3,8 @@ import wpilib
 from components.drive.Drive import Drive
 from phoenix6 import hardware, controls
 
+from utils.math.Vector import Vector
+
 
 class MecanumDrive(Drive):
     def __init__(
@@ -25,12 +27,9 @@ class MecanumDrive(Drive):
     z -> Give the rotational data for the bot
     """
 
-    def move(self, x: int, y: int, z: int):
-
-        x *= self.speed
-        y *= self.speed
-        z *= self.speed
-        self.front_left_motor.set(y - z - x)
-        self.front_right_motor.set(y + z + x)
-        self.back_left_motor.set(y - z + x)
-        self.back_right_motor.set(y + z - x)
+    def move(self, data: Vector):
+        data = map(data, lambda x: x * self.speed)
+        self.front_left_motor.set(data.b - data.c - data.a)
+        self.front_right_motor.set(data.b + data.c + data.a)
+        self.back_left_motor.set(data.b - data.c + data.a)
+        self.back_right_motor.set(data.b + data.c - data.a)
