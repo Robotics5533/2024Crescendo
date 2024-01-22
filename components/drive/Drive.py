@@ -1,9 +1,9 @@
 class Drive:
     def __init__(self):
-        self.set_speed(25)
+        self.set_speed((25, 25, 25))
         
-    def set_speed(self, speed: float):
-        self.speed = speed / 100
+    def set_speed(self, speed: tuple(float)):
+        self.speed = map(speed, lambda x: x / 100)
     
     """
     *args -> Do the math for a deadzone with any amount of args as possible

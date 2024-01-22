@@ -11,8 +11,6 @@ class Context:
     def next(self):
         if self.timer.get() == 0:
             self.timer.start()
-        print(self.run_time)
-        print(2, self.timer.get() - self.time > self.run_time)
         return self.timer.get() - self.time > self.run_time
     def rotate(self, angle: float):
         pass

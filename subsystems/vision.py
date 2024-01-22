@@ -1,11 +1,10 @@
-import commands2
-from components.drive.Drive import Drive
-
-from components.vision.limelight import Limelight
+from vision.limelight import Limelight
 
 
-class VisionSubSystem(commands2.SubsystemBase):
+class VisionSubSystem(Limelight):
     def __init__(self) -> None:
         super().__init__()
+        self.can_run = True
         
-        self.limelight = Limelight()
+    def update_state(self):
+        self.can_run = False

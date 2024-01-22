@@ -1,47 +1,41 @@
-from components.auton.PathPlanner import PathPlanner
-from components.drive.MecanumDrive import MecanumDrive
 import wpilib
 import wpilib.drive
-from components.vision.limelight import Limelight
 from constants import Robot
+from subsystems.index import SubSystems
 from utils.context import Context
 from utils.follower import Follower
-from phoenix6 import hardware
 
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
-        self.drive = MecanumDrive(hardware.TalonFX(Robot.motors.front_left),
-                                  hardware.TalonFX(Robot.motors.front_right),
-                                  hardware.TalonFX(Robot.motors.back_left),
-                                  hardware.TalonFX(Robot.motors.back_right))
+        self.subsystems = SubSystems()
         self.context = Context(
             self,
             2.5,
         )
         self.follower = Follower(self.context)
-        self.stick = wpilib.Joystick(0)
-        self.timer = wpilib.Timer()
-#        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Forwardybackwardy.json", self.timer)
-        self.limelight=Limelight()
-
-    def autonomousInit(self):
-        self.timer.reset()
-        self.timer.start()
+        self.stick = wpilib.Joystick(Robot.controllers.driver.joystick)
+    
+    def limelight_subsystem(self):
+        offset = self.subsystems.limelight.getError()
+        self.subsystems.drive.move(offset[0] * 0.5, offset[1], offset[2] * 0.5)
 
     def autonomousPeriodic(self):
-         self.follower.update()
+        self.follower.update()
+
     def teleopPeriodic(self):
-        if self.stick.getRawButton(1):
-            offset = self.limelight.getError()
-            self.drive.move(offset[0]*.5, offset[1], offset[2]*.5)
-        else:
+        self.subsystems.setup(
+            self.limelight_subsystem,
+            self.stick.getRawButton(1),
+            [self.subsystems.drive],
+        )
+        if self.subsytems.can(self.subsytems.drive):
             x, y, z = (
-            self.stick.getX(),
-            self.stick.getY(),
-            self.stick.getZ(),
+                self.stick.getX(),
+                self.stick.getY(),
+                self.stick.getZ(),
             )
-            self.drive.move(x, y, z)
+            self.subsytems.drive.move(x, y, z)
 
 
 if __name__ == "__main__":
