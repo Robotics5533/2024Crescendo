@@ -1,4 +1,5 @@
 from drive.MecanumDrive import MecanumDrive
+from utils.math.Vector import Vector
 
 
 class DriveSubSystem(MecanumDrive):
@@ -9,3 +10,7 @@ class DriveSubSystem(MecanumDrive):
 
     def update_state(self):
         self.can_run = False
+
+    def move(self, data: Vector):
+        if self.can_run:
+            super().move(data)

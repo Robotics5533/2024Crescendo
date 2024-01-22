@@ -16,7 +16,7 @@ class Arpeggio(wpilib.TimedRobot):
         )
         self.follower = Follower(self.context)
         self.stick = wpilib.Joystick(Robot.controllers.driver.joystick)
-    
+
     def limelight_subsystem(self):
         offset = self.subsystems.limelight.getError()
         self.subsystems.drive.move(Vector(offset[0] * 0.5, offset[1], offset[2] * 0.5))
@@ -30,13 +30,12 @@ class Arpeggio(wpilib.TimedRobot):
             self.stick.getRawButton(1),
             [self.subsystems.drive],
         )
-        if self.subsytems.can(self.subsytems.drive):
-            x, y, z = (
-                self.stick.getX(),
-                self.stick.getY(),
-                self.stick.getZ(),
-            )
-            self.subsytems.drive.move(Vector(x, y, z))
+        x, y, z = (
+            self.stick.getX(),
+            self.stick.getY(),
+            self.stick.getZ(),
+        )
+        self.subsytems.drive.move(Vector(x, y, z))
 
 
 if __name__ == "__main__":
