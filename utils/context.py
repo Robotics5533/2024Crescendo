@@ -10,10 +10,13 @@ class Context:
         self.timer = wpilib.Timer()
         self.run_time = run_time
     def next(self):
+        if self.timer.get() == 0:
+            self.timer.start()
         return self.timer.get() - self.time > self.run_time
     def rotate(self, angle: float):
         pass
-    def move(self, x2: float, y2: float):
+    def move(self, t):
+        (x2, y2) = t
         (x1, y1) = self.last_position
         speed = abs(((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5)
         self.robot.drive.set_speed(speed)
