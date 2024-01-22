@@ -28,7 +28,7 @@ class MecanumDrive(Drive):
     """
 
     def move(self, data: Vector):
-        data = map(data, lambda x: x * self.speed)
+        data = data.map(self.speed_calculation)
         self.front_left_motor.set(data.b - data.c - data.a)
         self.front_right_motor.set(data.b + data.c + data.a)
         self.back_left_motor.set(data.b - data.c + data.a)

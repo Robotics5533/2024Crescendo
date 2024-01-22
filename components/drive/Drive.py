@@ -14,6 +14,7 @@ class Drive:
             if value < -0.3 or value > 0.3:
                 return True
         return False
-    
+    def speed_calculation(self, x: float, i: int):
+        return x * self.speed[i]
     def move(self):
         pass
