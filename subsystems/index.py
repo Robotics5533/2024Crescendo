@@ -15,9 +15,6 @@ class SubSystems:
             Talon5533(Robot.motors.back_right),
         )
 
-    def can(self, system: Union[DriveSubSystem, VisionSubSystem]):
-        return system.can_run
-
     def setup(self, func, condition, requirements):
         if condition:
             for requirement in requirements:
