@@ -4,6 +4,8 @@ import wpilib
 import wpilib.drive
 from components.vision.limelight import Limelight
 from constants import Robot
+from utils.context import Context
+from utils.follower import Follower
 from phoenix6 import hardware
 
 
@@ -13,6 +15,11 @@ class Arpeggio(wpilib.TimedRobot):
                                   hardware.TalonFX(Robot.motors.front_right),
                                   hardware.TalonFX(Robot.motors.back_left),
                                   hardware.TalonFX(Robot.motors.back_right))
+        self.context = Context(
+            self,
+            2.5,
+        )
+        self.follower = Follower(self.context)
         self.stick = wpilib.Joystick(0)
         self.timer = wpilib.Timer()
 #        self.PathPlanner = PathPlanner("/home/lvuser/py/paths/Forwardybackwardy.json", self.timer)
@@ -23,9 +30,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.timer.start()
 
     def autonomousPeriodic(self):
-#        self.PathPlanner.run(self.drive)
-        pass
-
+         self.follower.update()
     def teleopPeriodic(self):
         if self.stick.getRawButton(1):
             offset = self.limelight.getError()

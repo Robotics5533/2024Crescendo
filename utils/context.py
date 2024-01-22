@@ -2,16 +2,17 @@ import wpilib
 
 
 class Context:
-    def __init__(self, robot, commands, run_time: float = 0):
+    def __init__(self, robot, run_time: float = 0):
         self.robot = robot
         self.last_position = (0, 0)
-        self.commands = commands
         self.time = 0
         self.timer = wpilib.Timer()
         self.run_time = run_time
     def next(self):
         if self.timer.get() == 0:
             self.timer.start()
+        print(self.run_time)
+        print(2, self.timer.get() - self.time > self.run_time)
         return self.timer.get() - self.time > self.run_time
     def rotate(self, angle: float):
         pass
