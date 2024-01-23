@@ -1,4 +1,5 @@
-from typing import Callable, Union
+from typing import Callable, Union, Tuple
+import math
 
 class Vector:
     def __init__(self, a: float, b: float, c: float):
@@ -6,29 +7,29 @@ class Vector:
         self.b = b
         self.c = c
 
+    def __add__(self, vec: 'Vector') -> 'Vector':
+        return Vector(self.a + vec.a, self.b + vec.b, self.c + vec.c)
+
+    def __sub__(self, vec: 'Vector') -> 'Vector':
+        return Vector(self.a - vec.a, self.b - vec.b, self.c - vec.c)
+
+    def __mul__(self, scalar: float) -> 'Vector':
+        return Vector(self.a * scalar, self.b * scalar, self.c * scalar)
+    
     def pythagorean(self, point: 'Vector') -> float:
         return ((self.a - point.a) ** 2 + (self.b - point.b) ** 2 + (self.c - point.c) ** 2) ** 0.5
     
     def map(self, func: Callable[[float, int], Union[float, int]]):
         return Vector(func(self.a), func(self.b), func(self.c))
 
-    def __add__(self, other: 'Vector') -> 'Vector':
-        return Vector(self.a + other.a, self.b + other.b, self.c + other.c)
+    def dot_product(self, vec: 'Vector') -> float:
+        return self.a * vec.a + self.b * vec.b + self.c * vec.c
 
-    def __sub__(self, other: 'Vector') -> 'Vector':
-        return Vector(self.a - other.a, self.b - other.b, self.c - other.c)
-
-    def __mul__(self, scalar: float) -> 'Vector':
-        return Vector(self.a * scalar, self.b * scalar, self.c * scalar)
-
-    def dot_product(self, other: 'Vector') -> float:
-        return self.a * other.a + self.b * other.b + self.c * other.c
-
-    def cross_product(self, other: 'Vector') -> 'Vector':
+    def cross_product(self, vec: 'Vector') -> 'Vector':
         return Vector(
-            self.b * other.c - self.c * other.b,
-            self.c * other.a - self.a * other.c,
-            self.a * other.b - self.b * other.a
+            self.b * vec.c - self.c * vec.b,
+            self.c * vec.a - self.a * vec.c,
+            self.a * vec.b - self.b * vec.a
         )
 
     def magnitude(self) -> float:
@@ -39,3 +40,20 @@ class Vector:
         if mag == 0:
             return Vector(0, 0, 0)
         return Vector(self.a / mag, self.b / mag, self.c / mag)
+
+    def rotate(self, angle: float) -> 'Vector':
+        rad_angle = math.radians(angle)
+        
+        new_a = self.a * math.cos(rad_angle) - self.b * math.sin(rad_angle)
+        new_b = self.a * math.sin(rad_angle) + self.b * math.cos(rad_angle)
+        
+        return Vector(new_a, new_b, self.c)
+
+    def scalar_project(self, vec: 'Vector') -> float:
+        dot_product = self.dot_product(vec)
+        magnitude_vec = vec.magnitude()
+        
+        if magnitude_vec == 0:
+            raise ValueError("Magnitude of the vector onto which to project is zero.")
+        
+        return dot_product / magnitude_vec

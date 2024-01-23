@@ -8,8 +8,8 @@ class DriveSubSystem(MecanumDrive):
         self.can_run = True
         
 
-    def update_state(self):
-        self.can_run = False
+    def update_state(self, state: bool):
+        self.can_run = state
 
     def move(self, data: Vector):
         if self.can_run:
