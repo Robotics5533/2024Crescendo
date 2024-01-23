@@ -17,6 +17,6 @@ class SubSystems:
 
     def setup(self, func, condition, requirements):
         for requirement in requirements:
-                requirement.update_state(condition)
+                requirement.update_state(not condition)
 
         func()
