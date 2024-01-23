@@ -1,5 +1,5 @@
+from typing import Callable
 from constants import Robot
-from typing import Union
 from components.motor.talon5533 import Talon5533
 from subsystems.drive import DriveSubSystem
 from subsystems.vision import VisionSubSystem
@@ -15,8 +15,7 @@ class SubSystems:
             Talon5533(Robot.motors.back_right),
         )
 
-    def setup(self, func, condition, requirements):
+    def setup(self, func: Callable[[any]], condition: bool, requirements: [any]):
         for requirement in requirements:
                 requirement.update_state(not condition)
-
         func()
