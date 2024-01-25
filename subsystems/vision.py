@@ -1,4 +1,4 @@
-from vision.limelight import Limelight
+from components.vision.limelight import Limelight
 
 
 class VisionSubSystem(Limelight):

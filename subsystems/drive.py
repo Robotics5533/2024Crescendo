@@ -1,11 +1,12 @@
-from drive.MecanumDrive import MecanumDrive
+from components.drive.MecanumDrive import MecanumDrive
 from utils.math.Vector import Vector
 
 
-class DriveSubSystem(MecanumDrive):
-    def __init__(self) -> None:
+class DriveSubSystem():
+    def __init__(self, mecanum_drive: MecanumDrive) -> None:
         super().__init__()
         self.can_run = True
+        self.drive = mecanum_drive
         
 
     def update_state(self, state: bool):
@@ -13,4 +14,4 @@ class DriveSubSystem(MecanumDrive):
 
     def move(self, data: Vector):
         if self.can_run:
-            super().move(data)
+            self.drive.move(data)

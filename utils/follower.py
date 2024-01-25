@@ -8,9 +8,9 @@ class Follower:
         self.command = 0
         self.commands=[
                 (self.ctx.rotate, -272.7367008673047),
-                (self.ctx.move, Vector(490, 210)),
+                (self.ctx.move, Vector(490, 210, 0)),
                 (self.ctx.rotate, 271.9231976564468),
-                (self.ctx.move, Vector(-248, -466)),
+                (self.ctx.move, Vector(-248, -466, 0)),
             ]
     def update(self):
         if self.ctx.next():

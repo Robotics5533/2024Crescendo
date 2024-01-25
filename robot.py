@@ -35,7 +35,7 @@ class Arpeggio(wpilib.TimedRobot):
             self.stick.getY(),
             self.stick.getZ(),
         )
-        self.subsytems.drive.move(Vector(x, y, z))
+        self.subsystems.drive.move(Vector(x, y, z))
 
 
 if __name__ == "__main__":

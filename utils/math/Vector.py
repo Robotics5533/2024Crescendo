@@ -19,8 +19,8 @@ class Vector:
     def pythagorean(self, point: 'Vector') -> float:
         return ((self.a - point.a) ** 2 + (self.b - point.b) ** 2 + (self.c - point.c) ** 2) ** 0.5
     
-    def map(self, func: Callable[[float, int], Union[float, int]]):
-        return Vector(func(self.a), func(self.b), func(self.c))
+    def map(self, func):
+        return Vector(func(self.a, 0), func(self.b, 1), func(self.c, 2))
 
     def dot_product(self, vec: 'Vector') -> float:
         return self.a * vec.a + self.b * vec.b + self.c * vec.c

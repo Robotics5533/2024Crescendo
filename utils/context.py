@@ -6,7 +6,7 @@ from utils.math.Vector import Vector
 class Context:
     def __init__(self, robot, run_time: float = 0):
         self.robot = robot
-        self.last_position = Vector(0, 0)
+        self.last_position = Vector(0, 0, 0)
         self.time = 0
         self.timer = wpilib.Timer()
         self.run_time = run_time
@@ -19,8 +19,8 @@ class Context:
 
     def move(self, point: Vector):
         speed = abs(point.pythagorean(self.last_position))
-        self.robot.subsytems.drive.set_speed(speed)
-        self.robot.subsytems.drive.move(point)
+        self.robot.subsystems.drive.drive.set_speed((speed, speed, speed))
+        self.robot.subsystems.drive.drive.move(point)
         self.time = self.timer.get()
         self.last_position = point
 
