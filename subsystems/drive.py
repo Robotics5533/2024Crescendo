@@ -6,7 +6,7 @@ class DriveSubSystem():
     def __init__(self, drive) -> None:
         super().__init__()
         self.can_run = True
-        self.mecanum = drive
+        self.drive = drive
         
 
     def update_state(self, state: bool):

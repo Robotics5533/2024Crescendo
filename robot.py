@@ -5,7 +5,7 @@ from subsystems.index import SubSystems
 from utils.context import Context
 from utils.follower import Follower
 from utils.math.Vector import Vector
-
+from phoenix6 import hardware, controls
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
@@ -18,7 +18,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.stick = wpilib.Joystick(Robot.controllers.driver.joystick)
     def limelight_subsystem(self):
         offset = self.subsystems.limelight.getError()
-        self.subsystems.drive.mecanum.set_speed(50)
+        self.subsystems.drive.drive.set_speed(50)
         self.subsystems.drive.move(Vector(offset[0], offset[1], offset[2]))
     def climb_subsystem(self):
         self.subsystems.climb.move(-self.stick.getY())
@@ -31,17 +31,18 @@ class Arpeggio(wpilib.TimedRobot):
             self.stick.getRawButton(1),
             [self.subsystems.drive],
         )
-        self.subsystems.setup(
-            self.climb_subsystem, 
-            self.stick.getRawButton(2), 
-            [self.subsytems.drive]
-        )
+        # self.subsystems.setup(
+        #     self.climb_subsystem, 
+        #     self.stick.getRawButton(2), 
+        #     [self.subsystems.drive]
+        # )
         x, y, z = (
             self.stick.getX(),
             self.stick.getY(),
             self.stick.getZ(),
         )
-        self.subsystems.drive.move(Vector(x, y, z))
+        self.climb_subsystem()
+        # self.subsystems.drive.move(Vector(x, y, z))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 from typing import Callable
-
+from phoenix6 import hardware, controls
 import wpilib
 from constants import Robot
 from components.motor.talon5533 import Talon5533
@@ -21,7 +21,7 @@ class SubSystems:
         # )
         tank =   self.drive = TankDrive(wpilib.MotorControllerGroup(wpilib.PWMSparkMax(0), wpilib.PWMSparkMax(1)), wpilib.MotorControllerGroup(wpilib.PWMSparkMax(2), wpilib.PWMSparkMax(3)))
         self.drive = DriveSubSystem(tank)
-        self.climb = ClimbSubSystem()
+        self.climb = ClimbSubSystem(hardware.TalonFX(Robot.motors.climb))
 
     def setup(self, func, condition: bool, requirements):
         for requirement in requirements:

@@ -16,7 +16,7 @@ class Drive:
         return False
     
     def speed_calculation(self, x: float, i: int):
-        return x * self.speed[i]
+        return x * self.speed
     
     def move(self):
         pass
