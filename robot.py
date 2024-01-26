@@ -16,7 +16,6 @@ class Arpeggio(wpilib.TimedRobot):
         )
         self.follower = Follower(self.context)
         self.stick = wpilib.Joystick(Robot.controllers.driver.joystick)
-
     def limelight_subsystem(self):
         offset = self.subsystems.limelight.getError()
         self.subsystems.drive.mecanum.set_speed(50)
