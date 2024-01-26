@@ -6,5 +6,5 @@ class VisionSubSystem(Limelight):
         super().__init__()
         self.can_run = True
         
-    def update_state(self):
-        self.can_run = False
+    def update_state(self, state: bool):
+        self.can_run = state
