@@ -3,10 +3,10 @@ from utils.math.Vector import Vector
 
 
 class DriveSubSystem():
-    def __init__(self, mecanum_drive: MecanumDrive) -> None:
+    def __init__(self, drive) -> None:
         super().__init__()
         self.can_run = True
-        self.drive = mecanum_drive
+        self.mecanum = drive
         
 
     def update_state(self, state: bool):

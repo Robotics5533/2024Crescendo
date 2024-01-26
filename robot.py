@@ -19,8 +19,10 @@ class Arpeggio(wpilib.TimedRobot):
 
     def limelight_subsystem(self):
         offset = self.subsystems.limelight.getError()
-        self.subsystems.drive.move(Vector(offset[0] * 0.5, offset[1], offset[2] * 0.5))
-
+        self.subsystems.drive.mecanum.set_speed(50)
+        self.subsystems.drive.move(Vector(offset[0], offset[1], offset[2]))
+    def climb_subsystem(self):
+        self.subsystems.climb.move(-self.stick.getY())
     def autonomousPeriodic(self):
         self.follower.update()
 
@@ -29,6 +31,11 @@ class Arpeggio(wpilib.TimedRobot):
             self.limelight_subsystem,
             self.stick.getRawButton(1),
             [self.subsystems.drive],
+        )
+        self.subsystems.setup(
+            self.climb_subsystem, 
+            self.stick.getRawButton(2), 
+            [self.subsytems.drive]
         )
         x, y, z = (
             self.stick.getX(),

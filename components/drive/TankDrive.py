@@ -1,3 +1,4 @@
+import wpilib
 from components.drive.Drive import Drive
 
 
@@ -6,7 +7,8 @@ class TankDrive(Drive):
     left_motors -> List of left motor controllers
     right_motors -> List of right motor controllers
     """
-    def __init__(self, left_motors: [], right_motors: []):
+    def __init__(self, left_motors, right_motors):
+        super().__init__()
         self.left_motors = left_motors
         self.right_motors = right_motors
 

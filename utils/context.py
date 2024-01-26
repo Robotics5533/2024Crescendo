@@ -19,8 +19,8 @@ class Context:
 
     def move(self, point: Vector):
         speed = abs(point.pythagorean(self.last_position))
-        self.robot.subsystems.drive.drive.set_speed((speed, speed, speed))
-        self.robot.subsystems.drive.drive.move(point)
+        self.robot.subsystems.drive.mecanum.set_speed((speed, speed, speed))
+        self.robot.subsystems.drive.mecanum.move(point)
         self.time = self.timer.get()
         self.last_position = point
 
