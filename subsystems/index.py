@@ -21,7 +21,7 @@ class SubSystems:
         # )
         tank =   self.drive = TankDrive(wpilib.MotorControllerGroup(wpilib.PWMSparkMax(0), wpilib.PWMSparkMax(1)), wpilib.MotorControllerGroup(wpilib.PWMSparkMax(2), wpilib.PWMSparkMax(3)))
         self.drive = DriveSubSystem(tank)
-        self.climb = ClimbSubSystem(hardware.TalonFX(Robot.motors.climb))
+        self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
 
     def setup(self, func, condition: bool, requirements):
         for requirement in requirements:
