@@ -39,8 +39,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("activate_gyro"),
             [self.subsystems.drive, self.subsystems.gyro],
         )
-         print(x, y, z)
-         if not self.action_map.get_action_pressed("activate_climb"):
+         if not self.action_map.get_action_pressed("activate_climb") and self.subsystems.drive.can_run:
            self.subsystems.drive.move(Vector(x, y, z))
            
          self.subsystems.reset()

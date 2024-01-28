@@ -8,7 +8,7 @@ class VisionSubSystem(Limelight):
         self.can_run = True
         
     def correct_error(self, drive_subsystem):
-        offset = self.limelight.getError()
+        offset = self.getError()
         drive_subsystem.drive.set_speed(50)
         drive_subsystem.drive.move(Vector(offset[0], offset[1], offset[2]))
         
