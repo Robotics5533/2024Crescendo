@@ -1,12 +1,14 @@
 from typing import Callable
+import navx
 from phoenix6 import hardware, controls
 import wpilib
 from constants import Robot
-from components.motor.talon5533 import Talon5533
+from components.motor.Talon5533 import Talon5533
 from components.drive.MecanumDrive import MecanumDrive
 from components.drive.TankDrive import TankDrive
 from subsystems.climb import ClimbSubSystem
 from subsystems.drive import DriveSubSystem
+from subsystems.gyro import GyroSubSystem
 from subsystems.vision import VisionSubSystem
 
 
@@ -15,8 +17,15 @@ class SubSystems:
         self.limelight = VisionSubSystem()
         self.drive = DriveSubSystem(Robot.Drive.tank)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
+        self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
+        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro]
 
-    def setup(self, func, condition: bool, requirements):
-        for requirement in requirements:
-                requirement.update_state(not condition)
-        func()
+    def setup(self, func, condition: bool, requirements, *args):
+        if not any(map(lambda x: not x.can_run, requirements)) and condition:
+            func(*args)
+            for requirement in requirements:
+                requirement.update_state(False)
+                
+    def reset(self):
+        for sub in self.sub_indexes:
+            sub.update_state(True)
