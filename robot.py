@@ -19,10 +19,10 @@ class Arpeggio(wpilib.TimedRobot):
         self.follower = Follower(self.context)
         self.subsystems = self.robot_container.subsystems
         
-    def autonomousPeriodic(self):
-        self.robot_container.teleop_lock.lock()
-        self.robot_container.process()
-        self.follower.update()
+    # def autonomousPeriodic(self):
+    #     self.robot_container.teleop_lock.lock()
+    #     self.robot_container.process()
+    #     self.follower.update()
 
     def teleopPeriodic(self):
         self.robot_container.process()

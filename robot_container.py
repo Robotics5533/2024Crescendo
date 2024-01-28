@@ -14,7 +14,7 @@ class RobotContainer:
         self.action_map.register_action("activate_gyro", self.teleop_lock.lockify(lambda: self.stick.getRawButton(3)))
         
     def get_motion(self):
-        return self.stick.getX(), self.stick.getY(), self.stick.getZ()
+        return (self.stick.getX(), self.stick.getY(), self.stick.getZ())
         
     def process(self):
          x, y, z = self.get_motion()
