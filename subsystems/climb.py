@@ -6,7 +6,7 @@ from components.motor.talon5533 import Talon5533
 class ClimbSubSystem:
     def __init__(self, motor: Talon5533): 
         self.motor = motor
-        self.can_run = True
+        self.can_run = False
     def update_state(self, state: bool):
         self.can_run = state
     def move(self, speed: float):

@@ -6,15 +6,6 @@ class Vector:
         self.a = a
         self.b = b
         self.c = c
-
-    # def __add__(self, vec: 'Vector') -> 'Vector':
-    #     return Vector(self.a + vec.a, self.b + vec.b, self.c + vec.c)
-
-    # def __sub__(self, vec: 'Vector') -> 'Vector':
-    #     return Vector(self.a - vec.a, self.b - vec.b, self.c - vec.c)
-
-    # def __mul__(self, scalar: float) -> 'Vector':
-    #     return Vector(self.a * scalar, self.b * scalar, self.c * scalar)
     
     def pythagorean(self, point: 'Vector') -> float:
         return ((self.a - point.a) ** 2 + (self.b - point.b) ** 2 + (self.c - point.c) ** 2) ** 0.5

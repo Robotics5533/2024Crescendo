@@ -13,14 +13,7 @@ from subsystems.vision import VisionSubSystem
 class SubSystems:
     def __init__(self):
         self.limelight = VisionSubSystem()
-        # mecanum_drive = MecanumDrive(
-        #     Talon5533(Robot.motors.front_left),
-        #     Talon5533(Robot.motors.front_right),
-        #     Talon5533(Robot.motors.back_left),
-        #     Talon5533(Robot.motors.back_right),
-        # )
-        tank =   self.drive = TankDrive(wpilib.MotorControllerGroup(wpilib.PWMSparkMax(0), wpilib.PWMSparkMax(1)), wpilib.MotorControllerGroup(wpilib.PWMSparkMax(2), wpilib.PWMSparkMax(3)))
-        self.drive = DriveSubSystem(tank)
+        self.drive = DriveSubSystem(Robot.Drive.tank)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
 
     def setup(self, func, condition: bool, requirements):
