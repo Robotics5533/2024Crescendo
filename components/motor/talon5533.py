@@ -13,7 +13,7 @@ class Talon5533:
         self.controller = controls.PositionDutyCycle(0) if mode == 0 else controls.DutyCycleOut(0)
     
     def get_position(self):
-        return self.talonmotor.get_position()
+        return self.talonmotor.get_position().value_as_double
     
     def set_position(self, position: float = 0):
         self.talonmotor.set_position(position)

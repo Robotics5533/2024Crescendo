@@ -17,7 +17,7 @@ class Follower:
             self.command += 1
             if self.command >= len(self.commands): 
                 return
-            (f, _) = self.commands[self.command]
-            f()
+            (f, p) = self.commands[self.command]
+            f(p)
 
 

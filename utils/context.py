@@ -4,19 +4,17 @@ from utils.math.Vector import Vector
 
 
 class Context:
-    def __init__(self, follower, robot, run_time: float = 0):
+    def __init__(self, robot, run_time: float = 0):
         self.robot = robot
         self.last_position = Vector(0, 0, 0)
         self.time = 0
         self.timer = wpilib.Timer()
         self.run_time = run_time
-        self.operation = None
-        self.follower = follower
+        self.operation = lambda: True
         self.move_distance = 0
         
-    @staticmethod
     def get_operation(self):
-        return self.operaton
+        return self.operation
     
     def set_operation(self, operation):
         self.operation = operation
@@ -30,7 +28,7 @@ class Context:
         pass
     
     def get_data(self):
-        return self.follower.commands[self.follower.command]
+        return self.data
         
     def next(self):
         if self.timer.get() == 0:
@@ -46,10 +44,11 @@ class Context:
     def move_operation(self):
         return self.robot.subsystems.drive.drive.get_position() > self.move_distance
         
-    def move(self):
+    def move(self, data):
+        self.data = data
         self.robot.subsystems.drive.drive.set_mode(0)
         self.set_operation(self.move_operation)
-        distance = self.last_position.pythagorean(self.get_data()[1])
+        distance = self.last_position.pythagorean(self.get_data())
         self.move_distance = distance
-        self.robot.subsystems.drive.move((0, distance, 0))
-        self.last_position = self.get_data()[1]
+        self.robot.subsystems.drive.move(Vector(0, distance, 0))
+        self.last_position = self.get_data()

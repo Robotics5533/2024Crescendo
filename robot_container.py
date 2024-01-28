@@ -1,5 +1,5 @@
-from inputs.ActionMap import ActionMap
-from inputs.Lockdown import Lockdown
+from components.inputs.ActionMap import ActionMap
+from components.inputs.Lockdown import Lockdown
 from utils.math.Vector import Vector
 
 
@@ -36,9 +36,9 @@ class RobotContainer:
          self.subsystems.setup(
             self.subsystems.gyro.update_angle,
             ActionMap.get_action_pressed("activate_gyro"),
-            [self.subsytems.drive, self.subsystems.gyro],
+            [self.subsystems.drive, self.subsystems.gyro],
         )
-         
+         print(x, y, z)
          if not ActionMap.get_action_pressed("activate_climb"):
            self.subsystems.drive.move(Vector(x, y, z))
            

@@ -1,7 +1,7 @@
 import wpilib
 from components.drive.TankDrive import TankDrive
 from components.drive.MecanumDrive import MecanumDrive
-from components.motor.talon5533 import Talon5533
+from components.motor.Talon5533 import Talon5533
 
 front_left = 1
 front_right = 2
@@ -9,10 +9,10 @@ back_left = 3
 back_right = 4
 class Robot:
     class Drive:
-        tank = TankDrive(
-            wpilib.MotorControllerGroup(wpilib.PWMSparkMax(0), wpilib.PWMSparkMax(1)),
-            wpilib.MotorControllerGroup(wpilib.PWMSparkMax(2), wpilib.PWMSparkMax(3)),
-        )
+        # tank = TankDrive(
+        #     wpilib.MotorControllerGroup(wpilib.PWMSparkMax(0), wpilib.PWMSparkMax(1)),
+        #     wpilib.MotorControllerGroup(wpilib.PWMSparkMax(2), wpilib.PWMSparkMax(3)),
+        # )
         mecanum = MecanumDrive(
             Talon5533(front_left),
             Talon5533(front_right),
