@@ -12,12 +12,13 @@ from phoenix6 import hardware, controls
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
         self.robot_container = RobotContainer(SubSystems(), wpilib.Joystick(Robot.controllers.joystick))
+        self.follower = Follower(self.context)
         self.context = Context(
+            self.follower,
             self,
             2.5,
         )
-        self.follower = Follower(self.context)
-
+        
     def autonomousPeriodic(self):
         self.robot_container.teleop_lock.lock()
         self.robot_container.process()

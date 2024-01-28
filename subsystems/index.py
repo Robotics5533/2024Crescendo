@@ -15,7 +15,7 @@ from subsystems.vision import VisionSubSystem
 class SubSystems:
     def __init__(self):
         self.limelight = VisionSubSystem()
-        self.drive = DriveSubSystem(Robot.Drive.tank)
+        self.drive = DriveSubSystem(Robot.Drive.mecanum)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro]

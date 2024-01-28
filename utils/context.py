@@ -4,26 +4,52 @@ from utils.math.Vector import Vector
 
 
 class Context:
-    def __init__(self, robot, run_time: float = 0):
+    def __init__(self, follower, robot, run_time: float = 0):
         self.robot = robot
         self.last_position = Vector(0, 0, 0)
         self.time = 0
         self.timer = wpilib.Timer()
         self.run_time = run_time
+        self.operation = None
+        self.follower = follower
+        self.move_distance = 0
+        
+    @staticmethod
+    def get_operation(self):
+        return self.operaton
+    
+    def set_operation(self, operation):
+        self.operation = operation
+        
+    @staticmethod
+    def get_rotation():
+        pass
+    
+    @staticmethod
+    def get_position():
+        pass
+    
+    def get_data(self):
+        return self.follower.commands[self.follower.command]
+        
     def next(self):
         if self.timer.get() == 0:
             self.timer.start()
-        return self.timer.get() - self.time > self.run_time
+        # self.timer.get() - self.time > self.run_time
+        return self.get_operation()()
+    
     def rotate(self, angle: float):
         pass
-
-    def move(self, point: Vector):
-        speed = abs(point.pythagorean(self.last_position))
-        self.robot.subsystems.drive.drive.set_speed(speed)
-        self.robot.subsystems.drive.drive.move(point)
-        self.time = self.timer.get()
-        self.last_position = point
-
-
-    def get_position():
-        pass
+    
+    
+    
+    def move_operation(self):
+        return self.robot.subsystems.drive.drive.get_position() > self.move_distance
+        
+    def move(self):
+        self.robot.subsystems.drive.drive.set_mode(0)
+        self.set_operation(self.move_operation)
+        distance = self.last_position.pythagorean(self.get_data()[1])
+        self.move_distance = distance
+        self.robot.subsystems.drive.move((0, distance, 0))
+        self.last_position = self.get_data()[1]
