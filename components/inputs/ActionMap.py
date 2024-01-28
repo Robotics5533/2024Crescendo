@@ -1,18 +1,16 @@
 class ActionMap:
-    actions = {}
-    
-    @staticmethod
-    def get_action_pressed(action: str):
-        return ActionMap.is_action_registered(action) and any([function() for function in ActionMap.actions[action]])
-    
-    @staticmethod
-    def register_action(action: str, func):
-        if not ActionMap.is_action_registered(action):
-            ActionMap.actions[action] = []
+    def __init__(self):
+        self.actions = {}
         
-        ActionMap.actions[action] += [func]
-        return ActionMap.actions
+    def get_action_pressed(self, action: str):
+        return self.is_action_registered(action) and any([function() for function in self.actions[action]])
     
-    @staticmethod
-    def is_action_registered(action: str):
-        return action in ActionMap.actions
+    def register_action(self, action: str, func):
+        if not self.is_action_registered(action):
+            self.actions[action] = []
+        
+        self.actions[action].append(func)
+        return self.actions
+    
+    def is_action_registered(self, action: str):
+        return action in self.actions
