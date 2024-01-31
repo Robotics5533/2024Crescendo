@@ -31,11 +31,14 @@
 # if __name__ == "__main__":
 #     wpilib.run(Arpeggio)
 import wpilib
-from robotcontainer import RobotContainer
-from commands2 import TimedCommandRobot
-class Arpeggio(TimedCommandRobot):
+from components.sensors.encoder5533 import BufferedEncoder5533
+
+class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
-        self.container = RobotContainer()
+        self.encoder = wpilib.Encoder(0,1)
+        self.BufferedEncoder = BufferedEncoder5533(self.encoder, 3)
+        self.stick = wpilib.Joystick(0)
+        self.spark = wpilib.Spark(0)
     #     self.timer = wpilib.Timer()
 
     # def autonomousInit(self) -> None:
@@ -46,5 +49,11 @@ class Arpeggio(TimedCommandRobot):
     #         self.container.drive_subsystem.drive.move(0.5, 0, 0)
     def teleopPeriodic(self) -> None:
         """return super().teleopPeriodic()"""
+        self.spark.set(self.stick.getRawAxis(3))
+        print(f"sliderPOS {self.stick.getRawAxis(3)}")
+        print(self.BufferedEncoder.getDistance())
+        
 if __name__ == "__main__":
     wpilib.run(Arpeggio)
+    
+    
