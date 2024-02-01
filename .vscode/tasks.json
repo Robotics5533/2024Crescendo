@@ -6,7 +6,7 @@
         {
             "label": "echo",
             "type": "shell",
-            "command": ".\\.env\\Scripts\\python.exe -m robotpy deploy --nc",
+            "command": "python3 -m robotpy deploy --nc",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
