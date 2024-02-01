@@ -30,6 +30,10 @@ class MecanumDrive(Drive):
     def get_position(self):
         return sum(map(lambda x: x.get_position(), self.motors)) / len(self.motors)
     
+    def set_position(self, position: float):
+        for motor in self.motors:
+            motor.set_position(position)
+            
     def move(self, data: Vector):
         self.front_left_motor.set(data.b - data.c - data.a)
         self.front_right_motor.set(data.b + data.c + data.a)

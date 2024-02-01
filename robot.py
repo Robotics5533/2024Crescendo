@@ -8,6 +8,7 @@ from utils.follower import Follower
 from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
 
+from utils.math.motors import drive_to_meters
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
@@ -19,10 +20,11 @@ class Arpeggio(wpilib.TimedRobot):
         self.follower = Follower(self.context)
         self.subsystems = self.robot_container.subsystems
         
-    # def autonomousPeriodic(self):
-    #     self.robot_container.teleop_lock.lock()
-    #     self.robot_container.process()
-    #     self.follower.update()
+    def autonomousPeriodic(self):
+        # self.robot_container.teleop_lock.lock()
+        # self.robot_container.process()
+        # self.follower.update()
+        drive_to_meters(self.subsystems.drive.drive, 50)
 
     def teleopPeriodic(self):
         self.robot_container.process()
