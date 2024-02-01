@@ -16,11 +16,11 @@ from subsystems.intake import IntakeSubSystem
 class SubSystems:
     def __init__(self):
         self.limelight = VisionSubSystem()
-        self.shooter = ShooterSubSystem([wpilib.Spark(0), wpilib.Spark(1)])
+        self.shooter = ShooterSubSystem([wpilib.Spark(Robot.motors.shooter[0]), wpilib.Spark(Robot.motors.shooter[1])])
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
-        self.intake = IntakeSubSystem([wpilib.Spark(2), wpilib.Spark(3)])
+        self.intake = IntakeSubSystem([wpilib.Spark(Robot.motors.intake[0]), wpilib.Spark(Robot.motors.intake[1])])
         self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake]
 
     def setup(self, func, condition: bool, requirements, *args):
