@@ -20,15 +20,9 @@ class Robot:
             Talon5533(back_right),
         )
 
-    class controllers:
+    class Controllers:
         joystick = 0
-
-    class ButtonInputs:
-        follow_limelight_btnid = 1
-        limelight_rotate = 2
-        add_speed = 12
-        remove_speed = 11
-
+        xbox = 1
     class motors:
         front_left = front_left
         front_right = front_right
