@@ -1,3 +1,4 @@
 __pycache__/
 .ycm_extra_conf.py
 .env/
+*.pyc
