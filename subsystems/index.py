@@ -9,6 +9,7 @@ from components.drive.TankDrive import TankDrive
 from subsystems.climb import ClimbSubSystem
 from subsystems.drive import DriveSubSystem
 from subsystems.gyro import GyroSubSystem
+from subsystems.intake_control import IntakeControlSubSystem
 from subsystems.shooter import ShooterSubSystem
 from subsystems.vision import VisionSubSystem
 from subsystems.intake import IntakeSubSystem
@@ -21,7 +22,8 @@ class SubSystems:
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.intake = IntakeSubSystem([wpilib.Spark(2), wpilib.Spark(3)])
-        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake]
+        self.intake_control = IntakeControlSubSystem(wpilib.Talon(4))
+        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control]
 
     def setup(self, func, condition: bool, requirements, *args):
         if not any(map(lambda x: not x.can_run, requirements)) and condition:
