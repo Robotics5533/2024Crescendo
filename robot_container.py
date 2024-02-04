@@ -17,6 +17,7 @@ class RobotContainer:
         self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: (self.xbox.getLeftX() + self.xbox.getLeftY()) * 45) > 0)
         self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
+        self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.xbox.getBButton()))
         self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.xbox.getRightBumperReleased()))
 
     def get_motion(self):
