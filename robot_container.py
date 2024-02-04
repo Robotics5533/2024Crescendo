@@ -16,7 +16,7 @@ class RobotContainer:
         self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.stick.getRawButton(3)))
         self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: self.stick.getPOV(0) >= 0))
         self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.stick.getRawButton(4)))
-      #  self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.stick.getRawButton(4)))
+        self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.stick.getRawButton(4)))
         self.speed = 75
         # self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.stick.getRawButton(5)))
 
@@ -40,7 +40,13 @@ class RobotContainer:
 
             self.speed
         )
-         
+         self.subsystems.setup(
+            self.subsystems.shooter.shoot, 
+            self.action_map.get_action_pressed("deactivate_shooter"),
+            [self.subsystems.shooter],
+
+            0
+         )
          self.subsystems.setup(
             self.subsystems.climb.move, 
             self.action_map.get_action_pressed("activate_climb"),
