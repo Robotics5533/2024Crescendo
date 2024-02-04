@@ -12,33 +12,35 @@ class RobotContainer:
         self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-        self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
-        self.action_map.register_action("activate_climb", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
-        self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
-        self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: (self.xbox.getLeftX() + self.xbox.getLeftY()) * 45) > 0)
+        # self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
+        # self.action_map.register_action("activate_climb", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        # self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
+        # self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: (self.xbox.getLeftX() + self.xbox.getLeftY()) * 45) > 0)
         self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
         self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.xbox.getBButton()))
-        self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.xbox.getRightBumperReleased()))
+        self.action_map.register_action("run_intake_in", self.teleop_lock.lockify(lambda: self.xbox.getRightBumper()))
+        self.action_map.register_action("run_intake_out", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
+        self.action_map.register_action("unrun_intake", self.teleop_lock.lockify(lambda: not (self.xbox.getRightBumper() or self.xbox.getLeftBumper())))
 
     def get_motion(self):
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ())
         
     def process(self):
          x, y, z = self.get_motion()
-         self.subsystems.setup(
-            self.subsystems.limelight.correct_error,
-            self.action_map.get_action_pressed("activate_limelight"),
-            [self.subsystems.drive, self.subsystems.limelight],
+        #  self.subsystems.setup(
+        #     self.subsystems.limelight.correct_error,
+        #     self.action_map.get_action_pressed("activate_limelight"),
+        #     [self.subsystems.drive, self.subsystems.limelight],
             
-            self.subsystems.drive
-        )
+        #     self.subsystems.drive
+        # )
          
          self.subsystems.setup(
             self.subsystems.shooter.shoot, 
             self.action_map.get_action_pressed("activate_shooter"),
             [self.subsystems.shooter],
 
-            self.speed
+        50
         )
          self.subsystems.setup(
             self.subsystems.shooter.shoot, 
@@ -48,36 +50,50 @@ class RobotContainer:
             0
          )
          self.subsystems.setup(
-            self.subsystems.climb.move, 
-            self.action_map.get_action_pressed("activate_climb"),
-            [self.subsystems.climb],
-            
-            -y
-        )
-         
-         self.subsystems.setup(
-            self.subsystems.gyro.reset,
-            self.action_map.get_action_pressed("reset_gyro"),
-            [self.subsystems.gyro],
-        )
-         
-         self.subsystems.setup(
-            self.subsystems.gyro.move,
-            self.action_map.get_action_pressed("move_gyro"),
-            [self.subsystems.gyro, self.subsystems.drive],
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("run_intake_in"),
+            [],
 
-            self.stick.getPOV(0)
+            0.5
+        )
+         self.subsystems.setup(
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("unrun_intake"),
+            [],
+
+            0
         )
          
+         self.subsystems.setup(
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("run_intake_out"),
+            [],
+
+            -0.5
+        )
         #  self.subsystems.setup(
-        #     self.subsystems.intake.run,
-        #     self.action_map.get_action_pressed("run_intake"),
-        #     [self.subsystems.drive],
-
-        #     0.5
+        #     self.subsystems.climb.move, 
+        #     self.action_map.get_action_pressed("activate_climb"),
+        #     [self.subsystems.climb],
+            
+        #     -y
         # )
          
-         if not self.action_map.get_action_pressed("activate_climb"):
+        #  self.subsystems.setup(
+        #     self.subsystems.gyro.reset,
+        #     self.action_map.get_action_pressed("reset_gyro"),
+        #     [self.subsystems.gyro],
+        # )
+         
+        #  self.subsystems.setup(
+        #     self.subsystems.gyro.move,
+        #     self.action_map.get_action_pressed("move_gyro"),
+        #     [self.subsystems.gyro, self.subsystems.drive],
+
+        #     self.stick.getPOV(0)
+        # )
+         
+         if not True:
              self.subsystems.drive.drive.set_mode(1)
              self.subsystems.drive.move(Vector(x, y, z))
            
