@@ -46,7 +46,7 @@ class Context:
         
     def move(self, data):
         self.data = data
-        self.robot.subsystems.drive.drive.set_mode(0)
+        # self.robot.subsystems.drive.drive.set_mode(0)
         self.set_operation(self.move_operation)
         distance = self.last_position.pythagorean(self.get_data())
         self.move_distance = distance

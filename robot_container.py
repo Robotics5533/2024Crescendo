@@ -16,7 +16,9 @@ class RobotContainer:
         self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.stick.getRawButton(3)))
         self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: self.stick.getPOV(0) >= 0))
         self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.stick.getRawButton(4)))
-        self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.stick.getRawButton(5)))
+      #  self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.stick.getRawButton(4)))
+        self.speed = 75
+        # self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.stick.getRawButton(5)))
 
     def get_motion(self):
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ())
@@ -36,7 +38,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("activate_shooter"),
             [self.subsystems.shooter],
 
-            0.5
+            self.speed
         )
          
          self.subsystems.setup(
@@ -61,16 +63,16 @@ class RobotContainer:
             self.stick.getPOV(0)
         )
          
-         self.subsystems.setup(
-            self.subsystems.intake.run,
-            self.action_map.get_action_pressed("run_intake"),
-            [self.subsystems.drive],
+        #  self.subsystems.setup(
+        #     self.subsystems.intake.run,
+        #     self.action_map.get_action_pressed("run_intake"),
+        #     [self.subsystems.drive],
 
-            0.5
-        )
+        #     0.5
+        # )
          
          if not self.action_map.get_action_pressed("activate_climb"):
-             self.subsystems.drive.set_mode(1)
+            #  self.subsystems.drive.drive.set_mode(1)
              self.subsystems.drive.move(Vector(x, y, z))
            
          self.subsystems.reset()
