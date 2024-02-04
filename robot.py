@@ -24,7 +24,8 @@ class Arpeggio(wpilib.TimedRobot):
         # self.robot_container.teleop_lock.lock()
         # self.robot_container.process()
         # self.follower.update()
-        drive_to_meters(self.subsystems.drive.drive, 50)
+        # drive_to_meters(self.subsystems.drive.drive, 50)
+        pass
 
     def teleopPeriodic(self):
         self.robot_container.process()

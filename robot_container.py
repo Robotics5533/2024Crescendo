@@ -12,7 +12,7 @@ class RobotContainer:
         self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-        self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXPressed()))
+        self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
         self.action_map.register_action("activate_climb", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
         self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: (self.xbox.getLeftX() + self.xbox.getLeftY()) * 45) > 0)
@@ -71,7 +71,7 @@ class RobotContainer:
         )
          
          if not self.action_map.get_action_pressed("activate_climb"):
-             self.subsystems.drive.set_mode(1)
+             self.subsystems.drive.drive.set_mode(1)
              self.subsystems.drive.move(Vector(x, y, z))
            
          self.subsystems.reset()
