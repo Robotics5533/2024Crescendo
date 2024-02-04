@@ -6,17 +6,18 @@ from utils.math.motors import drive_to_meters
 
 
 class RobotContainer:
-    def __init__(self, subsystems, stick):
+    def __init__(self, subsystems, stick, xbox):
         self.subsystems = subsystems
         self.stick = stick
+        self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-        self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.stick.getRawButton(1)))
-        self.action_map.register_action("activate_climb", self.teleop_lock.lockify(lambda: self.stick.getRawButton(2)))
-        self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.stick.getRawButton(3)))
-        self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: self.stick.getPOV(0) >= 0))
-        self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.stick.getRawButton(4)))
-        self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.stick.getRawButton(5)))
+        self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXPressed()))
+        self.action_map.register_action("activate_climb", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
+        self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: (self.xbox.getLeftX() + self.xbox.getLeftY()) * 45) > 0)
+        self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
+        self.action_map.register_action("run_intake", self.teleop_lock.lockify(lambda: self.xbox.getRightBumperReleased()))
 
     def get_motion(self):
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ())

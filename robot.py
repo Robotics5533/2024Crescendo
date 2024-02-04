@@ -12,7 +12,7 @@ from utils.math.motors import drive_to_meters
 
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
-        self.robot_container = RobotContainer(SubSystems(), wpilib.Joystick(Robot.controllers.joystick))
+        self.robot_container = RobotContainer(SubSystems(), wpilib.Joystick(Robot.Controllers.joystick), wpilib.XboxController(Robot.Controllers.xbox))
         self.context = Context(
             self,
             2.5,
