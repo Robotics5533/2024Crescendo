@@ -42,7 +42,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("activate_shooter"),
             [self.subsystems.shooter],
 
-        32
+        75
         )
          self.subsystems.setup(
             self.subsystems.shooter.shoot, 
@@ -79,7 +79,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("control_intake"),
             [],
 
-            clamp(self.xbox.getLeftTriggerAxis() - self.xbox.getRightTriggerAxis(), -0.3, 0.3)
+            clamp(-self.xbox.getLeftTriggerAxis() + self.xbox.getRightTriggerAxis(), -0.42, 0.42)
         )
          self.subsystems.setup(
             self.subsystems.intake_control.run,
