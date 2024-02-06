@@ -24,6 +24,7 @@ class RobotContainer:
         self.action_map.register_action("unrun_intake", self.teleop_lock.lockify(lambda: not (self.xbox.getRightBumper() or self.xbox.getLeftBumper())))
         self.action_map.register_action("control_intake", self.teleop_lock.lockify(lambda: (self.xbox.getLeftTriggerAxis() + self.xbox.getRightTriggerAxis()) > 0.1))
         self.action_map.register_action("control_intake_STOP", self.teleop_lock.lockify(lambda: not self.action_map.get_action_pressed("control_intake")))
+    
     def get_motion(self):
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ())
         
@@ -81,6 +82,7 @@ class RobotContainer:
 
             clamp(-self.xbox.getLeftTriggerAxis() + self.xbox.getRightTriggerAxis(), -0.42, 0.42)
         )
+         
          self.subsystems.setup(
             self.subsystems.intake_control.run,
             self.action_map.get_action_pressed("control_intake_STOP"),
