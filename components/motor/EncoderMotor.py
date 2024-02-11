@@ -22,6 +22,7 @@ class EncoderMotor:
         self.wheelDiameter = 22 # inches
         self.lastTime = 0
         self.lastPosition = 0
+        self.currentVoltage = 0
 
     def process(self):
         
@@ -31,16 +32,25 @@ class EncoderMotor:
         if self.mode == MotorModes.position or self.mode == MotorModes.velocity:
             error = self.get_target_error()
             correction = clamp(-atan(error), -1, 1)
-            self.motor.set(correction)
+
+            if self.mode == MotorModes.velocity:
+                self.currentVoltage += correction
+                self.motor.set(self.currentVoltage)
+
+            else:
+                self.motor.set(correction)
+
         self.lastPosition = self.get_position()
         self.lastTime = self.timer.get()
 
     def get_target_error(self) -> float:
         if self.mode == MotorModes.position:
             return self.get_position() - self.target
+        
         if self.mode == MotorModes.velocity:
             return self.get_velocity()-self.target
-        return 00.0
+        
+        return 0
             
 
 
@@ -50,8 +60,10 @@ class EncoderMotor:
     
         deltaPosition = self.get_position() - self.lastPosition
         deltaTime = self.timer.get() - self.lastTime
+
         if deltaTime == 0:
             return 0
+        
         return deltaPosition/deltaTime # = velocity
         
 
