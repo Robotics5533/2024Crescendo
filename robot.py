@@ -1,3 +1,4 @@
+from asyncio import sleep
 import wpilib
 import wpilib.drive
 from constants import Robot
@@ -25,8 +26,16 @@ class Arpeggio(wpilib.TimedRobot):
         # self.robot_container.process()
         # self.follower.update()
         # drive_to_meters(self.subsystems.drive.drive, 50)
+        # self.subsystems.shooter.run(75)
+        # sleep(2000)
+        # self.subsystems.shooter.run(0)
+        # self.subsystems.intake.run(-0.5)
+        # sleep(2000)
+        # self.subsystems.intake.run(0)
+        # self.subsystems.drive.drive(Vector(0, 0.25, 0))
+        # sleep(5000)
+        # self.subsystems.drive.drive(Vector(0, 0, 0))
         pass
-
     def teleopPeriodic(self):
         self.robot_container.process()
 

@@ -12,7 +12,7 @@ class EncoderMotor:
         return self.encoder.getDistance() * self.conversion
         
 
-    def __init__(self, encoder: Union[BufferedEncoder5533, "wpilib.encoder"] , motor , mode = MotorModes.velocity):
+    def __init__(self, encoder: Union[BufferedEncoder5533, "wpilib.encoder"], motor, mode = MotorModes.velocity):
         self.encoder = encoder 
         self.motor = motor
         self.mode = mode
