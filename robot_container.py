@@ -14,7 +14,9 @@ class RobotContainer:
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
         # self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
-        # self.action_map.register_action("activate_climb", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
+        self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.xbox.getYButton() or self.xbox.getAButton())))
         # self.action_map.register_action("reset_gyro", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         # self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: abs(self.xbox.getLeftX() + self.xbox.getLeftY()) > 0.25327548326587563845682347658735682736483765736573465))
         self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
@@ -91,13 +93,27 @@ class RobotContainer:
             0
         )
          
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move, 
-        #     self.action_map.get_action_pressed("activate_climb"),
-        #     [self.subsystems.climb],
+         self.subsystems.setup(
+            self.subsystems.climb.move, 
+            self.action_map.get_action_pressed("activate_climb_up"),
+            [self.subsystems.climb],
             
-        #     -y
-        # )
+            -30
+        )
+         self.subsystems.setup(
+            self.subsystems.climb.move, 
+            self.action_map.get_action_pressed("activate_climb_down"),
+            [self.subsystems.climb],
+            
+            30
+        )
+         self.subsystems.setup(
+            self.subsystems.climb.move, 
+            self.action_map.get_action_pressed("deactivate_climb"),
+            [self.subsystems.climb],
+            
+            0
+        )
          
         #  self.subsystems.setup(
         #     self.subsystems.gyro.reset,

@@ -28,4 +28,4 @@ class Robot:
         front_right = front_right
         back_left = back_left
         back_right = back_right
-        climb = 7
+        climb = 5
