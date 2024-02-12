@@ -18,8 +18,8 @@ class RobotContainer:
         # self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         # self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.xbox.getAButton() or self.xbox.getYButton())))
         # self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: abs(self.xbox.getLeftX() + self.xbox.getLeftY()) > 0.25327548326587563845682347658735682736483765736573465))
-        # self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
-        # self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.xbox.getBButton()))
+        self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
+        self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.xbox.getBButton()))
         # self.action_map.register_action("run_intake_in", self.teleop_lock.lockify(lambda: self.xbox.getRightBumper()))
         # self.action_map.register_action("run_intake_out", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
         # self.action_map.register_action("unrun_intake", self.teleop_lock.lockify(lambda: not (self.xbox.getRightBumper() or self.xbox.getLeftBumper())))
@@ -81,7 +81,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("control_intake"),
             [],
 
-            clamp(-self.xbox.getLeftTriggerAxis() + self.xbox.getRightTriggerAxis(), -1, 1)
+            clamp(0, -0.25, 0.25)
         )
          
          self.subsystems.setup(
