@@ -44,7 +44,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("activate_shooter"),
             [],
 
-        50
+        20
         )
          self.subsystems.setup(
             self.subsystems.shooter.shoot, 
@@ -58,7 +58,7 @@ class RobotContainer:
             self.action_map.get_action_pressed("run_intake_in"),
             [],
 
-            0.5
+            0.6
         )
          self.subsystems.setup(
             self.subsystems.intake.run,
@@ -74,7 +74,7 @@ class RobotContainer:
 
             [],
 
-            -0.5
+            -0.6
         )
          self.subsystems.setup(
             self.subsystems.intake_control.run,
