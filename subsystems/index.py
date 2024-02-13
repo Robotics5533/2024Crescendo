@@ -24,7 +24,7 @@ class SubSystems:
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
-        self.intake = IntakeSubSystem([wpilib.Spark(2), wpilib.Spark(3)])
+        self.intake = IntakeSubSystem([wpilib.Spark(2)])
         self.intake_control = IntakeControlSubSystem(self.intake_control)
         self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control]
 

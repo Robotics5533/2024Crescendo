@@ -11,6 +11,5 @@ class IntakeControlSubSystem:
         self.can_run = state
         
     def run(self, speed: float):
-        
         self.motor.set(speed)
             

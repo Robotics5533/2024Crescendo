@@ -20,9 +20,9 @@ class RobotContainer:
         # self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: abs(self.xbox.getLeftX() + self.xbox.getLeftY()) > 0.25327548326587563845682347658735682736483765736573465))
         self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
         self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.xbox.getBButton()))
-        # self.action_map.register_action("run_intake_in", self.teleop_lock.lockify(lambda: self.xbox.getRightBumper()))
-        # self.action_map.register_action("run_intake_out", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
-        # self.action_map.register_action("unrun_intake", self.teleop_lock.lockify(lambda: not (self.xbox.getRightBumper() or self.xbox.getLeftBumper())))
+        self.action_map.register_action("run_intake_in", self.teleop_lock.lockify(lambda: self.xbox.getRightBumper()))
+        self.action_map.register_action("run_intake_out", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
+        self.action_map.register_action("unrun_intake", self.teleop_lock.lockify(lambda: not (self.xbox.getRightBumper() or self.xbox.getLeftBumper())))
         self.action_map.register_action("control_intake", self.teleop_lock.lockify(lambda: (self.xbox.getLeftTriggerAxis() + self.xbox.getRightTriggerAxis()) > 0.1))
         self.action_map.register_action("control_intake_STOP", self.teleop_lock.lockify(lambda: not self.action_map.get_action_pressed("control_intake")))
     
@@ -39,49 +39,49 @@ class RobotContainer:
         #     self.subsystems.drive
         # )
          
-        #  self.subsystems.setup(
-        #     self.subsystems.shooter.shoot, 
-        #     self.action_map.get_action_pressed("activate_shooter"),
-        #     [self.subsystems.shooter],
+         self.subsystems.setup(
+            self.subsystems.shooter.shoot, 
+            self.action_map.get_action_pressed("activate_shooter"),
+            [],
 
-        # 75
-        # )
-        #  self.subsystems.setup(
-        #     self.subsystems.shooter.shoot, 
-        #     self.action_map.get_action_pressed("deactivate_shooter"),
-        #     [self.subsystems.shooter],
+        50
+        )
+         self.subsystems.setup(
+            self.subsystems.shooter.shoot, 
+            self.action_map.get_action_pressed("deactivate_shooter"),
+            [],
 
-        #     0
-        #  )
-        #  self.subsystems.setup(
-        #     self.subsystems.intake.run,
-        #     self.action_map.get_action_pressed("run_intake_in"),
-        #     [],
+            0
+         )
+         self.subsystems.setup(
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("run_intake_in"),
+            [],
 
-        #     0.5
-        # )
-        #  self.subsystems.setup(
-        #     self.subsystems.intake.run,
-        #     self.action_map.get_action_pressed("unrun_intake"),
-        #     [],
+            0.5
+        )
+         self.subsystems.setup(
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("unrun_intake"),
+            [],
 
-        #     0
-        # )
+            0
+        )
          
-        #  self.subsystems.setup(
-        #     self.subsystems.intake.run,
-        #     self.action_map.get_action_pressed("run_intake_out"),
+         self.subsystems.setup(
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("run_intake_out"),
 
-        #     [],
+            [],
 
-        #     -0.5
-        # )
+            -0.5
+        )
          self.subsystems.setup(
             self.subsystems.intake_control.run,
             self.action_map.get_action_pressed("control_intake"),
             [],
 
-            clamp(0, -0.25, 0.25)
+            clamp((self.xbox.getLeftTriggerAxis() - self.xbox.getRightTriggerAxis()), -0.0027, 0.0027)
         )
          
          self.subsystems.setup(
@@ -117,7 +117,7 @@ class RobotContainer:
          
         #  self.subsystems.drive.drive.set_mode(1)
         #  self.subsystems.drive.move(Vector(x, y, z))
-        #  self.subsystems.reset()
+         self.subsystems.reset()
          
         #  self.subsystems.setup(
         #     self.subsystems.gyro.reset,
