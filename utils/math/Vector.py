@@ -1,12 +1,18 @@
 from typing import Callable, Union, Tuple
 import math
 
+from utils.math.algebra import deadzone
+
 class Vector:
     def __init__(self, a: float, b: float, c: float):
         self.a = a
         self.b = b
         self.c = c
     
+    def deadzone(self, error = 0.1): 
+        values = [self.a, self.b, self.c]
+        return deadzone(values, error)
+
     def pythagorean(self, point: 'Vector') -> float:
         return ((self.a - point.a) ** 2 + (self.b - point.b) ** 2 + (self.c - point.c) ** 2) ** 0.5
     

@@ -35,6 +35,7 @@ class MecanumDrive(Drive):
             motor.set_position(position)
             
     def move(self, data: Vector):
+        data = Vector(*data.deadzone())
         self.front_left_motor.set(data.b - data.c - data.a)
         self.front_right_motor.set(data.b + data.c + data.a)
         self.back_left_motor.set(data.b - data.c + data.a)
