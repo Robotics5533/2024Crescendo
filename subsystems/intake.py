@@ -12,5 +12,5 @@ class IntakeSubSystem:
         
     def run(self, speed: float):
         for motor in self.motors:
-            motor.set(speed)
+            motor.set(speed / 100)
             

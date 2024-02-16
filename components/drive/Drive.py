@@ -1,3 +1,4 @@
+
 class Drive:
     def __init__(self):
         self.set_speed(25)
@@ -5,16 +6,17 @@ class Drive:
     def set_speed(self, speed):
         self.speed = speed / 100
     
-    """
-    *args -> Do the math for a deadzone with any amount of args as possible
-    """
-    @staticmethod
-    def deadzone(*args):
-        for value in args:
-            if value < -0.3 or value > 0.3:
-                return True
-        return False
+
+    # def deadzoneify(error = 0.3):
+    #     def create_deadzone_error(f):
+    #         def deadzoned_f():
+    #             value = f()
+    #             return 0 if almost_equal(value,0,error) else value
+    #         return deadzoned_f
+    #     return create_deadzone_error
     
+
+
     def speed_calculation(self, x: float, i: int):
         return x * self.speed
     

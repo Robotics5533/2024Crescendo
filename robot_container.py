@@ -2,9 +2,10 @@ import math
 from components.inputs.ActionMap import ActionMap
 from components.inputs.Lockdown import Lockdown
 from components.motor.Talon5533 import Talon5533
+from components.motor.Motor5533 import MotorModes
 from utils.math.Vector import Vector
+from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
-from utils.math.algebra import clamp
 
 class RobotContainer:
     def __init__(self, subsystems, stick, xbox):
@@ -13,124 +14,142 @@ class RobotContainer:
         self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-        # self.action_map.register_action("activate_limelight", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
-        # self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
-        # self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
-        # self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.xbox.getAButton() or self.xbox.getYButton())))
-        # self.action_map.register_action("move_gyro", self.teleop_lock.lockify(lambda: abs(self.xbox.getLeftX() + self.xbox.getLeftY()) > 0.25327548326587563845682347658735682736483765736573465))
-        self.action_map.register_action("activate_shooter", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
-        self.action_map.register_action("deactivate_shooter", self.teleop_lock.lockify(lambda: not self.xbox.getBButton()))
-        self.action_map.register_action("run_intake_in", self.teleop_lock.lockify(lambda: self.xbox.getRightBumper()))
-        self.action_map.register_action("run_intake_out", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
-        self.action_map.register_action("unrun_intake", self.teleop_lock.lockify(lambda: not (self.xbox.getRightBumper() or self.xbox.getLeftBumper())))
-        self.action_map.register_action("control_intake", self.teleop_lock.lockify(lambda: (self.xbox.getLeftTriggerAxis() + self.xbox.getRightTriggerAxis()) > 0.1))
-        self.action_map.register_action("control_intake_STOP", self.teleop_lock.lockify(lambda: not self.action_map.get_action_pressed("control_intake")))
+        """
+        Actions that operate the climb up
+        """
+        self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
+        self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
+
+        """
+        Actions that flip the intake in and out
+        """
+        self.action_map.register_action("intake_flip_in", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
+        self.action_map.register_action("intake_flip_out", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
+        self.action_map.register_action("intake_flip_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("intake_flip_out") or self.action_map.get_action_pressed("intake_flip_in"))))
+
+        """
+        Actions that run the intake in and out
+        """
+        self.action_map.register_action("intake_run_in", self.teleop_lock.lockify(lambda: self.xbox.getRightTriggerAxis() > 0.1))
+        self.action_map.register_action("intake_run_out", self.teleop_lock.lockify(lambda: self.xbox.getRightBumper()))
+        self.action_map.register_action("intake_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("intake_run_out") or self.action_map.get_action_pressed("intake_run_in"))))
+
+        """
+        Actions that run the shooter
+        """
+        self.action_map.register_action("shooter_run_speaker", self.teleop_lock.lockify(lambda: self.xbox.getLeftTriggerAxis() > 0.1))
+        self.action_map.register_action("shooter_run_amp", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
+        self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker"))))
+
+    def register_intake_flip(self):
+         """
+         Subsystems that actually operate the intake flip
+         """
+         self.subsystems.setup(
+            self.subsystems.intake_control.run,
+            self.action_map.get_action_pressed("intake_flip_in"),
+            [],
+            0.0025
+        )
+         self.subsystems.setup(
+            self.subsystems.intake_control.run,
+            self.action_map.get_action_pressed("intake_flip_out"),
+            [],
+            -0.0025
+        )
+         self.subsystems.setup(
+            self.subsystems.intake_control.run,
+            self.action_map.get_action_pressed("intake_flip_stop"),
+            [],
+            0
+        )
+         
+    def run_intake(self, speed: float):
+        self.subsystems.intake.run(speed)
+        # if almost_equal(self.subsystems.intake_control.motor.get_position(), 0):
+        self.subsystems.shooter.shoot(-speed)
+        # if speed == 0:
+        #     self.subsystems.shooter.shoot(0)
+
+    def register_intake(self):
+        """
+        Subsystems that actually operate the intake
+        """
+        self.subsystems.setup(
+            self.run_intake,
+            self.action_map.get_action_pressed("intake_run_out"),
+            [],
+            50
+        )
+        self.subsystems.setup(
+            self.subsystems.intake.run,
+            self.action_map.get_action_pressed("intake_run_in"),
+            [],
+            -50
+        )
+        self.subsystems.setup(
+            self.run_intake,
+            self.action_map.get_action_pressed("intake_run_stop"),
+            [],
+            0
+        )
+    def register_shooter(self):
+        """
+         Subsystems that operate the shooter
+         """
+        self.subsystems.setup(
+            self.subsystems.shooter.shoot,
+            self.action_map.get_action_pressed("shooter_run_speaker"),
+            [],
+            50
+        )
+        self.subsystems.setup(
+            self.subsystems.shooter.shoot,
+            self.action_map.get_action_pressed("shooter_run_amp"),
+            [],
+            30
+        )
+        self.subsystems.setup(
+            self.subsystems.shooter.shoot,
+            self.action_map.get_action_pressed("shooter_run_stop"),
+            [],
+            0
+        )
     
     def get_motion(self):
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ())
-        
+    
     def process(self):
          x, y, z = self.get_motion()
-        #  self.subsystems.setup(
-        #     self.subsystems.limelight.correct_error,
-        #     self.action_map.get_action_pressed("activate_limelight"),
-        #     [self.subsystems.drive, self.subsystems.limelight],
-            
-        #     self.subsystems.drive
-        # )
+
+        
+         self.register_intake_flip()
+         self.register_intake()
+         self.register_shooter()
+
          
          self.subsystems.setup(
-            self.subsystems.shooter.shoot, 
-            self.action_map.get_action_pressed("activate_shooter"),
+            self.subsystems.climb.move,
+            self.action_map.get_action_pressed("activate_climb_up"),
             [],
-
-        20
+            0.5
+        )
+         
+         self.subsystems.setup(
+            self.subsystems.climb.move,
+            self.action_map.get_action_pressed("activate_climb_down"),
+            [],
+            -0.5
         )
          self.subsystems.setup(
-            self.subsystems.shooter.shoot, 
-            self.action_map.get_action_pressed("deactivate_shooter"),
+            self.subsystems.climb.move,
+            self.action_map.get_action_pressed("deactivate_climb"),
             [],
-
-            0
-         )
-         self.subsystems.setup(
-            self.subsystems.intake.run,
-            self.action_map.get_action_pressed("run_intake_in"),
-            [],
-
-            0.6
-        )
-         self.subsystems.setup(
-            self.subsystems.intake.run,
-            self.action_map.get_action_pressed("unrun_intake"),
-            [],
-
             0
         )
          
-         self.subsystems.setup(
-            self.subsystems.intake.run,
-            self.action_map.get_action_pressed("run_intake_out"),
-
-            [],
-
-            -0.6
-        )
-         self.subsystems.setup(
-            self.subsystems.intake_control.run,
-            self.action_map.get_action_pressed("control_intake"),
-            [],
-
-            clamp((self.xbox.getLeftTriggerAxis() - self.xbox.getRightTriggerAxis()), -0.0027, 0.0027)
-        )
-         
-         self.subsystems.setup(
-            self.subsystems.intake_control.run,
-            self.action_map.get_action_pressed("control_intake_STOP"),
-            [],
-
-            0
-            
-        )
-         
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move, 
-        #     self.action_map.get_action_pressed("activate_climb_up"),
-        #     [self.subsystems.climb],
-
-        #     0.25
-        # )
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move, 
-        #     self.action_map.get_action_pressed("activate_climb_down"),
-        #     [self.subsystems.climb],
-
-        #     -0.25
-        # )
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move, 
-        #     self.action_map.get_action_pressed("deactivate_climb"),
-        #     [self.subsystems.climb],
-
-        #     0
-        # )
-         
-        #  self.subsystems.drive.drive.set_mode(1)
-        #  self.subsystems.drive.move(Vector(x, y, z))
+         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
+         self.subsystems.drive.move(Vector(x, y, z))
          self.subsystems.reset()
-         
-        #  self.subsystems.setup(
-        #     self.subsystems.gyro.reset,
-        #     self.action_map.get_action_pressed("reset_gyro"),
-        #     [self.subsystems.gyro],
-        # )
-         
-        #  self.subsystems.setup(
-        #     self.subsystems.gyro.move,
-        #     self.action_map.get_action_pressed("move_gyro"),
-        #     [self.subsystems.gyro, self.subsystems.drive],
-
-        #     self.stick.getPOV(0)
-        # )
-         
         
