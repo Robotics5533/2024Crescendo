@@ -16,30 +16,71 @@ class EncoderMotor:
         self.encoder = encoder 
         self.motor = motor
         self.mode = mode
+        self.timer = wpilib.Timer()
         self.target = 0
         self.conversion = 1
+        self.wheelDiameter = 22 # inches
+        self.lastTime = 0
+        self.lastPosition = 0
+        self.currentVoltage = 0
 
     def process(self):
         
         if self.mode == MotorModes.voltage:
             return
         
-        if self.mode == MotorModes.position:
-            error = self.getDistance() - self.target
+        if self.mode == MotorModes.position or self.mode == MotorModes.velocity:
+            error = self.get_target_error()
             correction = clamp(-atan(error), -1, 1)
-            self.motor.set(correction)
+
+            if self.mode == MotorModes.velocity:
+                self.currentVoltage += correction
+                self.motor.set(self.currentVoltage)
+
+            else:
+                self.motor.set(correction)
+
+        self.lastPosition = self.get_position()
+        self.lastTime = self.timer.get()
+
+    def get_target_error(self) -> float:
+        if self.mode == MotorModes.position:
+            return self.get_position() - self.target
+        
+        if self.mode == MotorModes.velocity:
+            return self.get_velocity()-self.target
+        
+        return 0
             
+
+
+
+
+    def get_velocity(self)->float:
+    
+        deltaPosition = self.get_position() - self.lastPosition
+        deltaTime = self.timer.get() - self.lastTime
+
+        if deltaTime == 0:
+            return 0
+        
+        return deltaPosition/deltaTime # = velocity
+        
+
     def set(self, value):
         if self.mode == MotorModes.voltage:
             self.motor.set(value)
-        elif self.mode == MotorModes.position:
+        
+        if self.mode == MotorModes.position or self.mode == MotorModes.velocity:
             self.target = value
+        
 
     def set_mode(self, mode: int):
         self.mode = mode
     
-    def get_position(self):
-        return self.talonmotor.get_position().value_as_double
+    def get_position(self) -> float:
+        return self.encoder.getDistance() * pi * self.wheelDiameter
+    
     
     def set_position(self, position: float = 0):
-        self.talonmotor.set_position(position)
+        self.encoder.setDistance(position)
