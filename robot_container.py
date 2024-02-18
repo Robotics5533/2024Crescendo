@@ -12,7 +12,6 @@ class RobotContainer:
         self.subsystems = subsystems
         self.stick = stick
         self.xbox = xbox
-        self.xbox_dpad = self.xbox.getPOV(0)
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
         # """
@@ -25,6 +24,10 @@ class RobotContainer:
         """
         Actions that operate the control climb
         """
+
+        self.action_map.register_action("climb_flip_in", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 0))
+        self.action_map.register_action("climb_flip_out", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 180))
+        self.action_map.register_action("climb_flip_stop", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == -1))
 
         """
         Actions that flip the intake in and out
@@ -48,6 +51,29 @@ class RobotContainer:
         self.action_map.register_action("shooter_run_backwards", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
         self.action_map.register_action("shooter_run_trap", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker") or self.action_map.get_action_pressed("shooter_run_backwards") or self.action_map.get_action_pressed("shooter_run_trap"))))
+
+    def register_climb_flip(self):
+        """
+         Subsystems that actually operate the climb flip
+         """
+        self.subsystems.setup(
+            self.subsystems.climb_control.move,
+            self.action_map.get_action_pressed("climb_flip_in"),
+            [],
+            55
+        )
+        self.subsystems.setup(
+            self.subsystems.climb_control.move,
+            self.action_map.get_action_pressed("climb_flip_out"),
+            [],
+            -55
+        )
+        self.subsystems.setup(
+            self.subsystems.climb_control.move,
+            self.action_map.get_action_pressed("climb_flip_stop"),
+            [],
+            0
+        )
 
     def register_intake_flip(self):
          """
@@ -149,11 +175,11 @@ class RobotContainer:
     
     def process(self):
         #  x, y, z = self.get_motion()
-
         
         #  self.register_intake_flip()
         #  self.register_intake()
         #  self.register_shooter()
+        self.register_climb_flip()
 
          
         #  self.subsystems.setup(
@@ -178,6 +204,5 @@ class RobotContainer:
          
         #  self.subsystems.drive.drive.set_mode(MotorModes.voltage)
         #  self.subsystems.drive.move(Vector(x, y, z))
-         
-         self.subsystems.reset()
+        self.subsystems.reset()
         

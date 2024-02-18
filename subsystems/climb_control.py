@@ -13,4 +13,4 @@ class ClimbControlSubSystem:
         
     def move(self, speed: float):
         if self.can_run:
-            self.motor.set(speed)
+            self.motor.set(speed / 100)

@@ -30,7 +30,7 @@ class SubSystems:
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.intake = IntakeSubSystem([wpilib.Spark(2)])
         self.intake_control = IntakeControlSubSystem(self.intake_control)
-        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control]
+        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control, self.climb_control]
 
     def setup(self, func, condition: bool, requirements, *args):
         if not any(map(lambda x: not x.can_run, requirements)) and condition:
