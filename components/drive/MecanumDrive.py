@@ -33,6 +33,7 @@ class MecanumDrive(Drive):
     def set_position(self, position: float):
         for motor in self.motors:
             motor.set_position(position)
+        
             
     def move(self, data: Vector):
         data = Vector(*data.deadzone())
