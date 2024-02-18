@@ -25,8 +25,8 @@ class RobotContainer:
         Actions that operate the control climb
         """
 
-        self.action_map.register_action("climb_flip_in", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 0))
-        self.action_map.register_action("climb_flip_out", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 180))
+        self.action_map.register_action("climb_flip_out", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 0))
+        self.action_map.register_action("climb_flip_in", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 180))
         self.action_map.register_action("climb_flip_stop", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == -1))
 
         """
@@ -58,13 +58,13 @@ class RobotContainer:
          """
         self.subsystems.setup(
             self.subsystems.climb_control.move,
-            self.action_map.get_action_pressed("climb_flip_in"),
+            self.action_map.get_action_pressed("climb_flip_out"),
             [],
             55
         )
         self.subsystems.setup(
             self.subsystems.climb_control.move,
-            self.action_map.get_action_pressed("climb_flip_out"),
+            self.action_map.get_action_pressed("climb_flip_in"),
             [],
             -55
         )
