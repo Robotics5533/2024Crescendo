@@ -12,6 +12,7 @@ class ShooterSubSystem:
         
     def shoot(self, speed: float):
         self.motors[0].set(-(speed / 100))
-        currentVoltage = self.motors[0].currentVoltage
-        self.motors[1].set(currentVoltage)
+        self.motors[0].process()
+        # currentVoltage = self.motors[0].currentVoltage
+        # self.motors[1].set(currentVoltage)
             

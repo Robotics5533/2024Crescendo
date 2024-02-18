@@ -1,6 +1,5 @@
 #EncoderModer
 from math import pi
-from phoenix6 import hardware, controls, configs3
 from components.motor.Motor5533 import MotorModes
 from components.sensors.encoder5533 import BufferedEncoder5533
 import wpilib
@@ -23,6 +22,8 @@ class EncoderMotor:
         self.lastTime = 0
         self.lastPosition = 0
         self.currentVoltage = 0
+        self.zero = 0
+        self.timer.restart()
 
     def process(self):
         
@@ -35,7 +36,7 @@ class EncoderMotor:
 
             if self.mode == MotorModes.velocity:
                 self.currentVoltage += correction
-                self.motor.set(self.currentVoltage)
+                # self.motor.set(self.currentVoltage)
 
             else:
                 self.motor.set(correction)
@@ -48,7 +49,8 @@ class EncoderMotor:
             return self.get_position() - self.target
         
         if self.mode == MotorModes.velocity:
-            return self.get_velocity()-self.target
+            v = self.get_velocity()
+            return v-self.target
         
         return 0
             
@@ -57,14 +59,15 @@ class EncoderMotor:
 
 
     def get_velocity(self)->float:
-    
+        self.set_position(0)
+        print(self.get_position())
         deltaPosition = self.get_position() - self.lastPosition
         deltaTime = self.timer.get() - self.lastTime
 
         if deltaTime == 0:
             return 0
         
-        return deltaPosition/deltaTime # = velocity
+        return deltaPosition / deltaTime # = velocity
         
 
     def set(self, value):
@@ -79,8 +82,10 @@ class EncoderMotor:
         self.mode = mode
     
     def get_position(self) -> float:
-        return self.encoder.getDistance() * pi * self.wheelDiameter
+        return self.encoder.getDistance() * pi * self.wheelDiameter + self.zero
     
     
     def set_position(self, position: float = 0):
-        self.encoder.setDistance(position)
+        curr_position = self.get_position()
+        self.zero = position - curr_position
+

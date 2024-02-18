@@ -12,6 +12,7 @@ class RobotContainer:
         self.subsystems = subsystems
         self.stick = stick
         self.xbox = xbox
+        self.xbox_dpad = self.xbox.getPOV(0)
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
         # """
@@ -20,6 +21,10 @@ class RobotContainer:
         # self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
         # self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         # self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
+
+        """
+        Actions that operate the control climb
+        """
 
         """
         Actions that flip the intake in and out
@@ -143,35 +148,36 @@ class RobotContainer:
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ() / 2)
     
     def process(self):
-         x, y, z = self.get_motion()
+        #  x, y, z = self.get_motion()
 
         
-         self.register_intake_flip()
-         self.register_intake()
-         self.register_shooter()
+        #  self.register_intake_flip()
+        #  self.register_intake()
+        #  self.register_shooter()
 
          
-         self.subsystems.setup(
-            self.subsystems.climb.move,
-            self.action_map.get_action_pressed("activate_climb_up"),
-            [],
-            0.5
-        )
+        #  self.subsystems.setup(
+        #     self.subsystems.climb.move,
+        #     self.action_map.get_action_pressed("activate_climb_up"),
+        #     [],
+        #     0.5
+        # )
          
-         self.subsystems.setup(
-            self.subsystems.climb.move,
-            self.action_map.get_action_pressed("activate_climb_down"),
-            [],
-            -0.5
-        )
-         self.subsystems.setup(
-            self.subsystems.climb.move,
-            self.action_map.get_action_pressed("deactivate_climb"),
-            [],
-            0
-        )
+        #  self.subsystems.setup(
+        #     self.subsystems.climb.move,
+        #     self.action_map.get_action_pressed("activate_climb_down"),
+        #     [],
+        #     -0.5
+        # )
+        #  self.subsystems.setup(
+        #     self.subsystems.climb.move,
+        #     self.action_map.get_action_pressed("deactivate_climb"),
+        #     [],
+        #     0
+        # )
          
-         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-         self.subsystems.drive.move(Vector(x, y, z))
+        #  self.subsystems.drive.drive.set_mode(MotorModes.voltage)
+        #  self.subsystems.drive.move(Vector(x, y, z))
+         
          self.subsystems.reset()
         

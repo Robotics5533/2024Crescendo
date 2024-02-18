@@ -8,8 +8,9 @@ from components.motor.Talon5533 import Talon5533
 from components.drive.MecanumDrive import MecanumDrive
 from components.drive.TankDrive import TankDrive
 from components.motor.Motor5533 import MotorModes
-from motor.EncoderMotor import EncoderMotor
+from components.motor.EncoderMotor import EncoderMotor
 from subsystems.climb import ClimbSubSystem
+from subsystems.climb_control import ClimbControlSubSystem
 from subsystems.drive import DriveSubSystem
 from subsystems.gyro import GyroSubSystem
 from subsystems.intake_control import IntakeControlSubSystem
@@ -22,9 +23,10 @@ class SubSystems:
         self.intake_control = Talon5533(7, pi * 64, MotorModes.velocity)
         self.intake_control.set_position(0)
         self.limelight = VisionSubSystem()
-        self.shooter = ShooterSubSystem([EncoderMotor(wpilib.Encoder(0), wpilib.Spark(0)), wpilib.Spark(1)])
+        self.shooter = ShooterSubSystem([EncoderMotor(wpilib.Encoder(0, 1), wpilib.Spark(1)), wpilib.Spark(0)])
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
+        self.climb_control = ClimbControlSubSystem(wpilib.Spark(3))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.intake = IntakeSubSystem([wpilib.Spark(2)])
         self.intake_control = IntakeControlSubSystem(self.intake_control)
