@@ -14,12 +14,12 @@ class RobotContainer:
         self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-        """
-        Actions that operate the climb up
-        """
-        self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
-        self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
-        self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
+        # """
+        # Actions that operate the climb up
+        # """
+        # self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        # self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
+        # self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
 
         """
         Actions that flip the intake in and out
@@ -40,7 +40,9 @@ class RobotContainer:
         """
         self.action_map.register_action("shooter_run_speaker", self.teleop_lock.lockify(lambda: self.xbox.getLeftTriggerAxis() > 0.1))
         self.action_map.register_action("shooter_run_amp", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
-        self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker"))))
+        self.action_map.register_action("shooter_run_backwards", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
+        self.action_map.register_action("shooter_run_trap", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
+        self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker") or self.action_map.get_action_pressed("shooter_run_backwards") or self.action_map.get_action_pressed("shooter_run_trap"))))
 
     def register_intake_flip(self):
          """
@@ -77,7 +79,7 @@ class RobotContainer:
         Subsystems that actually operate the intake
         """
         self.subsystems.setup(
-            self.run_intake,
+            self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_out"),
             [],
             50
@@ -94,6 +96,14 @@ class RobotContainer:
             [],
             0
         )
+    def trap_shooter(self, speed):
+        speed = (speed / 100)
+        # -56
+        # -46
+        self.subsystems.shooter.motors[0].set(-0.56) # bottom
+        self.subsystems.shooter.motors[1].set(-0.41) # top
+
+        #17.5in for shooter max
     def register_shooter(self):
         """
          Subsystems that operate the shooter
@@ -102,7 +112,19 @@ class RobotContainer:
             self.subsystems.shooter.shoot,
             self.action_map.get_action_pressed("shooter_run_speaker"),
             [],
-            50
+            80
+        )
+        self.subsystems.setup(
+            self.trap_shooter,
+            self.action_map.get_action_pressed("shooter_run_trap"),
+            [],
+            55
+        )
+        self.subsystems.setup(
+            self.subsystems.shooter.shoot,
+            self.action_map.get_action_pressed("shooter_run_backwards"),
+            [],
+            -40
         )
         self.subsystems.setup(
             self.subsystems.shooter.shoot,
@@ -118,7 +140,7 @@ class RobotContainer:
         )
     
     def get_motion(self):
-        return (self.stick.getX(), self.stick.getY(), self.stick.getZ())
+        return (self.stick.getX(), self.stick.getY(), self.stick.getZ() / 2)
     
     def process(self):
          x, y, z = self.get_motion()

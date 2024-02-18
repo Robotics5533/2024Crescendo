@@ -1,8 +1,4 @@
-from phoenix6 import hardware, controls
-from typing import Union
-import wpilib
 
-from components.motor.Talon5533 import Talon5533
 class GyroSubSystem:
     def __init__(self, gyroscope): 
         self.gyro = gyroscope
@@ -15,15 +11,18 @@ class GyroSubSystem:
         self.gyro.reset()
 
 
-    def move(self, target_angle: float):
-       angle = self.gyro.getAngle()
-       error = target_angle - angle
-       if abs(error) >= 180:
-        error = 360 - error
-        v = error / 180
-        v = v * 5
-       if abs(v) > 1:
+    def calculate(self, target_angle: float):
+        angle = self.gyro.getAngle()
+        error = target_angle - angle
+        v = 0
+        if abs(error) >= 180:
+            error = 360 - error
+            v = error / 180
+            v = v * 5
+        if abs(v) > 1:
            v = v / abs(v)
+        return v
+        
 
     def run(self, speed: float):
         pass

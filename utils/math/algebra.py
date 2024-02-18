@@ -15,4 +15,4 @@ def almost_equal(x, target, err = 0.01):
     return x < (target + err) and x > (target - err)
 
 def deadzone(values, error = 0.3):
-        return [0 if almost_equal(value, 0, error) else value for value in values]
+        return [0 if almost_equal(value, 0, error) else value - error for value in values]
