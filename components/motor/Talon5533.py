@@ -9,13 +9,7 @@ class Talon5533:
         self.controller = controls.DutyCycleOut(0)
         self.mode = mode
         self.conversion = conversion
-        self.kV = 2.18 * 1.27
-        # kwargs["kv"] if "kv" in kwargs else None
-        self.kD = 0
-        # kwargs["kd"] if "kd" in kwargs else None
-        self.kP = 0.1475
-        # kwargs["kp"] if "kp" in kwargs else None
-        self.set_mode(self.mode)
+        self.set_mode(self.mode,**kwargs)
 
     def set(self, value):
         if self.mode == MotorModes.velocity:
@@ -26,20 +20,34 @@ class Talon5533:
             self.talonmotor.set_control(self.controller)
         
     
-    def set_mode(self, mode):
+    def set_mode(self, mode, **kwargs):
         if mode == MotorModes.position:
-            self.controller = controls.PositionDutyCycle(0)
-        elif mode == MotorModes.voltage:
-            self.controller = controls.DutyCycleOut(0)
-        elif mode == MotorModes.velocity:
+            
+            self.controller = controls.PositionVoltage(0)
+            
             slot0_config = configs.Slot0Configs()
-            slot0_config.k_v = self.kV
-            slot0_config.k_p = self.kP
-            slot0_config.k_i = 0
-            slot0_config.k_d = self.kD
+            # slot0_config.k_v = kwargs["kv"] if "kv" in kwargs else 0
+            slot0_config.k_p = kwargs["kp"] if "kp" in kwargs else 4
+            slot0_config.k_i = kwargs["ki"] if "ki" in kwargs else 0
+            slot0_config.k_d = kwargs["kd"] if "kd" in kwargs else 0.23
+            
             configurator = self.talonmotor.configurator
             configurator.apply(slot0_config)
-            self.controller = controls.VelocityVoltage(0)
+            
+        elif mode == MotorModes.voltage:
+            
+            self.controller = controls.DutyCycleOut(0)
+            
+        elif mode == MotorModes.velocity:
+            
+            slot0_config = configs.Slot0Configs()
+            slot0_config.k_v = kwargs["kv"] if "kv" in kwargs else 2.7668
+            slot0_config.k_p = kwargs["kp"] if "kp" in kwargs else 0.1475
+            # slot0_config.k_i = kwargs["ki"] if "ki" in kwargs else 0
+            slot0_config.k_d = kwargs["kd"] if "kd" in kwargs else 0
+            configurator = self.talonmotor.configurator
+            configurator.apply(slot0_config)
+            self.controller = controls.VelocityVoltage(0) 
         self.mode = mode
 
     def get_position(self):
