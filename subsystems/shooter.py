@@ -11,8 +11,6 @@ class ShooterSubSystem:
         self.can_run = state
         
     def shoot(self, speed: float):
-        self.motors[0].set(-(speed / 100))
-        self.motors[0].process()
-        # currentVoltage = self.motors[0].currentVoltage
-        # self.motors[1].set(currentVoltage)
+        for motor in self.motors:
+            motor.set(-(speed / 100))
             

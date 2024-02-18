@@ -20,9 +20,9 @@ class RobotContainer:
         """
         Actions that operate the climb up
         """
-        self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getRightY() > 0))
-        self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getRightY() < 0))
-        self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
+        self.action_map.register_action("activate_climb_in", self.teleop_lock.lockify(lambda: self.xbox.getRightY() < -0.3))
+        self.action_map.register_action("activate_climb_out", self.teleop_lock.lockify(lambda: self.xbox.getRightY() > 0.3))
+        self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_in") or self.action_map.get_action_pressed("activate_climb_out"))))
 
         """
         Actions that operate the control climb
@@ -144,14 +144,14 @@ class RobotContainer:
         """
         self.subsystems.setup(
             self.subsystems.climb.move,
-            self.action_map.get_action_pressed("activate_climb_up"),
+            self.action_map.get_action_pressed("activate_climb_in"),
             [],
             0.5
         )
          
         self.subsystems.setup(
             self.subsystems.climb.move,
-            self.action_map.get_action_pressed("activate_climb_down"),
+            self.action_map.get_action_pressed("activate_climb_out"),
             [],
             -0.5
         )
@@ -200,18 +200,17 @@ class RobotContainer:
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ() / 2)
     
     def process(self):
-        #  x, y, z = self.get_motion()
-        
-        #  self.register_intake_flip()
-        #  self.register_intake()
-        #  self.register_shooter()
-        self.register_climb_flip()
-        # self.register_climb()
+         x, y, z = self.get_motion()
+         print(self.xbox.getLeftY())
 
-         
-         
-         
-        #  self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-        #  self.subsystems.drive.move(Vector(x, y, z))
-        self.subsystems.reset()
+
+         self.register_intake_flip()
+         self.register_intake()
+         self.register_shooter()
+         self.register_climb_flip()
+         self.register_climb()
+
+         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
+         self.subsystems.drive.move(Vector(x, y, z))
+         self.subsystems.reset()
         
