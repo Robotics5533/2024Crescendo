@@ -18,7 +18,7 @@ from subsystems.intake import IntakeSubSystem
 
 class SubSystems:
     def __init__(self):
-        self.intake_control = Talon5533(7, pi * 64, MotorModes.position,kv=0,kp=4,ki=0,kd=0)
+        self.intake_control = Talon5533(7, pi * 64, MotorModes.position,kv=0,kp=4,ki=0,kd=0.23)
         # self.intake_control.set_position(0)
         self.limelight = VisionSubSystem()
         self.shooter = ShooterSubSystem([wpilib.Spark(0), wpilib.Spark(1)])
