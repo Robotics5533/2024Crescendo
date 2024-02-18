@@ -1,4 +1,6 @@
 import math
+
+import wpilib
 from components.inputs.ActionMap import ActionMap
 from components.inputs.Lockdown import Lockdown
 from components.motor.Talon5533 import Talon5533
@@ -8,18 +10,19 @@ from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
 
 class RobotContainer:
-    def __init__(self, subsystems, stick, xbox):
+    def __init__(self, subsystems, stick, xbox: wpilib.XboxController):
         self.subsystems = subsystems
         self.stick = stick
         self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-        # """
-        # Actions that operate the climb up
-        # """
-        # self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
-        # self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
-        # self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
+
+        """
+        Actions that operate the climb up
+        """
+        self.action_map.register_action("activate_climb_up", self.teleop_lock.lockify(lambda: self.xbox.getRightY() > 0))
+        self.action_map.register_action("activate_climb_down", self.teleop_lock.lockify(lambda: self.xbox.getRightY() < 0))
+        self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_up") or self.action_map.get_action_pressed("activate_climb_down"))))
 
         """
         Actions that operate the control climb
@@ -60,13 +63,13 @@ class RobotContainer:
             self.subsystems.climb_control.move,
             self.action_map.get_action_pressed("climb_flip_out"),
             [],
-            55
+            30
         )
         self.subsystems.setup(
             self.subsystems.climb_control.move,
             self.action_map.get_action_pressed("climb_flip_in"),
             [],
-            -55
+            -30
         )
         self.subsystems.setup(
             self.subsystems.climb_control.move,
@@ -135,6 +138,29 @@ class RobotContainer:
         self.subsystems.shooter.motors[1].set(-0.41) # top
 
         #17.5in for shooter max
+    def register_climb(self):
+        """
+        Subsystems that operate the climb
+        """
+        self.subsystems.setup(
+            self.subsystems.climb.move,
+            self.action_map.get_action_pressed("activate_climb_up"),
+            [],
+            0.5
+        )
+         
+        self.subsystems.setup(
+            self.subsystems.climb.move,
+            self.action_map.get_action_pressed("activate_climb_down"),
+            [],
+            -0.5
+        )
+        self.subsystems.setup(
+            self.subsystems.climb.move,
+            self.action_map.get_action_pressed("deactivate_climb"),
+            [],
+            0
+        )
     def register_shooter(self):
         """
          Subsystems that operate the shooter
@@ -180,27 +206,10 @@ class RobotContainer:
         #  self.register_intake()
         #  self.register_shooter()
         self.register_climb_flip()
+        # self.register_climb()
 
          
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move,
-        #     self.action_map.get_action_pressed("activate_climb_up"),
-        #     [],
-        #     0.5
-        # )
          
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move,
-        #     self.action_map.get_action_pressed("activate_climb_down"),
-        #     [],
-        #     -0.5
-        # )
-        #  self.subsystems.setup(
-        #     self.subsystems.climb.move,
-        #     self.action_map.get_action_pressed("deactivate_climb"),
-        #     [],
-        #     0
-        # )
          
         #  self.subsystems.drive.drive.set_mode(MotorModes.voltage)
         #  self.subsystems.drive.move(Vector(x, y, z))
