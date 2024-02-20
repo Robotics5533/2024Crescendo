@@ -109,14 +109,11 @@ class RobotContainer:
          
     def intake_run_out(self, speed: float):
         self.subsystems.intake.run(speed)
-        print("test 1")
         if self.last_action == Actions.flipped_out:
-            print("test 2")
-            self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 1)
-        else: 
-            self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 0)
-        self.last_action = Actions.intook
-
+            self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 1)  
+    def intake_run_stop(self, speed: float):
+        self.subsystems.intake.run(speed)
+        self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 0)
 
     def register_intake(self):
         """
@@ -135,7 +132,7 @@ class RobotContainer:
             -50
         )
         self.subsystems.setup(
-            self.subsystems.intake.run,
+            self.intake_run_stop,
             self.action_map.get_action_pressed("intake_run_stop"),
             [],
             0
@@ -211,7 +208,6 @@ class RobotContainer:
     
     def process(self):
          x, y, z = self.get_motion()
-         print(self.xbox.getLeftY())
 
 
          self.register_intake_flip()
