@@ -5,6 +5,7 @@ from components.inputs.ActionMap import ActionMap
 from components.inputs.Lockdown import Lockdown
 from components.motor.Talon5533 import Talon5533
 from components.motor.Motor5533 import MotorModes
+from utils.actions import Actions
 from utils.math.Vector import Vector
 from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
@@ -16,7 +17,7 @@ class RobotContainer:
         self.xbox = xbox
         self.teleop_lock = Lockdown()
         self.action_map = ActionMap()
-
+        self.last_action = -1
         """
         Actions that operate the climb up
         """
@@ -78,6 +79,11 @@ class RobotContainer:
             0
         )
 
+    def flip_out(self, speed: float):
+        self.subsystems.intake_control.run(speed)
+        self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 0)
+        self.last_action = Actions.flipped_out
+
     def register_intake_flip(self):
          """
          Subsystems that actually operate the intake flip
@@ -89,7 +95,7 @@ class RobotContainer:
             0.0025
         )
          self.subsystems.setup(
-            self.subsystems.intake_control.run,
+            self.flip_out,
             self.action_map.get_action_pressed("intake_flip_out"),
             [],
             -0.0025
@@ -101,19 +107,21 @@ class RobotContainer:
             0
         )
          
-    def run_intake(self, speed: float):
+    def intake_run_out(self, speed: float):
         self.subsystems.intake.run(speed)
-        # if almost_equal(self.subsystems.intake_control.motor.get_position(), 0):
-        self.subsystems.shooter.shoot(-speed)
-        # if speed == 0:
-        #     self.subsystems.shooter.shoot(0)
+        if self.last_action == Actions.flipped_out:
+            self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 1)
+        else: 
+            self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 0)
+        self.last_action = Actions.intook
+
 
     def register_intake(self):
         """
         Subsystems that actually operate the intake
         """
         self.subsystems.setup(
-            self.subsystems.intake.run,
+            self.intake_run_in,
             self.action_map.get_action_pressed("intake_run_out"),
             [],
             50
@@ -125,7 +133,7 @@ class RobotContainer:
             -50
         )
         self.subsystems.setup(
-            self.run_intake,
+            self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_stop"),
             [],
             0

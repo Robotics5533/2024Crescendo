@@ -1,4 +1,4 @@
-from components.vision.limelight import Limelight
+from components.vision.Limelight import Limelight
 from utils.math.Vector import Vector
 
 
