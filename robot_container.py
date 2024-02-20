@@ -121,7 +121,7 @@ class RobotContainer:
         Subsystems that actually operate the intake
         """
         self.subsystems.setup(
-            self.intake_run_in,
+            self.intake_run_out,
             self.action_map.get_action_pressed("intake_run_out"),
             [],
             50
