@@ -35,20 +35,20 @@ class Arpeggio(wpilib.TimedRobot):
         # self.follower.update()
         # drive_to_meters(self.subsystems.drive.drive, 50)
         
-        # if self.timer.get() < 0.7:
-        #     self.subsystems.drive.move(Vector(0, -0.1, 0))
-        # elif self.timer.get() < 1.5:
-        #     self.subsystems.drive.move(Vector(0.2, 0, 0))
-        # elif self.timer.get() < 1.6:
-        #     self.subsystems.shooter.shoot(80)
-        #     self.subsystems.drive.move(Vector(0, 0, 0))
-        # elif self.timer.get() < 1.7:
-        #     self.subsystems.shooter.shoot(80)
-        #     self.subsystems.intake.run(50)
-        # elif self.timer.get() < 2.1:
-        #     self.subsystems.intake.run(0)
-        #     self.subsystems.shooter.shoot(0)
-        pass
+        if self.timer.get() < 0.7:
+            self.subsystems.drive.move(Vector(0, -0.1, 0))
+        elif self.timer.get() < 1.5:
+            self.subsystems.drive.move(Vector(0.2, 0, 0))
+        elif self.timer.get() < 1.7:
+            self.subsystems.shooter.shoot(80)
+            self.subsystems.drive.move(Vector(0, 0, 0))
+        elif self.timer.get() < 1.9:
+            self.subsystems.shooter.shoot(80)
+            self.subsystems.intake.run(50)
+        elif self.timer.get() < 2.1:
+            self.subsystems.intake.run(0)
+            self.subsystems.shooter.shoot(0)
+        # pass
     def teleopPeriodic(self):
         self.robot_container.process()
 
