@@ -95,7 +95,7 @@ class RobotContainer:
             0.0025
         )
          self.subsystems.setup(
-            self.flip_out,
+            self.subsystems.intake_control.run,
             self.action_map.get_action_pressed("intake_flip_out"),
             [],
             -0.0025
@@ -107,20 +107,21 @@ class RobotContainer:
             0
         )
          
-    def intake_run_out(self, speed: float):
-        self.subsystems.intake.run(speed)
-        if self.last_action == Actions.flipped_out:
-            self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 1)  
-    def intake_run_stop(self, speed: float):
-        self.subsystems.intake.run(speed)
-        self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 0)
+    # def intake_run_out(self, speed: float):
+    #     self.subsystems.intake.run(speed)
+    #     if self.last_action == Actions.flipped_out:
+    #         self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 1)
+            
+    # def intake_run_stop(self, speed: float):
+    #     self.subsystems.intake.run(speed)
+    #     self.xbox.setRumble(self.xbox.RumbleType.kBothRumble, 0)
 
     def register_intake(self):
         """
         Subsystems that actually operate the intake
         """
         self.subsystems.setup(
-            self.intake_run_out,
+            self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_out"),
             [],
             50
@@ -132,7 +133,7 @@ class RobotContainer:
             -50
         )
         self.subsystems.setup(
-            self.intake_run_stop,
+            self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_stop"),
             [],
             0

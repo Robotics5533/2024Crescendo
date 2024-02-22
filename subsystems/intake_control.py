@@ -12,6 +12,7 @@ class IntakeControlSubSystem:
         
     def update_state(self, state: bool):
         self.can_run = state
+    
     @staticmethod
     def calculate(x,s):
         if s > 0:

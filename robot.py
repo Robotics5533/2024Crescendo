@@ -22,6 +22,9 @@ class Arpeggio(wpilib.TimedRobot):
         self.subsystems = self.robot_container.subsystems
         self.timer = wpilib.Timer()
         
+    def teleopInit(self) -> None:
+        super().teleopInit()
+        self.robot_container.teleop_lock.unlock()
     def autonomousInit(self) -> None:
         super().autonomousInit()
         self.robot_container.teleop_lock.lock()
@@ -35,20 +38,48 @@ class Arpeggio(wpilib.TimedRobot):
         # self.robot_container.process()
         # self.follower.update()
         # drive_to_meters(self.subsystems.drive.drive, 50)
+        
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-        if self.timer.get() < 0.7:
-            self.subsystems.drive.move(Vector(0, -0.1, 0))
-        elif self.timer.get() < 1.5:
-            self.subsystems.drive.move(Vector(0.2, 0, 0))
+        if self.timer.get() < 1.0:
+            self.subsystems.shooter.shoot(40)
         elif self.timer.get() < 1.7:
-            self.subsystems.shooter.shoot(80)
-            self.subsystems.drive.move(Vector(0, 0, 0))
-        elif self.timer.get() < 1.9:
-            self.subsystems.shooter.shoot(80)
-            self.subsystems.intake.run(50)
-        elif self.timer.get() < 2.1:
+            self.subsystems.intake.run(-50)
+        elif self.timer.get() < 2.3:
             self.subsystems.intake.run(0)
             self.subsystems.shooter.shoot(0)
+        elif self.timer.get() < 2.7:
+            self.subsystems.intake_control.run(-0.0025)
+        elif self.timer.get() < 3:
+            self.subsystems.intake_control.run(0)
+        elif self.timer.get() < 3.4:
+            self.subsystems.intake.run(50)
+        elif self.timer.get() < 4.3:
+            self.subsystems.drive.move(Vector(0, -0.1, 0))
+        elif self.timer.get() < 4.7:
+            self.subsystems.drive.move(Vector(0, 0, 0))
+            self.subsystems.intake.run(0)
+        elif self.timer.get() < 6.2:
+            self.subsystems.intake_control.run(0.0025)
+        elif self.timer.get() < 7:
+            self.subsystems.intake_control.run(0)
+        elif self.timer.get() < 7.6:
+            self.subsystems.shooter.shoot(40)
+        elif self.timer.get() < 9:
+            self.subsystems.drive.move(Vector(0, 0.3, 0))
+        elif self.timer.get() < 9.3:
+            self.subsystems.drive.move(Vector(0, 0, 0))
+        elif self.timer.get() < 10:
+            self.subsystems.intake.run(-50)
+        elif self.timer.get() < 10.8:
+            self.subsystems.intake.run(0)
+            self.subsystems.shooter.shoot(0)
+        # elif self.timer.get() < 10.3:
+        #     self.subsystems.drive.move(Vector(0, 0, -0.1))
+        # elif self.timer.get() < 10.7:
+        #     self.subsystems.drive.move(Vector(0, 0, 0))
+        
+        
+        
         # pass
         # self.subsystems.drive.drive.set_mode(MotorModes.position)
         # self.subsystems.drive.drive.set_position(0)
