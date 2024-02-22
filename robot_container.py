@@ -9,7 +9,6 @@ from utils.actions import Actions
 from utils.math.Vector import Vector
 from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
-
 class RobotContainer:
     def __init__(self, subsystems, stick, xbox: wpilib.XboxController):
         self.subsystems = subsystems
@@ -208,17 +207,22 @@ class RobotContainer:
         return (self.stick.getX(), self.stick.getY(), self.stick.getZ() / 2)
     
     def process(self):
-         x, y, z = self.get_motion()
-         print(self.xbox.getLeftY())
+        #  x, y, z = self.get_motion()
+        #  print(self.xbox.getLeftY())
 
 
-         self.register_intake_flip()
-         self.register_intake()
-         self.register_shooter()
-         self.register_climb_flip()
-         self.register_climb()
+        #  self.register_intake_flip()
+        #  self.register_intake()
+        #  self.register_shooter()
+        #  self.register_climb_flip()
+        #  self.register_climb()
 
-         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-         self.subsystems.drive.move(Vector(x, y, z))
-         self.subsystems.reset()
-        
+        #  self.subsystems.drive.drive.set_mode(MotorModes.voltage)
+        #  self.subsystems.drive.move(Vector(x, y, z))
+        #  self.subsystems.reset()
+        # cs.UsbCamera("usbcam", 0)
+        # camera.setVideoMode(cs.VideoMode.PixelFormat.kMJPEG, 320, 240, 30)
+        # mjpegServer = cs.MjpegServer("httpserver", 8081)
+        # mjpegServer.setSource(camera)
+        # pass
+        pass

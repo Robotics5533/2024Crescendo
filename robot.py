@@ -20,6 +20,10 @@ class Arpeggio(wpilib.TimedRobot):
         self.follower = Follower(self.context)
         self.subsystems = self.robot_container.subsystems
         self.timer = wpilib.Timer()
+        wpilib.CameraServer().launch("vision.py")
+        
+
+
         
     def autonomousInit(self) -> None:
         super().autonomousInit()
