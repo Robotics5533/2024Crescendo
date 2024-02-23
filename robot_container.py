@@ -124,13 +124,13 @@ class RobotContainer:
             self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_out"),
             [],
-            50
+            70
         )
         self.subsystems.setup(
             self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_in"),
             [],
-            -50
+            -70
         )
         self.subsystems.setup(
             self.subsystems.intake.run,
