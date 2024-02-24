@@ -214,8 +214,8 @@ class RobotContainer:
          self.register_intake_flip()
          self.register_intake()
          self.register_shooter()
-         self.register_climb_flip()
-         self.register_climb()
+        #  self.register_climb_flip()
+        #  self.register_climb()
 
          self.subsystems.drive.drive.set_mode(MotorModes.voltage)
          self.subsystems.drive.move(Vector(x, y, z))

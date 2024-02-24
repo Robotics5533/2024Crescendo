@@ -44,7 +44,7 @@ class Arpeggio(wpilib.TimedRobot):
         
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
         auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
-        auton = create_auton(self.subsystems, auton_name)
+        auton = create_auton(self.subsystems, auton_name, self.timer)
         auton.run()
         # if self.timer.get() < 1.0:
         #     self.subsystems.shooter.shoot(40)

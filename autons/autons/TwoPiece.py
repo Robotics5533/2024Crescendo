@@ -1,14 +1,16 @@
+import wpilib
 from autons.auton import Auton
 from subsystems.index import SubSystems
 from utils.tasks import Tasks
 
 class TwoPiece(Auton):
-    def __init__(self, subsystems):
+    def __init__(self, subsystems, timer):
         self.subsystems = subsystems
-        self.tasks = Tasks()
+        self.timer = timer
+        self.tasks = Tasks(self.timer)
     def run(self):
 
-        @self.tasks.timed_task(1, self.subsystems, 80)
+        @self.tasks.timed_task(1, self.subsystems, 30)
         def shooter(subsystems: SubSystems, speed: float):
             subsystems.shooter.shoot(speed)
 
