@@ -11,14 +11,14 @@ class Talon5533:
         self.conversion = conversion
         self.set_mode(self.mode, **kwargs)
         self.target = 0
-
+        self.zero_position = 0
     def set(self, value):
         if self.mode == MotorModes.velocity:
             self.controller.slot = 0
             self.talonmotor.set_control(self.controller.with_velocity(value * self.conversion))
         elif self.mode == MotorModes.position:
             self.target = value
-            print(value, "position")
+            #print(value, "position")
         else:
             self.set_voltage(value)
     
@@ -51,8 +51,8 @@ class Talon5533:
             self.controller = controls.VelocityVoltage(0) 
         self.mode = mode
 
-    def get_position(self):
-        return self.talonmotor.get_position().value_as_double
+    def get_position(self): 
+        return self.talonmotor.get_position().value_as_double - self.zero_position
     
     def set_position(self, position: float = 0):
         # c = configs.TalonFXConfiguration
@@ -60,7 +60,7 @@ class Talon5533:
         # configurator = self.talonmotor.configurator
         # configurator.set_position(position) 
         # configurator.set_position
-        pass
+        self.zero_position =  self.get_position() - position
 
     def process(self, delta):
         #how far from target, use answer with math function that reverses positive/negative
@@ -68,8 +68,8 @@ class Talon5533:
         error = self.get_position() - self.target
         voltage = self.get_error_voltage(error)
         self.set_voltage(voltage)
-        print(error, "error")
-        print(self.get_position(), "grabbed position")
+        #print(error, "error")
+        #print(self.get_position(), "grabbed position")
         pass
 
     def get_error_voltage(self, error):
