@@ -32,8 +32,8 @@ class Talon5533:
            
             self.controller = controls.DutyCycleOut(0)
 
-            self.r = kwargs["r"] if "r" in kwargs else 5
-           
+            self.position_slowdown_threshhold = kwargs["position_slowdown_threshhold"] if "position_slowdown_threshhold" in kwargs else 5
+            self.max_position_correction_voltage = kwargs["max_position_correction_voltage"] if "max_position_correction_voltage" in kwargs else 1
             
         elif mode == MotorModes.voltage:
             
@@ -61,6 +61,7 @@ class Talon5533:
         # configurator.set_position(position) 
         # configurator.set_position
         pass
+
     def process(self, delta):
         #how far from target, use answer with math function that reverses positive/negative
         #x is error, y is correction
@@ -70,7 +71,8 @@ class Talon5533:
         print(error, "error")
         print(self.get_position(), "grabbed position")
         pass
+
     def get_error_voltage(self, error):
-        if abs(error) >= self.r:
-            return -(error / abs(error))
-        return(linear_remap(error,+self.r, -self.r, -1, 1))
+        if abs(error) >= self.position_slowdown_threshhold:
+            return -(error / abs(error) )* self.max_position_correction_voltage
+        return(linear_remap(error,+self.position_slowdown_threshhold, -self.position_slowdown_threshhold, -self.max_position_correction_voltage, self.max_position_correction_voltage))
