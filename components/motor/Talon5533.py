@@ -1,6 +1,6 @@
 from math import pi
 from phoenix6 import hardware, controls, configs
-
+from utils.math.algebra import linear_remap
 from components.motor.Motor5533 import MotorModes
 
 class Talon5533:
@@ -18,16 +18,21 @@ class Talon5533:
             self.talonmotor.set_control(self.controller.with_velocity(value * self.conversion))
         elif self.mode == MotorModes.position:
             self.target = value
-
+            print(value, "position")
         else:
-            self.controller.output = value
-            self.talonmotor.set_control(self.controller)
-        
+            self.set_voltage(value)
+    
+    def set_voltage(self,value):
+        self.controller.output = value
+        self.talonmotor.set_control(self.controller)
+
     
     def set_mode(self, mode, **kwargs):
         if mode == MotorModes.position:
            
             self.controller = controls.DutyCycleOut(0)
+
+            self.r = kwargs["r"] if "r" in kwargs else 5
            
             
         elif mode == MotorModes.voltage:
@@ -58,6 +63,14 @@ class Talon5533:
         pass
     def process(self, delta):
         #how far from target, use answer with math function that reverses positive/negative
-        error = self.target - self.get_position 
-
+        #x is error, y is correction
+        error = self.get_position() - self.target
+        voltage = self.get_error_voltage(error)
+        self.set_voltage(voltage)
+        print(error, "error")
+        print(self.get_position(), "grabbed position")
         pass
+    def get_error_voltage(self, error):
+        if abs(error) >= self.r:
+            return -(error / abs(error))
+        return(linear_remap(error,+self.r, -self.r, -1, 1))
