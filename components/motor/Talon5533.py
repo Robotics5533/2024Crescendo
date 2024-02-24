@@ -34,7 +34,7 @@ class Talon5533:
 
             self.position_slowdown_threshhold = kwargs["position_slowdown_threshhold"] if "position_slowdown_threshhold" in kwargs else 5
             self.max_position_correction_voltage = kwargs["max_position_correction_voltage"] if "max_position_correction_voltage" in kwargs else 1
-            
+            self.position_correction_bias = kwargs["position_correction_bias"] if "position_correction_bias" in kwargs else 0
         elif mode == MotorModes.voltage:
             
             self.controller = controls.DutyCycleOut(0)
@@ -75,4 +75,7 @@ class Talon5533:
     def get_error_voltage(self, error):
         if abs(error) >= self.position_slowdown_threshhold:
             return -(error / abs(error) )* self.max_position_correction_voltage
-        return(linear_remap(error,+self.position_slowdown_threshhold, -self.position_slowdown_threshhold, -self.max_position_correction_voltage, self.max_position_correction_voltage))
+        bias = self.position_correction_bias
+        if error >= 0:
+            bias = -bias
+        return bias + (linear_remap(error,+self.position_slowdown_threshhold, -self.position_slowdown_threshhold, -self.max_position_correction_voltage, self.max_position_correction_voltage))
