@@ -1,5 +1,7 @@
 import wpilib
 import wpilib.drive
+from autons.auton import Auton
+from autons.factory import AutonList, create_auton
 from constants import Robot
 from components.motor.Motor5533 import MotorModes
 from robot_container import RobotContainer
@@ -8,7 +10,7 @@ from utils.context import Context
 from utils.follower import Follower
 from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
-
+from wpilib import SmartDashboard
 from utils.math.motors import drive_to_meters
 
 class Arpeggio(wpilib.TimedRobot):
@@ -21,6 +23,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.follower = Follower(self.context)
         self.subsystems = self.robot_container.subsystems
         self.timer = wpilib.Timer()
+        SmartDashboard.putStringArray("Auto List", AutonList)
         
     def teleopInit(self) -> None:
         super().teleopInit()
@@ -40,39 +43,42 @@ class Arpeggio(wpilib.TimedRobot):
         # drive_to_meters(self.subsystems.drive.drive, 50)
         
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-        if self.timer.get() < 1.0:
-            self.subsystems.shooter.shoot(40)
-        elif self.timer.get() < 1.7:
-            self.subsystems.intake.run(-50)
-        elif self.timer.get() < 2.3:
-            self.subsystems.intake.run(0)
-            self.subsystems.shooter.shoot(0)
-        elif self.timer.get() < 2.7:
-            self.subsystems.intake_control.run(-0.0025)
-        elif self.timer.get() < 3:
-            self.subsystems.intake_control.run(0)
-        elif self.timer.get() < 3.4:
-            self.subsystems.intake.run(50)
-        elif self.timer.get() < 4.3:
-            self.subsystems.drive.move(Vector(0, -0.1, 0))
-        elif self.timer.get() < 4.7:
-            self.subsystems.drive.move(Vector(0, 0, 0))
-            self.subsystems.intake.run(0)
-        elif self.timer.get() < 6.2:
-            self.subsystems.intake_control.run(0.0025)
-        elif self.timer.get() < 7:
-            self.subsystems.intake_control.run(0)
-        elif self.timer.get() < 7.6:
-            self.subsystems.shooter.shoot(40)
-        elif self.timer.get() < 9:
-            self.subsystems.drive.move(Vector(0, 0.3, 0))
-        elif self.timer.get() < 9.3:
-            self.subsystems.drive.move(Vector(0, 0, 0))
-        elif self.timer.get() < 10:
-            self.subsystems.intake.run(-50)
-        elif self.timer.get() < 10.8:
-            self.subsystems.intake.run(0)
-            self.subsystems.shooter.shoot(0)
+        auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
+        auton = create_auton(self.subsystems, auton_name)
+        auton.run()
+        # if self.timer.get() < 1.0:
+        #     self.subsystems.shooter.shoot(40)
+        # elif self.timer.get() < 1.7:
+        #     self.subsystems.intake.run(-50)
+        # elif self.timer.get() < 2.3:
+        #     self.subsystems.intake.run(0)
+        #     self.subsystems.shooter.shoot(0)
+        # elif self.timer.get() < 2.7:
+        #     self.subsystems.intake_control.run(-0.0025)
+        # elif self.timer.get() < 3:
+        #     self.subsystems.intake_control.run(0)
+        # elif self.timer.get() < 3.4:
+        #     self.subsystems.intake.run(50)
+        # elif self.timer.get() < 4.3:
+        #     self.subsystems.drive.move(Vector(0, -0.1, 0))
+        # elif self.timer.get() < 4.7:
+        #     self.subsystems.drive.move(Vector(0, 0, 0))
+        #     self.subsystems.intake.run(0)
+        # elif self.timer.get() < 6.2:
+        #     self.subsystems.intake_control.run(0.0025)
+        # elif self.timer.get() < 7:
+        #     self.subsystems.intake_control.run(0)
+        # elif self.timer.get() < 7.6:
+        #     self.subsystems.shooter.shoot(40)
+        # elif self.timer.get() < 9:
+        #     self.subsystems.drive.move(Vector(0, 0.3, 0))
+        # elif self.timer.get() < 9.3:
+        #     self.subsystems.drive.move(Vector(0, 0, 0))
+        # elif self.timer.get() < 10:
+        #     self.subsystems.intake.run(-50)
+        # elif self.timer.get() < 10.8:
+        #     self.subsystems.intake.run(0)
+        #     self.subsystems.shooter.shoot(0)
         # elif self.timer.get() < 10.3:
         #     self.subsystems.drive.move(Vector(0, 0, -0.1))
         # elif self.timer.get() < 10.7:
