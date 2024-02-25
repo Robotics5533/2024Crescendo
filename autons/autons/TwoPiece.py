@@ -75,6 +75,14 @@ class TwoPiece(Auton):
         def stop(subsystems: SubSystems):
             subsystems.shooter.shoot(0)
             subsystems.intake.run(0)
+
+        @self.tasks.timed_task(0.4, self.subsystems)
+        def drive(subsystems: SubSystems):
+            subsystems.drive.move(Vector(0, -0.5, 0))
+
+        @self.tasks.timed_task(0.5, self.subsystems)
+        def drive(subsystems: SubSystems):
+            subsystems.drive.move(Vector(0, 0, 0))
         
        
         
