@@ -214,7 +214,14 @@ class RobotContainer:
              y = -y
              x = -x
              z = z
-        
+
+         if self.stick.getRawButton(12):
+             print("im in the in", self.subsystems.intake_control.motor.get_position())
+             self.subsystems.intake_control.motor.set_position(-3.30)
+         elif self.stick.getRawButton(11):
+             print("im in the out", self.subsystems.intake_control.motor.get_position())
+             self.subsystems.intake_control.motor.set_position(0)
+
 
          self.register_intake_flip()
          self.register_intake()

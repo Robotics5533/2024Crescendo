@@ -16,7 +16,7 @@ class TwoPiece(Auton):
         # def drive(subsystems: SubSystems, y: float):
         #     subsystems.drive.move(Vector(0, -y, 0))
 
-        @self.tasks.timed_task(1, self.subsystems, 50)
+        @self.tasks.timed_task(1, self.subsystems, 80)
         def shooter(subsystems: SubSystems, speed: float):
             subsystems.shooter.shoot(speed)
 
@@ -63,7 +63,7 @@ class TwoPiece(Auton):
         def drive(subsystems: SubSystems):
             subsystems.drive.move(Vector(0, 0, 0))
 
-        @self.tasks.timed_task(1, self.subsystems, 50)
+        @self.tasks.timed_task(1, self.subsystems, 80)
         def shooter(subsystems: SubSystems, speed: float):
             subsystems.shooter.shoot(speed)
 
