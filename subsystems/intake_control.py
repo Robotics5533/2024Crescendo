@@ -8,7 +8,7 @@ class IntakeControlSubSystem:
     def __init__(self, motor): 
         self.motor = motor
         self.can_run = True
-        self.motor.set_position(0)
+        
         
     def update_state(self, state: bool):
         self.can_run = state

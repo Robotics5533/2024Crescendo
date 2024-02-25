@@ -11,7 +11,7 @@ from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
 
 class RobotContainer:
-    def __init__(self, subsystems, stick, xbox: wpilib.XboxController):
+    def __init__(self, subsystems, stick: wpilib.Joystick, xbox: wpilib.XboxController):
         self.subsystems = subsystems
         self.stick = stick
         self.xbox = xbox
@@ -210,6 +210,11 @@ class RobotContainer:
     def process(self):
          x, y, z = self.get_motion()
 
+         if self.stick.getRawButton(1):
+             y = -y
+             x = -x
+             z = z
+        
 
          self.register_intake_flip()
          self.register_intake()

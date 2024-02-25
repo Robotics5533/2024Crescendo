@@ -12,6 +12,7 @@ class Talon5533:
         self.set_mode(self.mode, **kwargs)
         self.target = 0
         self.zero_position = 0
+
     def set(self, value):
         if self.mode == MotorModes.velocity:
             self.controller.slot = 0
@@ -32,7 +33,7 @@ class Talon5533:
            
             self.controller = controls.DutyCycleOut(0)
 
-            self.position_slowdown_threshhold = kwargs["position_slowdown_threshhold"] if "position_slowdown_threshhold" in kwargs else 5
+            self.position_slowdown_threshhold = kwargs["position_slowdown_threshhold"] if "position_slowdown_threshhold" in kwargs else 25
             self.max_position_correction_voltage = kwargs["max_position_correction_voltage"] if "max_position_correction_voltage" in kwargs else 1
             self.position_correction_bias = kwargs["position_correction_bias"] if "position_correction_bias" in kwargs else 0
         elif mode == MotorModes.voltage:
@@ -67,6 +68,7 @@ class Talon5533:
         #x is error, y is correction
         error = self.get_position() - self.target
         voltage = self.get_error_voltage(error)
+        # print(f"ERROR: {error}\n\nVOLTAGE: {voltage}\n\nPOSITION: {self.get_position()}\n\nTARGET: {self.target}\n\n")
         self.set_voltage(voltage)
         #print(error, "error")
         #print(self.get_position(), "grabbed position")
