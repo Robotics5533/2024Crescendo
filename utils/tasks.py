@@ -12,21 +12,24 @@ class Tasks:
         self.total_time = 0
         self.command_idx = 0
         self.running_idx = -1
+        self.ran = False
         
     def reset(self):
          self.running_idx = -1
          self.total_time = 0
+         self.ran = False
 
 
     def timed_task(self, duration: float, *args):
         self.total_time += duration
         self.running_idx += 1
         def decorator(func):
-                if self.command_idx != self.running_idx:
+                if self.ran:
                      return
                 if self.timer.get() < self.total_time:
                     func(*args)
                     self.command_idx += 1
+                    self.ran = True
                 return func
         return decorator
     

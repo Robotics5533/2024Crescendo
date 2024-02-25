@@ -56,6 +56,7 @@ class Talon5533:
         return self.talonmotor.get_position().value_as_double - self.zero_position
     
     def set_position(self, position: float = 0):
+        print("resetting position!")
         # c = configs.TalonFXConfiguration
         # configs.cancoder_configs.CANcoderConfiguration()
         # configurator = self.talonmotor.configurator
