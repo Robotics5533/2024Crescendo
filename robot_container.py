@@ -215,6 +215,17 @@ class RobotContainer:
              x = -x
              z = z
 
+         if self.stick.getRawButton(5):
+             self.subsystems.drive.drive.speed_multiplier = 0.5
+             #print("Speed Halved!")
+             
+         elif self.stick.getRawButton(3):
+             self.subsystems.drive.drive.speed_multiplier = 0.25
+             #print("Speed quartered!")
+         else: 
+             #print("Speed Normal!")
+             self.subsystems.drive.drive.speed_multiplier = 1
+
          if self.stick.getRawButton(12):
              print("im in the in", self.subsystems.intake_control.motor.get_position())
              self.subsystems.intake_control.motor.set_position(-3.30)

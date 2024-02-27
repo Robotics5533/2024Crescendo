@@ -54,3 +54,10 @@ class Vector:
             raise ValueError("Magnitude of the vector onto which to project is zero.")
         
         return dot_product / magnitude_vec
+    def __rmul__(self,other)->'Vector':
+        return self*other
+    def __mul__(self,other)->'Vector':
+        if type(other) == float or type(other) == int:
+            return Vector(self.a*other,self.b*other,self.c*other)
+    def __str__(self):
+        return f"Vector({self.a},{self.b},{self.c})"
