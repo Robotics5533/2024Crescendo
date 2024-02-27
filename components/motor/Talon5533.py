@@ -19,7 +19,8 @@ class Talon5533:
             self.talonmotor.set_control(self.controller.with_velocity(value * self.conversion))
         elif self.mode == MotorModes.position:
             self.target = value
-            #print(value, "position")
+        elif self.mode == MotorModes.static_brake:
+            pass
         else:
             self.set_voltage(value)
     
@@ -45,11 +46,14 @@ class Talon5533:
             slot0_config = configs.Slot0Configs()
             slot0_config.k_v = kwargs["kv"] if "kv" in kwargs else 2.7668
             slot0_config.k_p = kwargs["kp"] if "kp" in kwargs else 0.1475
-            # slot0_config.k_i = kwargs["ki"] if "ki" in kwargs else 0
+            # slot0_config.k_i = kwarg0s["ki"] if "ki" in kwargs else 0
             slot0_config.k_d = kwargs["kd"] if "kd" in kwargs else 0
             configurator = self.talonmotor.configurator
             configurator.apply(slot0_config)
             self.controller = controls.VelocityVoltage(0) 
+        elif mode == MotorModes.static_brake:
+            self.controller = controls.StaticBrake()
+            self.talonmotor.set_control(self.controller)
         self.mode = mode
 
     def get_position(self): 

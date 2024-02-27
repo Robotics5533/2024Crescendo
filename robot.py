@@ -31,6 +31,7 @@ class Arpeggio(wpilib.TimedRobot):
         super().teleopInit()
         
         self.robot_container.teleop_lock.unlock()
+        self.subsystems.drive.drive.set_mode(MotorModes.voltage)
 
 
     def autonomousInit(self) -> None:
@@ -49,8 +50,9 @@ class Arpeggio(wpilib.TimedRobot):
 
     def teleopPeriodic(self):
         # self.subsystems.intake_control.motor.set_position(0)
-        print(self.subsystems.intake_control.motor.get_position())  
+        # print(self.subsystems.intake_control.motor.get_position())  
         self.robot_container.process()
+       
 
 if __name__ == "__main__":
     wpilib.run(Arpeggio)
