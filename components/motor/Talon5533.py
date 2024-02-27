@@ -56,13 +56,12 @@ class Talon5533:
         return self.talonmotor.get_position().value_as_double - self.zero_position
     
     def set_position(self, position: float = 0):
-        print("resetting position!")
         # c = configs.TalonFXConfiguration
         # configs.cancoder_configs.CANcoderConfiguration()
         # configurator = self.talonmotor.configurator
         # configurator.set_position(position) 
         # configurator.set_position
-        self.zero_position =  self.get_position() - position
+        self.zero_position = self.talonmotor.get_position().value_as_double - position
 
     def process(self, delta):
         #how far from target, use answer with math function that reverses positive/negative
