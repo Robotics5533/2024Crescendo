@@ -12,10 +12,6 @@ class TwoPiece(Auton):
 
     def run(self):
 
-        # @self.tasks.position_task(5, self.subsystems, 5)
-        # def drive(subsystems: SubSystems, y: float):
-        #     subsystems.drive.move(Vector(0, -y, 0))
-
         @self.tasks.timed_task(1, self.subsystems, 50)
         def shooter(subsystems: SubSystems, speed: float):
             subsystems.shooter.shoot(speed)
@@ -84,17 +80,19 @@ class TwoPiece(Auton):
         def drive(subsystems: SubSystems):
             subsystems.drive.move(Vector(0, 0, 0))
         
-       
+        @self.tasks.timed_task(0.5, self.subsystems)
+        def drive(subsystems: SubSystems):
+            subsystems.drive.move(Vector(0, 0, 0))
         
         
-        # @self.tasks.timed_task(0.5, self.subsystems)
-        # def intake_control(subsystems: SubSystems):
-        #     subsystems.intake_control.run(0.0025)
+        @self.tasks.timed_task(0.5, self.subsystems)
+        def intake_control(subsystems: SubSystems):
+            subsystems.intake_control.run(0.0025)
 
-        # @self.tasks.timed_task(0.2, self.subsystems)
-        # def drive(subsystems: SubSystems):
-        #     subsystems.intake_control.run(0)
-        #     subsystems.drive.move(Vector(0, 0.5, 0))
+        @self.tasks.timed_task(0.2, self.subsystems)
+        def drive(subsystems: SubSystems):
+            subsystems.intake_control.run(0)
+            subsystems.drive.move(Vector(0, 0.5, 0))
         
 
 

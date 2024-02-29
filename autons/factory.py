@@ -1,9 +1,12 @@
+from autons.autons.FourPiece import FourPiece
 from autons.autons.TwoPiece import TwoPiece
 from subsystems.index import SubSystems
 
-AutonList = ["TwoPiece"]
+AutonList = ["TwoPiece", "FourPiece"]
 
 def create_auton(subsystems: SubSystems, type: str, timer):
         match type:
             case "TwoPiece":
                 return TwoPiece(subsystems, timer)
+            case "FourPiece":
+                  return FourPiece(subsystems, timer)

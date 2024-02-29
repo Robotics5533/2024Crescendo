@@ -19,7 +19,8 @@ class Talon5533:
             self.talonmotor.set_control(self.controller.with_velocity(value * self.conversion))
         elif self.mode == MotorModes.position:
             self.target = value
-            #print(value, "position")
+        elif self.mode == MotorModes.static_brake:
+            pass
         else:
             self.set_voltage(value)
     
@@ -45,24 +46,25 @@ class Talon5533:
             slot0_config = configs.Slot0Configs()
             slot0_config.k_v = kwargs["kv"] if "kv" in kwargs else 2.7668
             slot0_config.k_p = kwargs["kp"] if "kp" in kwargs else 0.1475
-            # slot0_config.k_i = kwargs["ki"] if "ki" in kwargs else 0
+            # slot0_config.k_i = kwarg0s["ki"] if "ki" in kwargs else 0
             slot0_config.k_d = kwargs["kd"] if "kd" in kwargs else 0
             configurator = self.talonmotor.configurator
             configurator.apply(slot0_config)
             self.controller = controls.VelocityVoltage(0) 
+        elif mode == MotorModes.static_brake:
+            self.talonmotor.set_control(controls.StaticBrake())
         self.mode = mode
 
     def get_position(self): 
         return self.talonmotor.get_position().value_as_double - self.zero_position
     
     def set_position(self, position: float = 0):
-        print("resetting position!")
         # c = configs.TalonFXConfiguration
         # configs.cancoder_configs.CANcoderConfiguration()
         # configurator = self.talonmotor.configurator
         # configurator.set_position(position) 
         # configurator.set_position
-        self.zero_position =  self.get_position() - position
+        self.zero_position = self.talonmotor.get_position().value_as_double - position
 
     def process(self, delta):
         #how far from target, use answer with math function that reverses positive/negative
