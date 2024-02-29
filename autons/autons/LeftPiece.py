@@ -15,5 +15,6 @@ class LeftPiece(Auton):
         @self.tasks.timed_task(0.5, self.subsystems)
         def drive(subsystems: SubSystems):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(-.5, 0, subsystems.gyro.calculate(0)))
+            print(subsystems.gyro.calculate(0))
+            subsystems.drive.move(Vector(0, 0, subsystems.gyro.calculate(0)))
         self.tasks.reset()
