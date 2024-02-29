@@ -12,7 +12,6 @@ from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
 from wpilib import SmartDashboard
 from utils.math.motors import drive_to_meters
-
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
         self.robot_container = RobotContainer(SubSystems(), wpilib.Joystick(Robot.Controllers.joystick), wpilib.XboxController(Robot.Controllers.xbox))

@@ -41,7 +41,20 @@ class MecanumDrive(Drive):
             
     def move(self, data: Vector):
         data = Vector(*data.deadzone())
-        self.front_left_motor.set(data.b - data.c - data.a)
-        self.front_right_motor.set(data.b + data.c + data.a)
-        self.back_left_motor.set(data.b - data.c + data.a)
-        self.back_right_motor.set(data.b + data.c - data.a)
+        fl = data.b - data.c - data.a
+        fr = data.b + data.c + data.a
+        bl = data.b - data.c + data.a
+        br = data.b + data.c - data.a
+
+        m = max([fl, fr, bl, br])
+
+        if m > 1:
+            fl /= m
+            fr /= m
+            bl /= m
+            br /= m
+
+        self.front_left_motor.set(fl)
+        self.front_right_motor.set(fr)
+        self.back_left_motor.set(bl)
+        self.back_right_motor.set(br)

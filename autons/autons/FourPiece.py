@@ -11,7 +11,7 @@ class FourPiece(Auton):
         self.timer = timer
         self.tasks = Tasks(self.timer, subsystems)
 
-    def run(self):
+    def shoot_first(self):
         @self.tasks.timed_task(0.5, self.subsystems, 50)
         def shooter(subsystems: SubSystems, speed: float):
             subsystems.shooter.shoot(speed)
@@ -25,10 +25,10 @@ class FourPiece(Auton):
             subsystems.shooter.shoot(0)
             subsystems.intake.run(0)
 
+    def intake_first(self):
         @self.tasks.timed_task(0.3, self.subsystems)
         def intake_control(subsystems: SubSystems):
             subsystems.intake_control.run(-0.0035)
-
 
         @self.tasks.timed_task(0.6, self.subsystems, 95)
         def intake(subsystems: SubSystems, speed: float):
@@ -38,7 +38,7 @@ class FourPiece(Auton):
         @self.tasks.timed_task(0.4, self.subsystems)
         def drive(subsystems: SubSystems):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, -0.7, 0))
+            subsystems.drive.move(Vector(0, -0.7, subsystems.gyro.calculate(0)))
         
         @self.tasks.timed_task(0.5, self.subsystems)
         def drive(subsystems: SubSystems):
@@ -59,7 +59,7 @@ class FourPiece(Auton):
         @self.tasks.timed_task(0.5, self.subsystems)
         def drive(subsystems: SubSystems):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0.9, 0))
+            subsystems.drive.move(Vector(0, 0.9, subsystems.gyro.calculate(0)))
 
         @self.tasks.timed_task(0.3, self.subsystems)
         def drive(subsystems: SubSystems):
@@ -68,6 +68,8 @@ class FourPiece(Auton):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
             subsystems.drive.move(Vector(0, 0, 0))
 
+            
+    def shoot_second(self):
         @self.tasks.timed_task(0.5, self.subsystems, 50)
         def shooter(subsystems: SubSystems, speed: float):
             subsystems.shooter.shoot(speed)
@@ -80,11 +82,12 @@ class FourPiece(Auton):
         def stop(subsystems: SubSystems):
             subsystems.shooter.shoot(0)
             subsystems.intake.run(0)
-        
+
+    def intake_second(self):
         @self.tasks.timed_task(0.9, self.subsystems)
         def drive(subsystems: SubSystems):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(-0.9, 0, 0))
+            subsystems.drive.move(Vector(-0.9, 0, subsystems.gyro.calculate(0)))
         
         @self.tasks.timed_task(0.6, self.subsystems)
         def intake_control(subsystems: SubSystems):
@@ -97,7 +100,7 @@ class FourPiece(Auton):
         @self.tasks.timed_task(0.4, self.subsystems)
         def drive(subsystems: SubSystems):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, -0.7, 0))
+            subsystems.drive.move(Vector(0, -0.7, subsystems.gyro.calculate(0)))
         
         @self.tasks.timed_task(0.5, self.subsystems)
         def drive(subsystems: SubSystems):
@@ -116,8 +119,11 @@ class FourPiece(Auton):
             subsystems.intake_control.run(0)
             subsystems.intake.run(0)
 
-        
 
-        
+    def run(self):
+        self.shoot_first()
+        self.intake_first()
+        self.shoot_second()
+        self.intake_second()
 
         self.tasks.reset()
