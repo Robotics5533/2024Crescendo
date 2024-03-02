@@ -27,13 +27,24 @@ class Tasks:
     
     def next(self):
          self.command_idx += 1
+    
+    def reset_time(self)->None:
+        self.total_time = 0
+        self.timer.reset()
 
+    def gyro_task(self, angle: float, *args, **kwargs):
+        return self.general(
+                lambda: almost(self.subsystems.gyro.calculate(angle), 0)
+                    ,*args, after=self.reset_time, **kwargs
+                    )
     def general(self, next, *args, **kwargs):
         def decorator(func):
             self.running_idx += 1
             if self.command_idx != self.running_idx:
                  return
             if next():
+                 if "after" in kwargs:
+                     kwargs["after"]()
                  self.next()
             else:
                  func(*args, **kwargs)
