@@ -28,7 +28,8 @@ class Arpeggio(wpilib.TimedRobot):
         
     def teleopInit(self) -> None:
         super().teleopInit()
-        self.robot_container.teleop_lock.unlock()       
+        self.robot_container.teleop_lock.unlock()    
+        self.subsystems.drive.drive.set_mode(MotorModes.voltage)   
         
          
     def autonomousInit(self) -> None:

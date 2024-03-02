@@ -92,13 +92,13 @@ class RobotContainer:
             self.subsystems.intake_control.run,
             self.action_map.get_action_pressed("intake_flip_in"),
             [],
-            0.0025
+            0.0035
         )
          self.subsystems.setup(
             self.subsystems.intake_control.run,
             self.action_map.get_action_pressed("intake_flip_out"),
             [],
-            -0.0025
+            -0.0035
         )
          self.subsystems.setup(
             self.subsystems.intake_control.run,

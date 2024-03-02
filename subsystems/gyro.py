@@ -14,11 +14,10 @@ class GyroSubSystem:
     def calculate(self, target_angle: float):
         angle = self.gyro.getAngle()
         error = target_angle - angle
-        v = 0
         if abs(error) >= 180:
             error = 360 - error
-            v = error / 180
-            v = v * 5
+        v = error / 180
+        v = v * 5
         if abs(v) > 1:
            v = v / abs(v)
         return v
