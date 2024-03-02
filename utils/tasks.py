@@ -12,42 +12,49 @@ class Tasks:
         self.command_idx = 0
         self.total_time = 0
         self.running_idx = -1
-        
+
     def reset(self):
-         self.running_idx = -1
-         self.total_time = 0
+        self.running_idx = -1
+        self.total_time = 0
 
+    def timed_task(self, duration: float, *args, **kwargs):
+        self.total_time += duration
+        return self.general(
+            lambda: self.timer.get() >= self.total_time, *args, **kwargs
+        )
 
-    def timed_task(self, duration: float, *args, **kwrags):
-         self.total_time += duration
-         return self.general(lambda: self.timer.get() >= self.total_time, *args, **kwrags)
-    
     def position_task(self, distance: float, *args, **kwargs):
-         return self.general(lambda: almost_equal(self.subsystems.drive.drive.get_position(), distance), *args, **kwargs)
-    
+        return self.general(
+            lambda: almost_equal(self.subsystems.drive.drive.get_position(), distance),
+            *args,
+            **kwargs
+        )
+
     def next(self):
-         self.command_idx += 1
-    
-    def reset_time(self)->None:
+        self.command_idx += 1
+
+    def reset_time(self) -> None:
         self.total_time = 0
         self.timer.reset()
 
     def gyro_task(self, angle: float, *args, **kwargs):
+        kwargs["after"] = self.reset_time
         return self.general(
-                lambda: almost(self.subsystems.gyro.calculate(angle), 0)
-                    ,*args, after=self.reset_time, **kwargs
-                    )
+            lambda: almost_equal(self.subsystems.gyro.calculate(angle), 0),
+            *args,
+            **kwargs
+        )
+
     def general(self, next, *args, **kwargs):
         def decorator(func):
             self.running_idx += 1
             if self.command_idx != self.running_idx:
-                 return
+                return
             if next():
-                 if "after" in kwargs:
-                     kwargs["after"]()
-                 self.next()
+                print(kwargs["after"]) if "after" in kwargs else print("none")
+                self.next()
             else:
-                 func(*args, **kwargs)
+                func(*args, **kwargs)
             return func
+
         return decorator
-    

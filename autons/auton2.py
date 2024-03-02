@@ -49,10 +49,11 @@ class Auton:
             if brake:
                 subsystems.drive.drive.set_mode(MotorModes.static_brake)
                 subsystems.drive.move(Vector(0, 0, 0))
+
     def rotate(self, **kwargs):
         angle = kwargs["angle"]
-        @self.tasks.gyro_task(angle,self.subsystems)
-        def rotate(subsystems : SubSystems):
+        @self.tasks.gyro_task(angle, self.subsystems)
+        def rotate(subsystems: SubSystems):
             subsystems.drive.move(Vector(0,0,subsystems.gyro.calculate(angle)))
 
     def flip(self, **kwargs):
