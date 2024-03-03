@@ -111,8 +111,8 @@ class Arpeggio(wpilib.TimedRobot):
 
     def teleopPeriodic(self):
         # self.robot_container.process()
-        # print(self.subsystems.gyro.calculate(180))
-        # self.subsystems.drive.move(Vector(0, 0, self.subsystems.gyro.calculate(180)))
+        print(self.subsystems.gyro.calculate(90))
+        self.subsystems.drive.move(Vector(0, 0, self.subsystems.gyro.calculate(90)))
         pass
         
 if __name__ == "__main__":
