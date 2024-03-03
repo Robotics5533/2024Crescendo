@@ -10,9 +10,9 @@ from utils.context import Context
 from utils.follower import Follower
 from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
-from wpilib import SmartDashboard
+from wpilib import CameraServer, SmartDashboard
 from utils.math.motors import drive_to_meters
-from cscore import CameraServer
+# from cscore import CameraServer
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
         self.robot_container = RobotContainer(SubSystems(), wpilib.Joystick(Robot.Controllers.joystick), wpilib.XboxController(Robot.Controllers.xbox))
@@ -27,8 +27,14 @@ class Arpeggio(wpilib.TimedRobot):
 
         self.subsystems.intake_control.motor.set_position(0)
         
-        camera = CameraServer.startAutomaticCapture()
-        camera.setResolution(600, 700)
+        # camera = CameraServer.startAutomaticCapture()
+        # camera.setResolution(600, 700)
+        
+        # input_stream = CameraServer.getVideo()
+        # output_stream = CameraServer.putVideo('Processed', 600, 700)
+        
+       
+        
 
         
     def teleopInit(self) -> None:
@@ -59,8 +65,8 @@ class Arpeggio(wpilib.TimedRobot):
 
     def teleopPeriodic(self):
         # self.robot_container.process()
-        print(self.subsystems.gyro.calculate(90))
-        self.subsystems.drive.move(Vector(0, 0, self.subsystems.gyro.calculate(90)))
+        # print(self.subsystems.gyro.calculate(90))
+        # self.subsystems.drive.move(Vector(0, 0, self.subsystems.gyro.calculate(90)))
         pass
         
 if __name__ == "__main__":

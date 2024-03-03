@@ -15,7 +15,6 @@ class FourPiece2(Auton):
         self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
         self.stop()
 
-        # Grab Second Note
         self.flip(direction = -1, duration = 0.3)
         self.flip(direction = 1, duration = 0.1, speed = 0)
         self.intake(direction = 1, duration = 0.7, speed = Auton.Speeds.intake)

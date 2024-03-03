@@ -39,22 +39,24 @@ class Auton:
 
 
     def drive(self, **kwargs):
-        duration = kwargs["duration"]
+        if not (("velocity" in kwargs) and ("duration" in kwargs)):
+            return
         velocity = kwargs["velocity"]
         brake = kwargs["brake"] if "brake" in kwargs else False
-        @self.tasks.timed_task(duration, self.subsystems)
-        def drive(subsystems: SubSystems):
+        @self.tasks.timed_task(self.subsystems, **kwargs)
+        def drive(subsystems: SubSystems,*args,**kwargs):
             subsystems.drive.drive.set_mode(MotorModes.voltage)
             subsystems.drive.move(velocity)
             if brake:
                 subsystems.drive.drive.set_mode(MotorModes.static_brake)
                 subsystems.drive.move(Vector(0, 0, 0))
+            
 
     def rotate(self, **kwargs):
         angle = kwargs["angle"]
         @self.tasks.gyro_task(angle, self.subsystems)
         def rotate(subsystems: SubSystems):
-            subsystems.drive.move(Vector(0,0,subsystems.gyro.calculate(angle)))
+            subsystems.drive.move(Vector(0, 0, subsystems.gyro.calculate(angle)))
 
     def flip(self, **kwargs):
         duration = kwargs["duration"]
@@ -62,5 +64,4 @@ class Auton:
         speed = kwargs["speed"] if "speed" in kwargs else 0.0035
         @self.tasks.timed_task(duration, self.subsystems)
         def intake_control(subsystems: SubSystems):
-            print(speed * direction)
             subsystems.intake_control.run(speed * direction)

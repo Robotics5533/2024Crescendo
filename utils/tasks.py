@@ -17,8 +17,15 @@ class Tasks:
         self.running_idx = -1
         self.total_time = 0
 
-    def timed_task(self, duration: float, *args, **kwargs):
-        self.total_time += duration
+    def timed_task(self, *args, **kwargs):
+        if not ("duration" in kwargs):
+            def dummy_dec(f):
+                return f 
+            
+            return dummy_dec
+        
+        self.total_time += kwargs["duration"]
+        
         return self.general(
             lambda: self.timer.get() >= self.total_time, *args, **kwargs
         )
@@ -47,12 +54,14 @@ class Tasks:
 
     def general(self, next, *args, **kwargs):
         def decorator(func):
+            print(kwargs)
             self.running_idx += 1
             if self.command_idx != self.running_idx:
                 return
             if next():
-                print(kwargs["after"]) if "after" in kwargs else print("none")
                 self.next()
+                if "after" in kwargs:
+                    kwargs["after"]()
             else:
                 func(*args, **kwargs)
             return func
