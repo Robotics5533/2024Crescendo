@@ -22,6 +22,7 @@ class MecanumDrive(Drive):
         self.back_right_motor = back_right
         
         self.motors = [front_left, front_right, back_left, back_right]
+        self.speed_multiplier = 1
         
     def set_mode(self, mode: int):
         for motor in self.motors:
@@ -40,7 +41,7 @@ class MecanumDrive(Drive):
             motor.process(0)
             
     def move(self, data: Vector):
-        data = Vector(*data.deadzone())
+        data = Vector(*data.deadzone()) * self.speed_multiplier
         fl = data.b - data.c - data.a
         fr = data.b + data.c + data.a
         bl = data.b - data.c + data.a

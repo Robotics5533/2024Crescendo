@@ -51,63 +51,11 @@ class Arpeggio(wpilib.TimedRobot):
        
     
     def autonomousPeriodic(self):
-
-        # self.robot_container.process()
-        # self.follower.update()
-        # drive_to_meters(self.subsystems.drive.drive, 50)
-        
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
         auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
         auton = create_auton(self.subsystems, auton_name, self.timer)
         auton.run()
 
-        # if self.timer.get() < 1.0:
-        #     self.subsystems.shooter.shoot(50)
-        # elif self.timer.get() < 1.7:
-        #     self.subsystems.intake.run(-50)
-        # elif self.timer.get() < 2.3:
-        #     self.subsystems.intake.run(0)
-        #     self.subsystems.shooter.shoot(0) # shot first note
-        # elif self.timer.get() < 2.7:
-        #     self.subsystems.intake_control.run(-0.0025)
-        # elif self.timer.get() < 3:
-        #     self.subsystems.intake_control.run(0)
-        #     self.subsystems.intake.run(50)
-        # elif self.timer.get() < 4.5:
-        #     self.subsystems.drive.move(Vector(0, -0.1, 0))
-        # elif self.timer.get() < 4.8:
-        #     self.subsystems.drive.move(Vector(0, 0, 0))
-        #     self.subsystems.intake.run(0)
-        # elif self.timer.get() < 6.2:
-        #     self.subsystems.intake_control.run(0.0025)
-        # elif self.timer.get() < 7:
-        #     self.subsystems.intake_control.run(0)
-        # elif self.timer.get() < 7.6:
-        #     self.subsystems.shooter.shoot(50)
-        # elif self.timer.get() < 9:
-        #     self.subsystems.drive.move(Vector(0, 0.3, 0))
-        # elif self.timer.get() < 9.3:
-        #     self.subsystems.drive.move(Vector(0, 0, 0))
-        # elif self.timer.get() < 10:
-        #     self.subsystems.intake.run(-50)
-        # elif self.timer.get() < 10.8:
-        #     self.subsystems.intake.run(0)
-        #     self.subsystems.shooter.shoot(0)
-        # elif self.timer.get() < 10.3:
-        #     self.subsystems.drive.move(Vector(0, 0, -0.1))
-        # elif self.timer.get() < 10.7:
-        #     self.subsystems.drive.move(Vector(0, 0, 0))
-        # elif self.timer.get() < 13.0:
-        #     self.subsystems.drive.move(Vector(0, -0.1, 0))
-        # else:
-        #     self.subsystems.drive.move(Vector(0, 0, 0))
-        
-        
-        
-        # pass
-        # self.subsystems.drive.drive.set_mode(MotorModes.position)
-        # self.subsystems.drive.drive.set_position(0)
-        # self.subsystems.drive.move(Vector(0, 12, 0))
 
     def teleopPeriodic(self):
         # self.robot_container.process()
