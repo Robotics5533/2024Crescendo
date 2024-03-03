@@ -9,6 +9,7 @@ from utils.actions import Actions
 from utils.math.Vector import Vector
 from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
+from math import pi
 
 class RobotContainer:
     def __init__(self, subsystems, stick: wpilib.Joystick, xbox: wpilib.XboxController):
@@ -213,7 +214,6 @@ class RobotContainer:
          if self.stick.getRawButton(1):
              y = -y
              x = -x
-             z = z
 
          if self.stick.getRawButton(5):
              self.subsystems.drive.drive.speed_multiplier = 0.5
@@ -226,6 +226,13 @@ class RobotContainer:
              #print("Speed Normal!")
              self.subsystems.drive.drive.speed_multiplier = 1
 
+         if self.stick.getRawButton(4):
+             angle = self.subsystems.gyro.gyro.getAngle() * -pi / 180
+             v = Vector(x, y, z).rotate(angle)
+             x = v.a
+             y = v.b
+             print(angle)
+            
          if self.stick.getRawButton(12):
              print("im in the in", self.subsystems.intake_control.motor.get_position())
              self.subsystems.intake_control.motor.set_position(-3.30)
