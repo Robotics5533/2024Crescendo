@@ -16,3 +16,16 @@ def almost_equal(x, target, err = 0.01):
 
 def deadzone(values, error = 0.3):
         return [0 if almost_equal(value, 0, error) else value - error for value in values]
+
+
+def calculate_for_gyro(**kwargs):
+    x = kwargs["x"]
+    mx = kwargs["mx"]
+    mi = kwargs["mi"]
+    si = kwargs["si"]
+    ei = kwargs["ei"]
+    sf = kwargs["sf"]
+    ef = kwargs["ef"]
+
+    return clamp(linear_remap(x, si, ei, sf, ef), mi, mx)
+   
