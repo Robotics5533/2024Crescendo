@@ -9,6 +9,7 @@ from utils.actions import Actions
 from utils.math.Vector import Vector
 from utils.math.algebra import almost_equal, clamp
 from utils.math.motors import drive_to_meters
+from math import pi
 
 class RobotContainer:
     def __init__(self, subsystems, stick: wpilib.Joystick, xbox: wpilib.XboxController):
@@ -195,7 +196,7 @@ class RobotContainer:
             self.subsystems.shooter.shoot,
             self.action_map.get_action_pressed("shooter_run_amp"),
             [],
-            30
+            35
         )
         self.subsystems.setup(
             self.subsystems.shooter.shoot,
@@ -213,8 +214,32 @@ class RobotContainer:
          if self.stick.getRawButton(1):
              y = -y
              x = -x
-             z = z
-        
+
+         if self.stick.getRawButton(5):
+             self.subsystems.drive.drive.speed_multiplier = 0.5
+             #print("Speed Halved!")
+             
+         elif self.stick.getRawButton(3):
+             self.subsystems.drive.drive.speed_multiplier = 0.25
+             #print("Speed quartered!")
+         else: 
+             #print("Speed Normal!")
+             self.subsystems.drive.drive.speed_multiplier = 1
+
+         if self.stick.getRawButton(4):
+             angle = self.subsystems.gyro.gyro.getAngle() * -pi / 180
+             v = Vector(x, y, z).rotate(angle)
+             x = v.a
+             y = v.b
+             print(angle)
+            
+         if self.stick.getRawButton(12):
+             print("im in the in", self.subsystems.intake_control.motor.get_position())
+             self.subsystems.intake_control.motor.set_position(-3.30)
+         elif self.stick.getRawButton(11):
+             print("im in the out", self.subsystems.intake_control.motor.get_position())
+             self.subsystems.intake_control.motor.set_position(0)
+
 
          self.register_intake_flip()
          self.register_intake()
