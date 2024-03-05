@@ -1,12 +1,14 @@
 from autons.auton2 import Auton
 from subsystems.index import SubSystems
 from utils.math.Vector import Vector
+from utils.math.algebra import linear_remap
 
 
 class FourPiece2(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
+        
 
 
     def get_note(self):
@@ -26,6 +28,13 @@ class FourPiece2(Auton):
         self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
         self.stop()
 
+    def move_left(self, duration: float, speed: float):
+        self.drive(velocity = Vector(linear_remap(self.timer.get(), self.tasks.total_time - duration, self.tasks.total_time, 0, -speed), 0, self.subsystems.gyro.calculate(0)), duration = duration)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+    
+    def move_right(self, duration: float, speed: float):
+        self.move_left(duration, -speed)
+
     def run(self):
         self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.25)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
@@ -40,24 +49,22 @@ class FourPiece2(Auton):
         self.shoot_note()
 
         # Grab third
-        self.drive(velocity = Vector(-0.9, 0, self.subsystems.gyro.calculate(0)), duration = 1.4)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+        self.move_left(1.4, 0.9)
         self.get_note()
-        self.drive(velocity = Vector(0.9, 0, self.subsystems.gyro.calculate(0)), duration = 1.1)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        self.move_right(1.1, 0.9)
 
         #Shoot third note
         self.shoot_note()
 
         # Grab fourth note
-        self.drive(velocity = Vector(0.9, 0, self.subsystems.gyro.calculate(0)), duration = 0.9)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
-        self.get_note()
-        self.drive(velocity = Vector(-0.9, 0, self.subsystems.gyro.calculate(0)), duration = 0.9)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        # self.drive(velocity = Vector(0.9, 0, self.subsystems.gyro.calculate(0)), duration = 0.9)
+        # self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+        # self.get_note()
+        # self.drive(velocity = Vector(-0.9, 0, self.subsystems.gyro.calculate(0)), duration = 0.9)
+        # self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
 
         # Shoot Fourth note
-        self.shoot_note()
+        # self.shoot_note()
 
         # self.rotate(angle = 180)
         

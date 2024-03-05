@@ -46,7 +46,7 @@ class MecanumDrive(Drive):
         bl = data.b - data.c + data.a
         br = data.b + data.c - data.a
 
-        m = max([fl, fr, bl, br])
+        m = max(abs(x) for x in [fl, fr, bl, br])
 
         if m > 1:
             fl /= m
