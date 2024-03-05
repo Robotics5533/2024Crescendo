@@ -6,7 +6,7 @@ from utils.tasks import Tasks
 
 class Auton:
     class Speeds:
-        shooter = 80
+        shooter = 90
         intake = 95
     def __init__(self, subsystems, timer):
         self.subsystems = subsystems
