@@ -1,3 +1,4 @@
+import gc
 import wpilib
 import wpilib.drive
 from autons.auton import Auton
@@ -23,7 +24,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.subsystems = self.robot_container.subsystems
         self.timer = wpilib.Timer()
         SmartDashboard.putStringArray("Auto List", AutonList)
-
+        self.garabage_iteration = 0
         self.subsystems.intake_control.motor.set_position(0)
         
     def teleopInit(self) -> None:
@@ -104,6 +105,9 @@ class Arpeggio(wpilib.TimedRobot):
         # self.subsystems.drive.move(Vector(0, 12, 0))
 
     def teleopPeriodic(self):
+        self.garabage_iteration = self.garabage_iteration + 1 % 100
+        if(not (self.garabage_iteration % 100)):
+            gc.collect()
         self.robot_container.process()
 
 if __name__ == "__main__":

@@ -195,7 +195,7 @@ class RobotContainer:
             self.subsystems.shooter.shoot,
             self.action_map.get_action_pressed("shooter_run_amp"),
             [],
-            30
+            29.25
         )
         self.subsystems.setup(
             self.subsystems.shooter.shoot,
