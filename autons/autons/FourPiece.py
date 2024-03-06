@@ -1,163 +1,67 @@
-import wpilib
-from autons.auton import Auton
-from components.motor.Motor5533 import MotorModes
+from autons.auton2 import Auton
 from subsystems.index import SubSystems
 from utils.math.Vector import Vector
-from utils.tasks import Tasks
+from utils.math.algebra import linear_remap
+
 
 class FourPiece(Auton):
-    def __init__(self, subsystems, timer):
+    def __init__(self, subsystems: SubSystems, timer):
+        super().__init__(subsystems, timer)
         self.subsystems = subsystems
-        self.timer = timer
-        self.tasks = Tasks(self.timer, subsystems)
-
-    def shoot_first(self):
-        @self.tasks.timed_task(0.5, self.subsystems, 50)
-        def shooter(subsystems: SubSystems, speed: float):
-            subsystems.shooter.shoot(speed)
-
-        @self.tasks.timed_task(0.45, self.subsystems, -80)
-        def intake(subsystems: SubSystems, speed: float):
-            subsystems.intake.run(speed)
-
-        @self.tasks.timed_task(0.2, self.subsystems)
-        def stop(subsystems: SubSystems):
-            subsystems.shooter.shoot(0)
-            subsystems.intake.run(0)
-
-    def intake_first(self):
-        @self.tasks.timed_task(0.3, self.subsystems)
-        def intake_control(subsystems: SubSystems):
-            subsystems.intake_control.run(-0.0035)
-
-        @self.tasks.timed_task(0.6, self.subsystems, 95)
-        def intake(subsystems: SubSystems, speed: float):
-            subsystems.intake_control.run(0)
-            subsystems.intake.run(speed)
-        
-        @self.tasks.timed_task(0.4, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, -0.7, subsystems.gyro.calculate(0)))
-        
-        @self.tasks.timed_task(0.5, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.static_brake)
-            subsystems.drive.move(Vector(0, 0, 0))
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0, 0))
-
-        @self.tasks.timed_task(0.5, self.subsystems)
-        def intake_control(subsystems: SubSystems):
-            subsystems.intake.run(0)
-            subsystems.intake_control.run(0.0035)
-
-        @self.tasks.timed_task(0.2, self.subsystems)
-        def intake(subsystems: SubSystems):
-            subsystems.intake_control.run(0)
-
-        @self.tasks.timed_task(0.5, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0.9, subsystems.gyro.calculate(0)))
-
-        @self.tasks.timed_task(0.3, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.static_brake)
-            subsystems.drive.move(Vector(0, 0, 0))
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0, 0))
-
-
-    def shoot_second(self):
-        @self.tasks.timed_task(0.5, self.subsystems, 50)
-        def shooter(subsystems: SubSystems, speed: float):
-            subsystems.shooter.shoot(speed)
-
-        @self.tasks.timed_task(0.45, self.subsystems, -90)
-        def intake(subsystems: SubSystems, speed: float):
-            subsystems.intake.run(speed)
-
-        @self.tasks.timed_task(0.3, self.subsystems)
-        def stop(subsystems: SubSystems):
-            subsystems.shooter.shoot(0)
-            subsystems.intake.run(0)
-
-    def intake_second(self):
-        @self.tasks.timed_task(1.1, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(-0.9, 0, subsystems.gyro.calculate(0)))
-        
-        @self.tasks.timed_task(0.6, self.subsystems)
-        def intake_control(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.static_brake)
-            subsystems.drive.move(Vector(0, 0, 0))
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0, 0))
-            subsystems.intake_control.run(-0.0025)
-
-        @self.tasks.timed_task(0.4, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, -0.7, subsystems.gyro.calculate(0)))
-        
-        @self.tasks.timed_task(0.5, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.intake.run(80)
-            subsystems.drive.drive.set_mode(MotorModes.static_brake)
-            subsystems.drive.move(Vector(0, 0, 0))
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0, 0))
-
-        @self.tasks.timed_task(0.3, self.subsystems)
-        def intake(subsystems: SubSystems):
-            subsystems.intake_control.run(0)
-            subsystems.intake.run(0)
-
-
-    def shoot_third(self):
-        @self.tasks.timed_task(0.5, self.subsystems)
-        def intake_control(subsystems: SubSystems):
-            subsystems.intake_control.run(0.0035)
-
-        @self.tasks.timed_task(0.8, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.intake_control.run(0)
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0.95, 0, subsystems.gyro.calculate(0)))
-
-
-        @self.tasks.timed_task(0.5, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0.9, subsystems.gyro.calculate(0)))
-
-        @self.tasks.timed_task(0.3, self.subsystems)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.static_brake)
-            subsystems.drive.move(Vector(0, 0, 0))
-            subsystems.drive.drive.set_mode(MotorModes.voltage)
-            subsystems.drive.move(Vector(0, 0, 0))
-
-        @self.tasks.timed_task(0.5, self.subsystems, 50)
-        def shooter(subsystems: SubSystems, speed: float):
-            subsystems.shooter.shoot(speed)
-
-        @self.tasks.timed_task(0.45, self.subsystems, -90)
-        def intake(subsystems: SubSystems, speed: float):
-            subsystems.intake.run(speed)
-
-        @self.tasks.timed_task(0.3, self.subsystems)
-        def stop(subsystems: SubSystems):
-            subsystems.shooter.shoot(0)
-            subsystems.intake.run(0)
-
         
 
 
+    def get_note(self):
+        self.flip(direction = -1, duration = 0.3)
+        self.flip(direction = 1, duration = 0.1, speed = 0)
+        self.intake(direction = 1, duration = 0.9, speed = Auton.Speeds.intake)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.35)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.5, brake = True)
+        self.intake(speed = 0, direction = 0, duration = 0.2)
+        self.flip(direction = 1, duration = 0.5)
+        self.flip(direction = -1, duration = 0.1, speed = 0)
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.425)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+    
+    def shoot_note(self):
+        self.shoot(speed = Auton.Speeds.shooter, direction = 1, duration = 0.7)
+        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
+        self.stop()
+
+    def move_left(self, duration: float, speed: float):
+        self.drive(velocity = Vector(linear_remap(self.timer.get(), self.tasks.total_time - duration, self.tasks.total_time, 0, -speed), 0, self.subsystems.gyro.calculate(0)), duration = duration)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+    
+    def move_right(self, duration: float, speed: float):
+        self.move_left(duration, -speed)
 
     def run(self):
-        self.shoot_first()
-      
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.3)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        # Shoot first note
+        self.shoot(speed = Auton.Speeds.shooter, direction = 1, duration = 0.9)
+        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
+        self.stop()
+        # Grab Second Note
+        self.get_note()
+
+        # Shoot second note
+        self.shoot_note()
+
+        # Grab third
+        self.move_left(1.25, 0.9)
+        self.get_note()
+        self.move_right(0.85, 0.9)
+
+
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.25)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        #Shoot third note
+        self.shoot_note()
+
+
+       # Taxi
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.5)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        
         self.tasks.reset()
