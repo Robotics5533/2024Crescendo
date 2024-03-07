@@ -1,3 +1,4 @@
+from wpilib import DriverStation
 from components.motor.Motor5533 import MotorModes
 from subsystems.index import SubSystems
 from utils.math.Vector import Vector
@@ -12,7 +13,7 @@ class Auton:
         self.subsystems = subsystems
         self.timer = timer
         self.tasks = Tasks(self.timer, subsystems)
-        
+        self.subsystems.drive.drive.speed_multiplier = 12 / DriverStation.getBatteryVoltage()
 
     def shoot(self, **kwargs):
         duration = kwargs["duration"]
