@@ -162,7 +162,7 @@ class RobotContainer:
             self.subsystems.climb.move,
             self.action_map.get_action_pressed("activate_climb_out"),
             [],
-            -0.5
+            -0.2
         )
         self.subsystems.setup(
             self.subsystems.climb.move,
