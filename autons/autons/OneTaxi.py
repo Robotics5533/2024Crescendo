@@ -44,7 +44,7 @@ class OneTaxi(Auton):
         self.stop()
         
         # Taxi
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.5)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.75)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
         self.tasks.reset()

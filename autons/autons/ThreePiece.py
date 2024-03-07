@@ -3,7 +3,6 @@ from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
 
-
 class ThreePiece(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
@@ -11,7 +10,7 @@ class ThreePiece(Auton):
         
 
 
-    def get_note(self):
+    def get_note(self, last_duration = 0.425):
         self.flip(direction = -1, duration = 0.3)
         self.flip(direction = 1, duration = 0.1, speed = 0)
         self.intake(direction = 1, duration = 0.9, speed = Auton.Speeds.intake)
@@ -20,7 +19,7 @@ class ThreePiece(Auton):
         self.intake(speed = 0, direction = 0, duration = 0.2)
         self.flip(direction = 1, duration = 0.5)
         self.flip(direction = -1, duration = 0.1, speed = 0)
-        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.425)
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = last_duration)
         self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
     
     def shoot_note(self):
@@ -49,19 +48,21 @@ class ThreePiece(Auton):
         self.shoot_note()
 
         # Grab third
-        self.move_left(1.25, 0.9)
-        self.get_note()
+        self.move_left(1, 0.9)
+        self.get_note(0.2)
         self.move_right(0.85, 0.9)
 
 
-        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.25)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        # self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.25)
+        # self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+
+
         #Shoot third note
         self.shoot_note()
 
 
        # Taxi
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.5)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.75)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
         self.tasks.reset()
