@@ -3,7 +3,7 @@ from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
 from wpilib import DriverStation
-class ThreePieceRight(Auton):
+class ThreePieceLeft(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
@@ -40,7 +40,7 @@ class ThreePieceRight(Auton):
         self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
         self.stop()
         # Grab Second Note
-        self.get_note(0.4)
+        self.get_note(0.5)
         self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.35)
         self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
 
@@ -48,9 +48,9 @@ class ThreePieceRight(Auton):
         self.shoot_note()
 
         # Grab third
-        self.move_right(1.25, 0.9)
+        self.move_left(1.15, 0.9)
         self.get_note(0.425, 0.45)
-        self.move_left(1, 0.9)
+        self.move_right(1, 0.9)
 
 
         self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.45)
