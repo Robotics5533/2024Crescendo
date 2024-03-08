@@ -9,10 +9,10 @@ class Auton:
     class Speeds:
         shooter = 90
         intake = 95
-    def __init__(self, subsystems, timer):
+    def __init__(self, subsystems, timer, tasks = None):
         self.subsystems = subsystems
         self.timer = timer
-        self.tasks = Tasks(self.timer, subsystems)
+        self.tasks = Tasks(self.timer, subsystems) if tasks == None else tasks
         self.subsystems.drive.drive.speed_multiplier = 12 / DriverStation.getBatteryVoltage()
 
     def shoot(self, **kwargs):
