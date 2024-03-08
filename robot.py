@@ -12,6 +12,7 @@ from utils.follower import Follower
 from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
 from wpilib import SmartDashboard
+# from cscore import CameraServer
 from utils.math.motors import drive_to_meters
 class Arpeggio(wpilib.TimedRobot):
     def robotInit(self):
@@ -26,7 +27,8 @@ class Arpeggio(wpilib.TimedRobot):
         SmartDashboard.putStringArray("Auto List", AutonList)
         self.garabage_iteration = 0
         self.subsystems.intake_control.motor.set_position(0)
-        
+        # camera  = CameraServer.startAutomaticCapture()      
+        # camera.setResolution(10, 10)
     def teleopInit(self) -> None:
         super().teleopInit()
         self.robot_container.teleop_lock.unlock()    
