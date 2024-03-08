@@ -131,7 +131,7 @@ class RobotContainer:
             self.subsystems.intake.run,
             self.action_map.get_action_pressed("intake_run_in"),
             [],
-            -70
+            -75
         )
         self.subsystems.setup(
             self.subsystems.intake.run,
@@ -196,7 +196,7 @@ class RobotContainer:
             self.subsystems.shooter.shoot,
             self.action_map.get_action_pressed("shooter_run_amp"),
             [],
-            29.25
+            (29.25 / (wpilib.DriverStation.getBatteryVoltage())) * 12
         )
         self.subsystems.setup(
             self.subsystems.shooter.shoot,
