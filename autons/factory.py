@@ -1,3 +1,4 @@
+from autons.autons.OnePieceNoTaxi import OnePieceNoTaxi
 from autons.autons.OneTaxi import OneTaxi
 from autons.autons.OneTaxiLeft import OneTaxiLeft
 from autons.autons.OneTaxiRight import OneTaxiRight
@@ -8,7 +9,7 @@ from autons.autons.ThreePieceRight import ThreePieceRight
 from autons.autons.TwoPiece import TwoPiece
 from subsystems.index import SubSystems
 
-AutonList = ["TwoPiece", "OneTaxi", "OneTaxiPositionLeft", "OneTaxiPositionRight", "ThreePieceRightUnstable", "ThreePieceLeftUnstable"]
+AutonList = ["TwoPiece", "OnePieceNoTaxi", "OneTaxi", "OneTaxiPositionLeft", "OneTaxiPositionRight", "ThreePieceRightUnstable", "ThreePieceLeftUnstable"]
 
 def create_auton(subsystems: SubSystems, type: str, timer):
         match type:
@@ -16,6 +17,8 @@ def create_auton(subsystems: SubSystems, type: str, timer):
                 return TwoPiece(subsystems, timer)
             case "OneTaxi":
                 return OneTaxi(subsystems, timer)
+            case "OnePieceNoTaxi":
+                  return OnePieceNoTaxi(subsystems, timer)
             case "OneTaxiPositionLeft":
                   return OneTaxiLeft(subsystems, timer)
             case "OneTaxiPositionRight":
