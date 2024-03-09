@@ -50,8 +50,8 @@ class Arpeggio(wpilib.TimedRobot):
         auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
         auton = create_auton(self.subsystems, auton_name, self.timer)
         auton.run()
-
-
+    
+   
     def teleopPeriodic(self):
         self.garabage_iteration = self.garabage_iteration + 1 % 100
         if(not (self.garabage_iteration % 100)):

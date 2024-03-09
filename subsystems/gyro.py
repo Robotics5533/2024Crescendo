@@ -17,7 +17,7 @@ class GyroSubSystem:
         if abs(error) >= 180:
             error = 360 - error
         v = error / 180
-        v = v * 5
+        v = v * 7
         if abs(v) > 1:
            v = v / abs(v)
         return v
