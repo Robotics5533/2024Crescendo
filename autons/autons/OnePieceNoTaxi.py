@@ -5,8 +5,8 @@ from utils.math.algebra import linear_remap
 
 
 class OnePieceNoTaxi(Auton):
-    def __init__(self, subsystems: SubSystems, timer):
-        super().__init__(subsystems, timer)
+    def __init__(self, subsystems: SubSystems, timer, tasks = None):
+        super().__init__(subsystems, timer, tasks)
         self.subsystems = subsystems
         
 

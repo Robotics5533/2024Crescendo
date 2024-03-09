@@ -55,7 +55,7 @@ class Auton:
         angle = kwargs["angle"]
         @self.tasks.gyro_task(angle, self.subsystems)
         def rotate(subsystems: SubSystems):
-            subsystems.drive.move(Vector(0,0,subsystems.gyro.calculate(angle)))
+            subsystems.drive.move(Vector(0,0, subsystems.gyro.calculate(angle)))
 
     def flip(self, **kwargs):
         duration = kwargs["duration"]
