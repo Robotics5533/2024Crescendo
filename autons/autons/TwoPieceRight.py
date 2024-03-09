@@ -37,7 +37,7 @@ class TwoPieceRight(Auton):
         self.move_left(duration, -speed)
 
     def run(self):
-        self.one_piece.initate()
+        self.one_piece.initiate()
         
         
         self.drive(velocity = Vector(0, 0, -0.15), duration = 0.3)
@@ -52,7 +52,7 @@ class TwoPieceRight(Auton):
         self.drive(velocity = Vector(0, 0, 0.15), duration = 0.3)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
-        self.one_piece.initate()
+        self.one_piece.initiate()
         
        # Taxi
         self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)
