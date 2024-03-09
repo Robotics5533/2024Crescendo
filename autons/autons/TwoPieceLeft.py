@@ -1,14 +1,15 @@
 from autons.auton2 import Auton
+from autons.autons.OnePieceNoTaxi import OnePieceNoTaxi
 from autons.autons.TwoPiece import TwoPiece
 from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
 from wpilib import DriverStation
-class ThreePieceRightUnstable(Auton):
+class TwoPieceRight(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
-        self.two_piece = TwoPiece(subsystems, timer, self.tasks)
+        self.one_piece = OnePieceNoTaxi(subsystems, timer, self.tasks)
 
 
     def get_note(self, last_duration = 0.425, first_duration = 0.3):
@@ -36,22 +37,23 @@ class ThreePieceRightUnstable(Auton):
         self.move_left(duration, -speed)
 
     def run(self):
-        self.two_piece.initate()
-
-       # Grab third
-        self.move_left(1.15, 0.9)
-        self.get_note(0.425, 0.5)
-        self.move_right(1.15, 0.9)
-
-
-        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.45)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.6, brake = True)
-
-
-        #Shoot third note
-        self.shoot_note()
-
-
+        self.one_piece.initiate()
+        
+        
+        self.drive(velocity = Vector(0, 0, 0.15), duration = 0.3)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        
+        @self.tasks.timed_task(0.1, self.subsystems)
+        def reset_gyro(subsystems: SubSystems):
+            subsystems.gyro.reset()
+            
+        self.get_note()
+        
+        self.drive(velocity = Vector(0, 0, -0.15), duration = 0.3)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        
+        self.one_piece.initiate()
+        
        # Taxi
         self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)
         self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
