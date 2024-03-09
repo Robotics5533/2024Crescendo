@@ -1,27 +1,27 @@
 from autons.auton2 import Auton
+from autons.autons.TwoPiece import TwoPiece
 from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
-
-
-class OneTaxi(Auton):
+from wpilib import DriverStation
+class ThreePieceLeftUnstable(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
-        
+        self.two_piece = TwoPiece(subsystems, timer, self.tasks)
 
 
-    def get_note(self):
+    def get_note(self, last_duration = 0.425, first_duration = 0.3):
         self.flip(direction = -1, duration = 0.3)
         self.flip(direction = 1, duration = 0.1, speed = 0)
         self.intake(direction = 1, duration = 0.9, speed = Auton.Speeds.intake)
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.35)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = first_duration)
         self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.5, brake = True)
-        self.intake(speed = 0, direction = 0, duration = 0.2)
+
         self.flip(direction = 1, duration = 0.5)
         self.flip(direction = -1, duration = 0.1, speed = 0)
-        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.425)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+        self.intake(speed = 0, direction = 0, duration = 0.2)
+        
     
     def shoot_note(self):
         self.shoot(speed = Auton.Speeds.shooter, direction = 1, duration = 0.7)
@@ -36,15 +36,25 @@ class OneTaxi(Auton):
         self.move_left(duration, -speed)
 
     def run(self):
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.3)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
-        # Shoot first note
-        self.shoot(speed = Auton.Speeds.shooter, direction = 1, duration = 0.9)
-        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
-        self.stop()
-        
-        # Taxi
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.9)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+        self.two_piece.initate()
+
+       # Grab third
+        self.move_left(1.15, 0.9)
+        self.get_note(0.425, 0.5)
+        self.move_right(1.15, 0.9)
+
+
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.45)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.6, brake = True)
+
+
+        #Shoot third note
+        self.shoot_note()
+
+
+       # Taxi
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
         
         self.tasks.reset()
+
