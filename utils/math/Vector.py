@@ -9,6 +9,12 @@ class Vector:
         self.b = b
         self.c = c
     
+
+
+    @staticmethod
+    def index_to_name(index: int) -> str:
+        return "xyz"[index]
+    
     def deadzone(self, error = 0.1): 
         values = [self.a, self.b, self.c]
         return deadzone(values, error)
