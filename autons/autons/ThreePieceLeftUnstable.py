@@ -4,7 +4,7 @@ from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
 from wpilib import DriverStation
-class ThreePieceRightUnstable(Auton):
+class ThreePieceLeftUnstable(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
