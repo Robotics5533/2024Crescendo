@@ -12,6 +12,7 @@ from utils.follower import Follower
 from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
 from wpilib import SmartDashboard
+from wpilib import CameraServer
 # from cscore import CameraServer
 from utils.math.motors import drive_to_meters
 class Arpeggio(wpilib.TimedRobot):

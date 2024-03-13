@@ -147,8 +147,8 @@ class RobotContainer:
         self.subsystems.shooter.motors[1].set(-0.41) # top
 
     def amp_shooter(self):
-        self.subsystems.shooter.motors[0].set(-0.325) # bottom
-        self.subsystems.shooter.motors[1].set(-0.245) # top
+        self.subsystems.shooter.motors[0].set(-0.36) # bottom
+        self.subsystems.shooter.motors[1].set(-0.20) # top
 
         #17.5in for shooter max
     def register_climb(self):
