@@ -6,7 +6,7 @@
         {
             "label": "echo",
             "type": "shell",
-            "command": "python3 -m robotpy deploy --nc",
+            "command": "python3 -m robotpy deploy",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
