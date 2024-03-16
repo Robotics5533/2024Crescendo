@@ -37,22 +37,24 @@ class TwoPieceRight(Auton):
         self.move_left(duration, -speed)
 
     def run(self):
-        self.one_piece.initiate()
+        self.shoot_note()
         
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.3)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
-        self.drive(velocity = Vector(0, 0, -0.15), duration = 0.3)
+        self.drive(velocity = Vector(0, 0, -0.5), duration = 0.3)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
         @self.tasks.timed_task(0.1, self.subsystems)
         def reset_gyro(subsystems: SubSystems):
             subsystems.gyro.reset()
             
-        self.get_note()
+        self.get_note(0.425, 0.2)
         
-        self.drive(velocity = Vector(0, 0, 0.15), duration = 0.3)
+        self.drive(velocity = Vector(0, 0, 0.5), duration = 0.4)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
-        self.one_piece.initiate()
+        self.shoot_note()
         
        # Taxi
         self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)

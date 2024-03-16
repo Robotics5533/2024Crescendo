@@ -44,7 +44,7 @@ class ThreePieceLeftUnstable(Auton):
         self.move_right(1.15, 0.9)
 
 
-        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.45)
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.4)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.6, brake = True)
 
 
