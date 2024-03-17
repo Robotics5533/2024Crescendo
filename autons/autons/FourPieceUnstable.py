@@ -4,7 +4,7 @@ from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
 from wpilib import DriverStation
-class ThreePieceRightUnstable(Auton):
+class FourPieceUnstable(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
@@ -57,15 +57,15 @@ class ThreePieceRightUnstable(Auton):
         #Shoot third note
         self.two_piece.shoot_note()
 
-        # # Grab fourth
-        # self.move_left(1.2, 0.9)
-        # self.get_note_the_sequel()
-        # self.move_right(1.1, 0.9)
+        # Grab fourth
+        self.move_left(1.2, 0.9)
+        self.get_note_the_sequel()
+        self.move_right(1.1, 0.9)
 
-        # self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.4)
-        # self.drive(velocity = Vector(0, 0, 0), duration = 0.05, brake = True)
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.4)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.05, brake = True)
 
-        # self.two_piece.shoot_note()
+        self.two_piece.shoot_note()
 
 
 

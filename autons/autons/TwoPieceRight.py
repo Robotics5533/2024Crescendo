@@ -13,11 +13,11 @@ class TwoPieceRight(Auton):
 
 
     def get_note(self, last_duration = 0.425, first_duration = 0.3):
-        self.flip(direction = -1, duration = 0.3)
+        self.flip(direction = -1, duration = 0.325)
         self.flip(direction = 1, duration = 0.1, speed = 0)
         self.intake(direction = 1, duration = 0.9, speed = Auton.Speeds.intake)
         self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = first_duration)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.5, brake = True)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
 
         self.flip(direction = 1, duration = 0.5)
         self.flip(direction = -1, duration = 0.1, speed = 0)
@@ -39,26 +39,41 @@ class TwoPieceRight(Auton):
     def run(self):
         self.shoot_note()
         
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.3)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.285)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
-        
-        self.drive(velocity = Vector(0, 0, -0.5), duration = 0.3)
+
+
+        self.drive(velocity = Vector(0, 0, -0.5), duration = 0.275)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
         @self.tasks.timed_task(0.1, self.subsystems)
         def reset_gyro(subsystems: SubSystems):
             subsystems.gyro.reset()
             
-        self.get_note(0.425, 0.2)
-        
-        self.drive(velocity = Vector(0, 0, 0.5), duration = 0.4)
+        self.get_note(0.425, 0.485)
+
+        self.drive(velocity = Vector(0, 0.9, 0), duration = 0.285)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+
+        self.drive(velocity = Vector(0, 0, 0.5), duration = 0.35)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+
+        self.drive(velocity = Vector(0, 0.9, 0), duration = 0.38)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
-        self.shoot_note()
+        # self.drive(velocity = Vector(0, 0, -0.5), duration = 0.)
+        # self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
-       # Taxi
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+        self.shoot_note()
+
+        self.drive(velocity = Vector(0, 0, -0.5), duration = 0.2)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
+
+
+
+        # Taxi
+        self.drive(velocity = Vector(0, -0.9, 0), duration = 0.65)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
         
         self.tasks.reset()
 

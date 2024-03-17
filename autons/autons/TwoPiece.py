@@ -12,20 +12,20 @@ class TwoPiece(Auton):
 
 
     def get_note(self):
-        self.flip(direction = -1, duration = 0.3)
-        self.flip(direction = 1, duration = 0.1, speed = 0)
-        self.intake(direction = 1, duration = 0.9, speed = Auton.Speeds.intake)
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.56)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.5, brake = True)
+        self.flip(direction = -1, duration = 0.45)
+        self.flip(direction = 1, duration = 0.05, speed = 0)
+        self.intake(direction = 1, duration = 0.05, speed = Auton.Speeds.intake)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.55)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.05, brake = True)
         self.flip(direction = 1, duration = 0.5)
-        self.flip(direction = -1, duration = 0.1, speed = 0)
-        self.intake(speed = 0, direction = 0, duration = 0.2)
-        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.525)
-        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+        self.flip(direction = -1, duration = 0.05, speed = 0)
+        self.intake(speed = 0, direction = 0, duration = 0.05)
+        self.drive(velocity = Vector(0, 0.9, self.subsystems.gyro.calculate(0)), duration = 0.48)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.05, brake = True)
     
     def shoot_note(self):
-        self.shoot(speed = Auton.Speeds.shooter, direction = 1, duration = 0.7)
-        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
+        self.shoot(speed = 100, direction = 1, duration = 0.33)
+        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.35)
         self.stop()
 
     def move_left(self, duration: float, speed: float):
@@ -36,12 +36,12 @@ class TwoPiece(Auton):
         self.move_left(duration, -speed)
 
     def initate(self):
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.17)
-        self.drive(velocity = Vector(0, 0, 0), duration = 0.3, brake = True)
-        # Shoot first note
-        self.shoot(speed = Auton.Speeds.shooter, direction = 1, duration = 0.9)
-        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.45)
+        self.shoot(speed = 100, direction = 1, duration = 0.05)
+        self.drive(velocity = Vector(0, -0.875, self.subsystems.gyro.calculate(0)), duration = 0.2)
+        self.drive(velocity = Vector(0, 0, 0), duration = 0.15, brake = True)
+        self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.35)
         self.stop()
+
         # Grab Second Note
         self.get_note()
 

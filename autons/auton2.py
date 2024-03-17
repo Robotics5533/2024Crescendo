@@ -32,7 +32,7 @@ class Auton:
             subsystems.intake.run(speed * direction)
 
     def stop(self):
-        @self.tasks.timed_task(0.2, self.subsystems)
+        @self.tasks.timed_task(0.05, self.subsystems)
         def stop(subsystems: SubSystems):
             subsystems.shooter.shoot(0)
             subsystems.intake.run(0)
