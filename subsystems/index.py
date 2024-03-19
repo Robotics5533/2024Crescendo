@@ -22,7 +22,7 @@ class SubSystems:
     def __init__(self):
         self.intake_control = Talon5533(7, pi * 64, MotorModes.velocity)
         self.limelight = VisionSubSystem()
-        self.shooter = ShooterSubSystem([wpilib.Spark(1), wpilib.Spark(0)])
+        self.shooter = ShooterSubSystem([])
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb))
         self.climb_control = ClimbControlSubSystem(wpilib.Spark(3))

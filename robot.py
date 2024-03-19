@@ -13,6 +13,7 @@ from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
 from wpilib import SmartDashboard
 from wpilib import CameraServer
+from components.motor.EncoderMotor import EncoderMotor
 # from cscore import CameraServer
 from utils.math.motors import drive_to_meters
 class Arpeggio(wpilib.TimedRobot):
@@ -28,6 +29,12 @@ class Arpeggio(wpilib.TimedRobot):
         SmartDashboard.putStringArray("Auto List", AutonList)
         self.garabage_iteration = 0
         self.subsystems.intake_control.motor.set_position(0)
+
+        self.enc = wpilib.Encoder(1,0)
+        self.enc.setDistancePerPulse(1/4030)
+        self.enc.setSamplesToAverage(100)
+        self.test_motor = EncoderMotor(self.enc,wpilib.Spark(1),MotorModes.velocity)
+
         # camera  = CameraServer.startAutomaticCapture()      
         # camera.setResolution(10, 10)
     def teleopInit(self) -> None:
@@ -54,10 +61,12 @@ class Arpeggio(wpilib.TimedRobot):
     
    
     def teleopPeriodic(self):
-        self.garabage_iteration = self.garabage_iteration + 1 % 100
-        if(not (self.garabage_iteration % 100)):
-            gc.collect()
-        self.robot_container.process()
+        self.test_motor.set(14)
+        print(self.enc.getRate())
+        # self.garabage_iteration = self.garabage_iteration + 1 % 100
+        # if(not (self.garabage_iteration % 100)):
+        #     gc.collect()
+        # self.robot_container.process()
 
 if __name__ == "__main__":
     wpilib.run(Arpeggio)
