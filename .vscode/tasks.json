@@ -12,6 +12,7 @@
                 "kind": "build",
                 "isDefault": true
             },
+            // removes having to press Reset everytime when using the task. (the deploy command *SHOULD* kill itself upon launch.)
             "runOptions": {
                 "instanceLimit": 2
             }
