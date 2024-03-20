@@ -61,7 +61,7 @@ class Arpeggio(wpilib.TimedRobot):
     
    
     def teleopPeriodic(self):
-        self.test_motor.set(14)
+        self.test_motor.set(-14)
         print(self.enc.getRate())
         # self.garabage_iteration = self.garabage_iteration + 1 % 100
         # if(not (self.garabage_iteration % 100)):
