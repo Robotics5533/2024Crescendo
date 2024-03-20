@@ -181,7 +181,7 @@ class RobotContainer:
             self.subsystems.shooter.shoot,
             self.action_map.get_action_pressed("shooter_run_speaker"),
             [],
-            80
+            30
         )
         self.subsystems.setup(
             self.trap_shooter,
@@ -196,12 +196,14 @@ class RobotContainer:
             -40
         )
         self.subsystems.setup(
-            self.amp_shooter,
+            self.subsystems.shooter.shoot,
             self.action_map.get_action_pressed("shooter_run_amp"),
             [],
+            14,
+            9/10
         )
         self.subsystems.setup(
-            self.subsystems.shooter.shoot,
+            self.subsystems.shooter.stop,
             self.action_map.get_action_pressed("shooter_run_stop"),
             [],
             0

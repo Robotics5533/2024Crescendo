@@ -14,13 +14,15 @@ class EncoderMotor:
     def get_velocity(self)->float:
         return self.encoder.getRate()
         
-
     def set(self, value):
+        
         if self.mode == MotorModes.voltage:
             self.motor.set(value)
         elif self.mode == MotorModes.velocity:
             print("setting based on velocity")
-            self.motor.set(self.velocity_controller.calculate(-self.get_velocity(),value))
+            x = self.velocity_controller.calculate(-self.get_velocity(),value)
+            self.motor.set(x)
+            return x
         
 
     def set_mode(self, mode: int):
