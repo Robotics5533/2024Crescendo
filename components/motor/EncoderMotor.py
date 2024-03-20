@@ -8,7 +8,7 @@ class EncoderMotor:
         self.motor = motor
         self.mode = mode
 
-        self.velocity_controller = PIDController(2/16,0,5/16)
+        self.velocity_controller = PIDController(1/16,1/32,0.00005)
             
 
     def get_velocity(self)->float:
@@ -20,7 +20,7 @@ class EncoderMotor:
             self.motor.set(value)
         elif self.mode == MotorModes.velocity:
             print("setting based on velocity")
-            self.motor.set(-self.velocity_controller.calculate(self.get_velocity(),value))
+            self.motor.set(self.velocity_controller.calculate(-self.get_velocity(),value))
         
 
     def set_mode(self, mode: int):
