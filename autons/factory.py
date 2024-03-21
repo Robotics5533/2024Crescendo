@@ -3,9 +3,9 @@ from autons.autons.OnePieceNoTaxi import OnePieceNoTaxi
 from autons.autons.OneTaxi import OneTaxi
 from autons.autons.OneTaxiLeft import OneTaxiLeft
 from autons.autons.OneTaxiRight import OneTaxiRight
-from autons.autons.ThreePieceFast import ThreePieceFast
+from autons.autons.EditingThreePiece import EditingThreePiece
 from autons.autons.ThreePieceLeftUnstable import ThreePieceLeftUnstable
-from autons.autons.ThreePieceRightUnstable import ThreePieceRightUnstable
+
 from autons.autons.ThreePieceLeft import ThreePieceLeft
 from autons.autons.ThreePieceRight import ThreePieceRight
 from autons.autons.TwoPiece import TwoPiece
@@ -13,7 +13,7 @@ from autons.autons.TwoPieceLeft import TwoPieceLeft
 from autons.autons.TwoPieceRight import TwoPieceRight
 from subsystems.index import SubSystems
 
-AutonList = ["FourPiece", "ThreePieceFast", "TwoPiece", "OnePieceNoTaxi", "OneTaxi", "OneTaxiPositionLeft", "OneTaxiPositionRight", "ThreePieceRightUnstable", "ThreePieceLeftUnstable","TwoPieceRight", "TwoPieceLeft"]
+AutonList = ["FourPiece", "EditingThreePiece", "TwoPiece", "OnePieceNoTaxi", "OneTaxi", "OneTaxiPositionLeft", "OneTaxiPositionRight", "ThreePieceRightUnstable", "ThreePieceLeftUnstable","TwoPieceRight", "TwoPieceLeft"]
 
 def create_auton(subsystems: SubSystems, type: str, timer):
         match type:
@@ -27,16 +27,16 @@ def create_auton(subsystems: SubSystems, type: str, timer):
                   return OneTaxiLeft(subsystems, timer)
             case "OneTaxiPositionRight":
                   return OneTaxiRight(subsystems, timer)
-            case "ThreePieceRightUnstable":
-              return ThreePieceRightUnstable(subsystems, timer)
+            # case "ThreePieceRightUnstable":
+            #   return ThreePieceRightUnstable(subsystems, timer)
             case "ThreePieceLeftUnstable":
               return ThreePieceLeftUnstable(subsystems, timer)
             case "TwoPieceRight":
                   return TwoPieceRight(subsystems,timer)
             case "TwoPieceLeft":
                   return TwoPieceLeft(subsystems,timer)
-            case "ThreePieceFast":
-                  return ThreePieceFast(subsystems, timer)
+            case "EditingThreePiece":
+                  return EditingThreePiece(subsystems, timer)
             case "FourPiece":
                   return FourPieceUnstable(subsystems, timer)
                   
