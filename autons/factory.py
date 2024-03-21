@@ -2,6 +2,7 @@
 from autons.autons.OneTaxi import OneTaxi
 from autons.autons.OneTaxiLeft import OneTaxiLeft
 from autons.autons.OneTaxiRight import OneTaxiRight
+from autons.autons.ThreePieceRightUnstable import ThreePieceBlueStage
 from autons.autons.TwoPiece import TwoPiece
 from autons.autons.TwoPieceLeft import TwoPieceLeft
 from autons.autons.TwoPieceRight import TwoPieceRight
@@ -13,7 +14,8 @@ AutonList = [
      "OneTaxiRight",
      "TwoPiece",
      "TwoPieceLeft",
-     "TwoPieceRight"
+     "TwoPieceRight",
+     "ThreePiece"
 ]
 
 def create_auton(subsystems: SubSystems, auton_name: str, timer):
@@ -30,5 +32,7 @@ def create_auton(subsystems: SubSystems, auton_name: str, timer):
                   return TwoPieceLeft(subsystems, timer)
             case "TwoPieceRight":
                   return TwoPieceRight(subsystems, timer)
+            case "ThreePiece":
+                    return ThreePieceBlueStage(subsystems, timer)
                
                   
