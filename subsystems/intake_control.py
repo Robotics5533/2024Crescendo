@@ -16,12 +16,12 @@ class IntakeControlSubSystem:
     
     @staticmethod
     def calculate(x,s):
-        if s > 0:
-            x = -3.30 - x
-        if x > -3.30/2:
-            return 1.85
+        if s > 0: # Invert for in
+            x = -3.30 - x # Go this speed
+        if x > -3.30/1.8: # If x is greater than the midpoint
+            return 1.85 # Go this speed
         else:
-            return linear_remap(x, -3.30/2, -3.30, 1/100, 0)
+            return linear_remap(x, -3.30/1.8, -3.30, 1/100, 0) # Slow down when in desired zones
         
     def run(self, speed: float):
         speed = self.calculate(self.motor.get_position(), speed) * speed
