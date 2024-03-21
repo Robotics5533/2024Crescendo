@@ -48,7 +48,7 @@ class Arpeggio(wpilib.TimedRobot):
     
     def autonomousPeriodic(self):
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-        auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
+        auton_name = SmartDashboard.getString("Auto Selector", "OneTaxi")
         auton = create_auton(self.subsystems, auton_name, self.timer)
         auton.run()
     
