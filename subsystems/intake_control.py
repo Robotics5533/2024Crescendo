@@ -5,8 +5,9 @@ import wpilib
 from utils.math.algebra import linear_remap
 
 class IntakeControlSubSystem:
-    def __init__(self, motor): 
+    def __init__(self, motor, follow_motor): 
         self.motor = motor
+        self.follow_motor = follow_motor
         self.can_run = True
         
         
@@ -25,4 +26,5 @@ class IntakeControlSubSystem:
     def run(self, speed: float):
         speed = self.calculate(self.motor.get_position(), speed) * speed
         self.motor.set(speed)
+        self.follow_motor.set(-speed)
             

@@ -21,6 +21,8 @@ from subsystems.intake import IntakeSubSystem
 class SubSystems:
     def __init__(self):
         self.intake_control = Talon5533(7, pi * 64, MotorModes.velocity)
+        self.intake_follow_motor = Talon5533(8, pi * 64, MotorModes.velocity)
+        
         self.limelight = VisionSubSystem()
         self.shooter = ShooterSubSystem([wpilib.Spark(1), wpilib.Spark(0)])
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
@@ -28,7 +30,7 @@ class SubSystems:
         self.climb_control = ClimbControlSubSystem(wpilib.Spark(3))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.intake = IntakeSubSystem([wpilib.Spark(2)])
-        self.intake_control = IntakeControlSubSystem(self.intake_control)
+        self.intake_control = IntakeControlSubSystem(self.intake_control,self.intake_follow_motor)
         self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control, self.climb_control]
 
     def setup(self, func, condition: bool, requirements, *args):
