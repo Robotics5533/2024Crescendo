@@ -4,7 +4,7 @@ from subsystems.index import SubSystems
 from utils.math.Vector import Vector
 from utils.math.algebra import linear_remap
 from wpilib import DriverStation
-class BlueThreePieceFast(Auton):
+class ThreePieceBlueStage(Auton):
     def __init__(self, subsystems: SubSystems, timer):
         super().__init__(subsystems, timer)
         self.subsystems = subsystems
@@ -70,9 +70,9 @@ class BlueThreePieceFast(Auton):
 
 
 
-       # Taxi
-        # self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)
-        # self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
+        # Taxi
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.7)
+        self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.3, brake = True)
         
         self.tasks.reset()
 
