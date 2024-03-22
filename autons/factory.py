@@ -1,5 +1,6 @@
-
-from autons.autons.FourPiece import FourPiece
+from autons.autons.FourPieceBlue import FourPieceBlue
+from autons.autons.FourPieceRed import FourPieceRed
+from autons.autons.OnePiece import OnePiece
 from autons.autons.OneTaxi import OneTaxi
 from autons.autons.OneTaxiLeft import OneTaxiLeft
 from autons.autons.OneTaxiRight import OneTaxiRight
@@ -11,6 +12,7 @@ from autons.autons.TwoPieceRight import TwoPieceRight
 from subsystems.index import SubSystems
 
 AutonList = [
+     "OnePiece",
      "OneTaxi",
      "OneTaxiLeft",
      "OneTaxiRight",
@@ -21,7 +23,8 @@ AutonList = [
      "ThreePieceBlueAmp",
      "ThreePieceRedStage",
      "ThreePieceRedAmp",
-     "FourPiece"
+     "FourPieceRed",
+     "FourPieceBlue"
 ]
 
 def create_auton(subsystems: SubSystems, auton_name: str, timer):
@@ -46,7 +49,11 @@ def create_auton(subsystems: SubSystems, auton_name: str, timer):
                     return ThreePieceBlueAmp(subsystems, timer)
             case "ThreePieceRedAmp":
                     return ThreePieceBlueStage(subsystems, timer)
-            case "FourPiece":
-                      return FourPiece(subsystems, timer)
+            case "FourPieceRed":
+                      return FourPieceRed(subsystems, timer)
+            case "FourPieceBlue":
+                      return FourPieceBlue(subsystems, timer)
                
+            case "OnePiece":
+                      return OnePiece(subsystems, timer)
                   

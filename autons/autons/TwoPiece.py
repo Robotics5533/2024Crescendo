@@ -37,7 +37,7 @@ class TwoPiece(Auton):
 
     def initate(self):
         self.shoot(speed = 100, direction = 1, duration = 0.05)
-        self.drive(velocity = Vector(0, -0.875, self.subsystems.gyro.calculate(0)), duration = 0.23)
+        self.drive(velocity = Vector(0, -0.875, self.subsystems.gyro.calculate(0)), duration = 0.18)
         self.drive(velocity = Vector(0, 0, 0), duration = 0.15, brake = True)
         self.intake(speed = Auton.Speeds.intake, direction = -1, duration = 0.35)
         self.stop()

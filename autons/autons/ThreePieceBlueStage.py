@@ -15,7 +15,7 @@ class ThreePieceBlueStage(Auton):
         self.flip(direction = -1, duration = 0.45)
         self.flip(direction = 1, duration = 0.05, speed = 0)
         self.intake(direction = 1, duration = 0.05, speed = Auton.Speeds.intake)
-        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.35)
+        self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.33)
         self.drive(velocity = Vector(0, 0, self.subsystems.gyro.calculate(0)), duration = 0.05, brake = True)
         self.flip(direction = 1, duration = 0.5)
         self.flip(direction = -1, duration = 0.05, speed = 0)
