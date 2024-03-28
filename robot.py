@@ -1,4 +1,5 @@
 import gc
+import math
 import wpilib
 import wpilib.drive
 from autons.auton import Auton
@@ -23,7 +24,7 @@ class Arpeggio(wpilib.TimedRobot):
             2.5,
         )
         self.follower = Follower(self.context)
-        self.subsystems = self.robot_container.subsystems
+        self.subsystems: SubSystems = self.robot_container.subsystems
         self.timer = wpilib.Timer()
         SmartDashboard.putStringArray("Auto List", AutonList)
         self.garabage_iteration = 0
@@ -33,7 +34,9 @@ class Arpeggio(wpilib.TimedRobot):
     def teleopInit(self) -> None:
         super().teleopInit()
         self.robot_container.teleop_lock.unlock()    
-        self.subsystems.drive.drive.set_mode(MotorModes.voltage)   
+        self.subsystems.drive.drive.set_mode(MotorModes.position)
+        self.subsystems.drive.drive.set_position(0)  
+        self.timer.restart()
     def autonomousInit(self) -> None:
         super().autonomousInit()
         self.robot_container.teleop_lock.lock()
@@ -54,10 +57,13 @@ class Arpeggio(wpilib.TimedRobot):
     
    
     def teleopPeriodic(self):
-        self.garabage_iteration = self.garabage_iteration + 1 % 100
-        if(not (self.garabage_iteration % 100)):
-            gc.collect()
-        self.robot_container.process()
+        # self.garabage_iteration = self.garabage_iteration + 1 % 100
+        # if(not (self.garabage_iteration % 100)):
+        #     gc.collect()
+        # self.robot_container.process()
+        # print(self.subsystems.drive.drive.motors[0].get_position())
+        self.subsystems.drive.drive.move(Vector(0, 3*6*math.pi, 0))
+        
 
 if __name__ == "__main__":
     wpilib.run(Arpeggio)

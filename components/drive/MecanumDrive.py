@@ -3,7 +3,9 @@ import wpilib
 from components.drive.Drive import Drive
 from phoenix6 import hardware, controls
 
+from components.motor.Motor5533 import MotorModes
 from utils.math.Vector import Vector
+from utils.math.algebra import clamp
 
 
 class MecanumDrive(Drive):
@@ -23,8 +25,11 @@ class MecanumDrive(Drive):
         
         self.motors = [front_left, front_right, back_left, back_right]
         self.speed_multiplier = 1
+        self.mode = MotorModes.voltage
+        self.conversion = 10.78/(6*3.14159)
         
     def set_mode(self, mode: int):
+        self.mode = mode
         for motor in self.motors:
             motor.set_mode(mode)
             
@@ -47,13 +52,31 @@ class MecanumDrive(Drive):
         bl = data.b - data.c + data.a
         br = data.b + data.c - data.a
 
+        
+        
         m = max(abs(x) for x in [fl, fr, bl, br])
 
-        if m > 1:
+        if m > 1 and self.mode == MotorModes.voltage:
             fl /= m
             fr /= m
             bl /= m
             br /= m
+
+        if self.mode == MotorModes.position:
+            fr *= -1
+            br *= -1
+            fl *= -1
+            bl *= -1
+
+
+
+            fr *= self.conversion
+            fl *= self.conversion
+            br *= self.conversion
+            bl *= self.conversion
+
+
+            
 
         self.front_left_motor.set(fl)
         self.front_right_motor.set(fr)
