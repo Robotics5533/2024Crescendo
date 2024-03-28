@@ -1,11 +1,7 @@
-from typing import Union
-import wpilib
 from components.drive.Drive import Drive
-from phoenix6 import hardware, controls
-
+import math
 from components.motor.Motor5533 import MotorModes
 from utils.math.Vector import Vector
-from utils.math.algebra import clamp
 
 
 class MecanumDrive(Drive):
@@ -47,6 +43,10 @@ class MecanumDrive(Drive):
             
     def move(self, data: Vector):
         data = Vector(*data.deadzone())*self.speed_multiplier
+
+        if self.mode == MotorModes.position:
+            data.c *= -6*math.pi/50.61
+
         fl = data.b - data.c - data.a
         fr = data.b + data.c + data.a
         bl = data.b - data.c + data.a

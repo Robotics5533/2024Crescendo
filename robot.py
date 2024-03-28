@@ -62,7 +62,8 @@ class Arpeggio(wpilib.TimedRobot):
         #     gc.collect()
         # self.robot_container.process()
         # print(self.subsystems.drive.drive.motors[0].get_position())
-        self.subsystems.drive.drive.move(Vector(0, 3*6*math.pi, 0))
+        print(self.subsystems.gyro.gyro.getAngle())
+        self.subsystems.drive.drive.move(Vector(-6*math.pi,0, 0))
         
 
 if __name__ == "__main__":

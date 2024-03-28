@@ -1,6 +1,6 @@
 from math import pi
 from phoenix6 import hardware, controls, configs
-from utils.math.algebra import linear_remap,clamp,RotatingAverage
+from utils.math.algebra import linear_remap,clamp,RotatingAverage,almost_equal
 from components.motor.Motor5533 import MotorModes
 from wpimath.controller import PIDController
 class Talon5533:
@@ -16,7 +16,7 @@ class Talon5533:
 
         kp = 0.2*speed
 
-        self.position_controller = PIDController(kp, kp/.3, kp*0.1)
+        self.position_controller = PIDController(kp, kp/.5, kp*0.5)
         self.position_controller.setIZone(2)
 
         self.lazy_mode : bool = False
@@ -26,6 +26,12 @@ class Talon5533:
             self.controller.slot = 0
             self.talonmotor.set_control(self.controller.with_velocity(value * self.conversion))
         elif self.mode == MotorModes.position:
+
+            if almost_equal(self.get_position(),value,1):
+                self.lazy_mode = False
+            else:
+                self.lazy_mode = True
+
             self.set_voltage(
                 clamp(
                         self.position_controller.calculate(self.get_position(), value)
