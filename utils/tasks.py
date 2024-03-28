@@ -33,6 +33,7 @@ class Tasks:
     def next(self):
         self.command_idx += 1
 
+
     def reset_time(self) -> None:
         self.total_time = 0
         self.timer.reset()
@@ -51,10 +52,10 @@ class Tasks:
             if self.command_idx != self.running_idx:
                 return
             if next():
-                print(kwargs["after"]) if "after" in kwargs else print("none")
                 self.next()
             else:
                 func(*args, **kwargs)
+
             return func
 
         return decorator

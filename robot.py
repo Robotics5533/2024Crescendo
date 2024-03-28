@@ -6,6 +6,7 @@ from autons.auton import Auton
 from autons.factory import AutonList, create_auton
 from constants import Robot
 from components.motor.Motor5533 import MotorModes
+from components.motor.Talon5533 import Talon5533
 from robot_container import RobotContainer
 from subsystems.index import SubSystems
 from utils.context import Context
@@ -14,6 +15,7 @@ from utils.math.Vector import Vector
 from phoenix6 import hardware, controls
 from wpilib import SmartDashboard
 from wpilib import CameraServer
+from utils.tasks2 import Tasks2
 # from cscore import CameraServer
 from utils.math.motors import drive_to_meters
 class Arpeggio(wpilib.TimedRobot):
@@ -37,6 +39,7 @@ class Arpeggio(wpilib.TimedRobot):
         self.subsystems.drive.drive.set_mode(MotorModes.position)
         self.subsystems.drive.drive.set_position(0)  
         self.timer.restart()
+        self.tasks = Tasks2(self.timer,self.subsystems)
     def autonomousInit(self) -> None:
         super().autonomousInit()
         self.robot_container.teleop_lock.lock()
@@ -61,9 +64,22 @@ class Arpeggio(wpilib.TimedRobot):
         # if(not (self.garabage_iteration % 100)):
         #     gc.collect()
         # self.robot_container.process()
-        # print(self.subsystems.drive.drive.motors[0].get_position())
-        print(self.subsystems.gyro.gyro.getAngle())
-        self.subsystems.drive.drive.move(Vector(-6*math.pi,0, 0))
+        # 
+        
+        # self.subsystems.drive.drive.move(Vector(-6*math.pi,0, 0))
+
+        # @self.tasks.timed(run_time=10,after = lambda : print("finished the thing!"))
+        # def test_stuff(*args,**kwargs):
+        #     print("running task for 10s")
+        
+        # @self.tasks.timed(run_time=20)
+        # def test_other_stuff(*args,**kwargs):
+        #     print("running other stuff")
+        
+        @self.tasks.positioned(run_time = 2, distance = 0.5, after = lambda: print("I GOT TO THE DISTANCE"))
+        def test(*args, **kwargs):
+            print("I WILL GO THE DISTANCE")
+        self.tasks.reset()
         
 
 if __name__ == "__main__":

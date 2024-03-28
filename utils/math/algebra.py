@@ -32,6 +32,6 @@ class RotatingAverage:
          return sum(self.samples)/len(self.samples)
     
     def set_through(self,value : float)->float:
-         print("averaging the value")
+         
          self.set_value(value)
          return self.get_value()

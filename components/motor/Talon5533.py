@@ -45,7 +45,7 @@ class Talon5533:
             self.set_voltage(value)
 
     def set_voltage(self,value):
-        print(self.lazy_mode)
+        
         if self.lazy_mode:
             self.controller.output = self.rotating_average.set_through(value)
         else:

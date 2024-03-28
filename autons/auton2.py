@@ -63,5 +63,5 @@ class Auton:
         speed = kwargs["speed"] if "speed" in kwargs else 0.0035
         @self.tasks.timed_task(duration, self.subsystems)
         def intake_control(subsystems: SubSystems):
-            print(speed * direction)
+            
             subsystems.intake_control.run(speed * direction)

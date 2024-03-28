@@ -222,13 +222,13 @@ class RobotContainer:
 
          if self.stick.getRawButton(5):
              self.subsystems.drive.drive.speed_multiplier = 0.5
-             #print("Speed Halved!")
+             #
              
          elif self.stick.getRawButton(3):
              self.subsystems.drive.drive.speed_multiplier = 0.25
-             #print("Speed quartered!")
+             #
          else: 
-             #print("Speed Normal!")
+             #
              self.subsystems.drive.drive.speed_multiplier = 1
 
         #  if self.stick.getRawButton(4):
@@ -236,7 +236,7 @@ class RobotContainer:
         #      v = Vector(x, y, z).rotate(angle)
         #      x = v.a
         #      y = v.b
-        #      print(angle)
+        #      
 
 
          self.register_intake_flip()

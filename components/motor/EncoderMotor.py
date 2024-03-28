@@ -60,7 +60,7 @@ class EncoderMotor:
 
     def get_velocity(self)->float:
         self.set_position(0)
-        print(self.get_position())
+        
         deltaPosition = self.get_position() - self.lastPosition
         deltaTime = self.timer.get() - self.lastTime
 
