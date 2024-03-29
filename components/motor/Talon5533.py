@@ -16,11 +16,13 @@ class Talon5533:
 
         kp = 0.2*speed
 
-        self.position_controller = PIDController(kp, kp/.5, kp*0.5)
+        self.position_controller = PIDController(kp, kp/1, kp*0.3)
         self.position_controller.setIZone(2)
 
-        self.lazy_mode : bool = False
-        self.rotating_average = RotatingAverage(50)
+        self.lazy_mode: bool = False
+        self.rotating_average = RotatingAverage(1)
+        self.rotating_input_signal = RotatingAverage(50)
+
     def set(self, value):
         if self.mode == MotorModes.velocity:
             self.controller.slot = 0
@@ -31,12 +33,14 @@ class Talon5533:
                 self.lazy_mode = False
             else:
                 self.lazy_mode = True
+            
+            self.lazy_mode = True
 
             self.set_voltage(
                 clamp(
                         self.position_controller.calculate(self.get_position(), value)
-                        ,-0.3
-                        ,0.3
+                        ,-0.6
+                        ,0.6
                         )
                 )
         elif self.mode == MotorModes.static_brake:
@@ -73,8 +77,10 @@ class Talon5533:
             self.lazy_mode = False
         self.mode = mode
 
-    def get_position(self): 
-        return self.talonmotor.get_position().value_as_double - self.zero_position
+    def get_position(self):
+        return self.rotating_input_signal.set_through(
+                            (self.talonmotor.get_position().value_as_double - self.zero_position)
+                        )
     
     def set_position(self, position: float = 0):
         self.zero_position = self.talonmotor.get_position().value_as_double - position

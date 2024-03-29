@@ -57,8 +57,10 @@ class Arpeggio(wpilib.TimedRobot):
         auton_name = SmartDashboard.getString("Auto Selector", "OneTaxi")
         auton = create_auton(self.subsystems, auton_name, self.timer)
         auton.run()
-    
-   
+
+    def disabledInit(self) -> None:
+        super().disabledInit()
+        self.subsystems.drive.drive.set_mode(MotorModes.voltage)
     def teleopPeriodic(self):
         # self.garabage_iteration = self.garabage_iteration + 1 % 100
         # if(not (self.garabage_iteration % 100)):
@@ -75,10 +77,44 @@ class Arpeggio(wpilib.TimedRobot):
         # @self.tasks.timed(run_time=20)
         # def test_other_stuff(*args,**kwargs):
         #     print("running other stuff")
-        
-        @self.tasks.positioned(run_time = 2, distance = 0.5, after = lambda: print("I GOT TO THE DISTANCE"))
-        def test(*args, **kwargs):
-            print("I WILL GO THE DISTANCE")
+    
+        square = 6 * math.pi
+        self.subsystems.drive.drive.set_mode(MotorModes.position)
+        self.subsystems.drive.move(Vector(0, 5*square, 0))
+        # @self.tasks.positioned(run_time = 23846597, distance = square * 2, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.position)
+        #     self.subsystems.drive.move(Vector(0, square * 2, 0))
+         
+        # @self.tasks.timed(run_time = 1, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.static_brake)
+        #     self.subsystems.drive.move(Vector(0, 0, 0))
+
+        # @self.tasks.positioned(run_time = 23846597, distance = square * 2, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.position)
+        #     self.subsystems.drive.move(Vector(-(square * 2), 0, 0))
+
+        # @self.tasks.timed(run_time = 1, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.static_brake)
+        #     self.subsystems.drive.move(Vector(0, 0, 0))
+
+        # @self.tasks.positioned(run_time = 23846597, distance = square * 2, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.position)
+        #     self.subsystems.drive.move(Vector(0, -(square * 2), 0))
+
+        # @self.tasks.positioned(run_time = 23846597, distance = square * 2, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.position)
+        #     self.subsystems.drive.move(Vector((square * 2), 0, 0))
+
+        # @self.tasks.timed(run_time = 1, after = lambda: 1)
+        # def test(*args, **kwargs):
+        #     self.subsystems.drive.drive.set_mode(MotorModes.static_brake)
+        #     self.subsystems.drive.move(Vector(0, 0, 0))
         self.tasks.reset()
         
 

@@ -16,6 +16,15 @@ def almost_equal(x, target, err = 0.01):
 
 def deadzone(values, error = 0.3):
         return [0 if almost_equal(value, 0, error) else value - error for value in values]
+
+
+
+
+
+
+
+
+
 class RotatingAverage:
     def __init__(self,size : int,start_value : float = 0):
           self.samples = [start_value]*size
@@ -31,6 +40,11 @@ class RotatingAverage:
     def get_value(self):
          return sum(self.samples)/len(self.samples)
     
+    def set(self, value = 0):
+         for i in range(0, len(self.samples)):
+              self.samples[i] = value
+
+
     def set_through(self,value : float)->float:
          
          self.set_value(value)

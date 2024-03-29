@@ -60,12 +60,17 @@ class Tasks2:
         return self.taskify(lambda : self.timer.get() >= run_time, after = after)
     
     def positioned(self, **kwargs):
+        local_unit = 1/self.subsystems.drive.drive.conversion
         distance = kwargs["distance"]
         run_time = kwargs["run_time"]
         def after():
             self.timer.reset()
+            self.subsystems.drive.drive.set_position(0)
+            self.subsystems.drive.drive.set_averages(0)
             if "after" in kwargs:
                 kwargs["after"]()
-        task_condition = lambda: almost_equal(self.subsystems.drive.drive.get_position(), distance) or self.timer.get() >= run_time
+
+        
+        task_condition = lambda: almost_equal(self.subsystems.drive.drive.get_position() * local_unit, distance, 0.7) or self.timer.get() >= run_time
         return self.taskify(task_condition, after = after)
            

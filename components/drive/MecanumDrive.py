@@ -22,7 +22,7 @@ class MecanumDrive(Drive):
         self.motors = [front_left, front_right, back_left, back_right]
         self.speed_multiplier = 1
         self.mode = MotorModes.voltage
-        self.conversion = 10.78/(6*3.14159)
+        self.conversion = 10.78/(6*math.pi)
         
     def set_mode(self, mode: int):
         self.mode = mode
@@ -35,7 +35,10 @@ class MecanumDrive(Drive):
     def set_position(self, position: float):
         for motor in self.motors:
             motor.set_position(position)
-
+    
+    def set_averages(self, value = 0):
+        for motor in self.motors:
+            motor.rotating_average.set(value)
 
     def process(self):
         for motor in self.motors:
@@ -46,6 +49,7 @@ class MecanumDrive(Drive):
 
         if self.mode == MotorModes.position:
             data.c *= -6*math.pi/50.61
+            # data.a *= 1.2
 
         fl = data.b - data.c - data.a
         fr = data.b + data.c + data.a
