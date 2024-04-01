@@ -66,7 +66,8 @@ class Arpeggio(wpilib.TimedRobot):
         # if(not (self.garabage_iteration % 100)):
         #     gc.collect()
         # self.robot_container.process()
-        # 
+        print(self.subsystems.amper.position_motor.get_position())
+        
         
         # self.subsystems.drive.drive.move(Vector(-6*math.pi,0, 0))
 
@@ -78,9 +79,9 @@ class Arpeggio(wpilib.TimedRobot):
         # def test_other_stuff(*args,**kwargs):
         #     print("running other stuff")
     
-        square = 6 * math.pi
-        self.subsystems.drive.drive.set_mode(MotorModes.position)
-        self.subsystems.drive.move(Vector(0, 5*square, 0))
+        # square = 6 * math.pi
+        # self.subsystems.drive.drive.set_mode(MotorModes.position)
+        # self.subsystems.drive.move(Vector(0, 5*square, 0))
         # @self.tasks.positioned(run_time = 23846597, distance = square * 2, after = lambda: 1)
         # def test(*args, **kwargs):
         #     self.subsystems.drive.drive.set_mode(MotorModes.position)
@@ -115,7 +116,7 @@ class Arpeggio(wpilib.TimedRobot):
         # def test(*args, **kwargs):
         #     self.subsystems.drive.drive.set_mode(MotorModes.static_brake)
         #     self.subsystems.drive.move(Vector(0, 0, 0))
-        self.tasks.reset()
+        # self.tasks.reset()
         
 
 if __name__ == "__main__":

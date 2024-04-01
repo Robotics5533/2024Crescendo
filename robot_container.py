@@ -5,6 +5,7 @@ from components.inputs.ActionMap import ActionMap
 from components.inputs.Lockdown import Lockdown
 from components.motor.Talon5533 import Talon5533
 from components.motor.Motor5533 import MotorModes
+from subsystems.amper import Amper
 from utils.actions import Actions
 from utils.math.Vector import Vector
 from utils.math.algebra import almost_equal, clamp
@@ -41,6 +42,15 @@ class RobotContainer:
         self.action_map.register_action("intake_flip_out", self.teleop_lock.lockify(lambda: self.xbox.getBButton()))
         self.action_map.register_action("intake_flip_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("intake_flip_out") or self.action_map.get_action_pressed("intake_flip_in"))))
 
+
+        """
+        Actions that flip the amper up and down
+        """
+        self.action_map.register_action("amper_flip_up", self.teleop_lock.lockify(lambda: self.xbox.getAButton() and self.subsystems.amper.state == Amper.down))
+        self.action_map.register_action("amper_flip_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton() and self.subsystems.amper.state == Amper.up))
+        self.action_map.register_action("amper_flip_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("amper_flip_up") or self.action_map.get_action_pressed("amper_flip_down"))))
+
+
         """
         Actions that run the intake in and out
         """
@@ -54,8 +64,7 @@ class RobotContainer:
         self.action_map.register_action("shooter_run_speaker", self.teleop_lock.lockify(lambda: self.xbox.getLeftTriggerAxis() > 0.1))
         self.action_map.register_action("shooter_run_amp", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
         self.action_map.register_action("shooter_run_backwards", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
-        self.action_map.register_action("shooter_run_trap", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
-        self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker") or self.action_map.get_action_pressed("shooter_run_backwards") or self.action_map.get_action_pressed("shooter_run_trap"))))
+        self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker") or self.action_map.get_action_pressed("shooter_run_backwards"))))
 
     def register_climb_flip(self):
         """
@@ -108,6 +117,32 @@ class RobotContainer:
             0
         )
          
+    def register_amper_flip(self):
+         """
+         Subsystems that actually operate the amper flip
+         """
+         self.subsystems.setup(
+            self.subsystems.amper.run,
+            self.action_map.get_action_pressed("amper_flip_up"),
+            [],
+            0.0035,
+            Amper.up
+        )
+         self.subsystems.setup(
+            self.subsystems.amper.run,
+            self.action_map.get_action_pressed("amper_flip_down"),
+            [],
+            -0.0035,
+            Amper.down
+        )
+         self.subsystems.setup(
+            self.subsystems.amper.run,
+            self.action_map.get_action_pressed("amper_flip_stop"),
+            [],
+            0,
+            self.subsystems.amper.state
+        )
+         
     def intake_run(self, speed: float):
         self.subsystems.intake.run(speed)
         # if speed > 0:
@@ -142,16 +177,10 @@ class RobotContainer:
             [],
             0
         )
-    def trap_shooter(self, speed):
-        speed = (speed / 100)
-        # -56
-        # -46
-        self.subsystems.shooter.motors[0].set(-0.56) # bottom
-        self.subsystems.shooter.motors[1].set(-0.41) # top
 
     def amp_shooter(self):
-        self.subsystems.shooter.motors[0].set(-0.36) # bottom
-        self.subsystems.shooter.motors[1].set(-0.20) # top
+        self.subsystems.shooter.motors[0].set(-0.40) # bottom, 0.38
+        self.subsystems.shooter.motors[1].set(-0.24) # top, 0.22
         #17.5in for shooter max
     def register_climb(self):
         """
@@ -185,12 +214,6 @@ class RobotContainer:
             self.action_map.get_action_pressed("shooter_run_speaker"),
             [],
             80
-        )
-        self.subsystems.setup(
-            self.trap_shooter,
-            self.action_map.get_action_pressed("shooter_run_trap"),
-            [],
-            55
         )
         self.subsystems.setup(
             self.subsystems.shooter.shoot,
@@ -244,6 +267,8 @@ class RobotContainer:
          self.register_shooter()
          self.register_climb_flip()
          self.register_climb()
+         self.register_amper_flip()
+
 
          self.subsystems.drive.drive.set_mode(MotorModes.voltage)
          self.subsystems.drive.move(Vector(x, y, z))
