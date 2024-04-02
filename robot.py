@@ -31,20 +31,19 @@ class Arpeggio(wpilib.TimedRobot):
         SmartDashboard.putStringArray("Auto List", AutonList)
         self.garabage_iteration = 0
         self.subsystems.intake_control.motor.set_position(0)
-        self.subsystems.amper.position_motor.set_position(0)
         # camera  = CameraServer.startAutomaticCapture()      
         # camera.setResolution(10, 10)
     def teleopInit(self) -> None:
         super().teleopInit()
         self.robot_container.teleop_lock.unlock()    
-        self.subsystems.drive.drive.set_mode(MotorModes.position)
-        self.subsystems.drive.drive.set_position(0)  
         self.subsystems.amper.position_motor.set_position(0)
         self.timer.restart()
         self.tasks = Tasks2(self.timer,self.subsystems)
+
     def autonomousInit(self) -> None:
         super().autonomousInit()
         self.robot_container.teleop_lock.lock()
+        self.subsystems.drive.drive.set_position(0)
         self.subsystems.intake_control.motor.set_position(0)
         self.subsystems.amper.position_motor.set_position(0)
         self.subsystems.gyro.reset()
@@ -57,7 +56,7 @@ class Arpeggio(wpilib.TimedRobot):
     
     def autonomousPeriodic(self):
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-        auton_name = SmartDashboard.getString("Auto Selector", "OneTaxi")
+        auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
         auton = create_auton(self.subsystems, auton_name, self.timer)
         auton.run()
 

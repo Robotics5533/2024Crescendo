@@ -44,13 +44,13 @@ class Auton3:
         distance = kwargs["distance"]
         position = kwargs["position"]
         brake = kwargs["brake"] if "brake" in kwargs else False
-        @self.tasks.position_task(self.subsystems, duration = duration, distance = distance)
-        def drive(subsystems: SubSystems):
-            subsystems.drive.drive.set_mode(MotorModes.position)
-            subsystems.drive.move(position)
+        @self.tasks.position_task(duration = duration, distance = distance)
+        def drive(*args, **kwargs):
+            self.subsystems.drive.drive.set_mode(MotorModes.position)
+            self.subsystems.drive.move(position)
             if brake:
-                subsystems.drive.drive.set_mode(MotorModes.static_brake)
-                subsystems.drive.move(Vector(0, 0, 0))
+                self.subsystems.drive.drive.set_mode(MotorModes.static_brake)
+                self.subsystems.drive.move(Vector(0, 0, 0))
 
 
     def flip(self, **kwargs):

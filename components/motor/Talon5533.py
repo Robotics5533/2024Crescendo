@@ -16,12 +16,12 @@ class Talon5533:
 
         kp = 0.2*speed
 
-        self.position_controller = PIDController(kp, kp/1, kp*0.3)
+        self.position_controller = PIDController(kp, 0.05, 0)
         self.position_controller.setIZone(2)
 
         self.lazy_mode: bool = False
         self.rotating_average = RotatingAverage(1)
-        self.rotating_input_signal = RotatingAverage(50)
+        self.rotating_input_signal = RotatingAverage(1)
 
     def set(self, value):
         if self.mode == MotorModes.velocity:
@@ -34,8 +34,8 @@ class Talon5533:
             else:
                 self.lazy_mode = True
             
-            self.lazy_mode = True
-
+            self.lazy_mode = False
+            print(self.get_position() - value)
             self.set_voltage(
                 clamp(
                         self.position_controller.calculate(self.get_position(), value)
