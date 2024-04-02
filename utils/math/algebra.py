@@ -29,6 +29,7 @@ class RotatingAverage:
     def __init__(self,size : int,start_value : float = 0):
           self.samples = [start_value]*size
           self.idx = 0
+          self.pass_through = False
     
     def increase_index(self)->None:
          self.idx = (self.idx + 1) % len(self.samples)
@@ -46,6 +47,7 @@ class RotatingAverage:
 
 
     def set_through(self,value : float)->float:
-         
+         if self.pass_through:
+              return value
          self.set_value(value)
          return self.get_value()

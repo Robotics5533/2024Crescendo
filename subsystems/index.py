@@ -18,11 +18,13 @@ from subsystems.intake_control import IntakeControlSubSystem
 from subsystems.shooter import ShooterSubSystem
 from subsystems.vision import VisionSubSystem
 from subsystems.intake import IntakeSubSystem
+from utils.math.algebra import RotatingAverage
 
 class SubSystems:
     def __init__(self):
         self.intake_control = Talon5533(7, pi * 64, MotorModes.velocity)
         self.intake_follow_motor = Talon5533(8, pi * 64, MotorModes.velocity)
+        self.intake_control.rotating_input_signal.pass_through = True
         
         self.limelight = VisionSubSystem()
         self.shooter = ShooterSubSystem([wpilib.Spark(1), wpilib.Spark(0)])
