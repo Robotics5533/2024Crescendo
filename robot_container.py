@@ -28,14 +28,6 @@ class RobotContainer:
         self.action_map.register_action("deactivate_climb", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("activate_climb_in") or self.action_map.get_action_pressed("activate_climb_out"))))
 
         """
-        Actions that operate the control climb
-        """
-
-        self.action_map.register_action("climb_flip_out", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 0))
-        self.action_map.register_action("climb_flip_in", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == 180))
-        self.action_map.register_action("climb_flip_stop", self.teleop_lock.lockify(lambda: self.xbox.getPOV(0) == -1))
-
-        """
         Actions that flip the intake in and out
         """
         self.action_map.register_action("intake_flip_in", self.teleop_lock.lockify(lambda: self.xbox.getXButton()))
@@ -46,8 +38,8 @@ class RobotContainer:
         """
         Actions that flip the amper up and down
         """
-        self.action_map.register_action("amper_flip_up", self.teleop_lock.lockify(lambda: self.xbox.getAButton() and self.subsystems.amper.state == Amper.down))
-        self.action_map.register_action("amper_flip_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton() and self.subsystems.amper.state == Amper.up))
+        self.action_map.register_action("amper_flip_up", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
+        self.action_map.register_action("amper_flip_down", self.teleop_lock.lockify(lambda: not self.xbox.getLeftBumper()))
         self.action_map.register_action("amper_flip_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("amper_flip_up") or self.action_map.get_action_pressed("amper_flip_down"))))
 
 
@@ -66,28 +58,6 @@ class RobotContainer:
         self.action_map.register_action("shooter_run_backwards", self.teleop_lock.lockify(lambda: self.xbox.getYButton()))
         self.action_map.register_action("shooter_run_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("shooter_run_amp") or self.action_map.get_action_pressed("shooter_run_speaker") or self.action_map.get_action_pressed("shooter_run_backwards"))))
 
-    def register_climb_flip(self):
-        """
-         Subsystems that actually operate the climb flip
-         """
-        self.subsystems.setup(
-            self.subsystems.climb_control.move,
-            self.action_map.get_action_pressed("climb_flip_out"),
-            [],
-            30
-        )
-        self.subsystems.setup(
-            self.subsystems.climb_control.move,
-            self.action_map.get_action_pressed("climb_flip_in"),
-            [],
-            -30
-        )
-        self.subsystems.setup(
-            self.subsystems.climb_control.move,
-            self.action_map.get_action_pressed("climb_flip_stop"),
-            [],
-            0
-        )
 
     def flip_out(self, speed: float):
         self.subsystems.intake_control.run(speed)
@@ -125,14 +95,14 @@ class RobotContainer:
             self.subsystems.amper.run,
             self.action_map.get_action_pressed("amper_flip_up"),
             [],
-            0.0035,
+            0.0007,
             Amper.up
         )
          self.subsystems.setup(
             self.subsystems.amper.run,
             self.action_map.get_action_pressed("amper_flip_down"),
             [],
-            -0.0035,
+            -0.0007,
             Amper.down
         )
          self.subsystems.setup(
@@ -265,7 +235,6 @@ class RobotContainer:
          self.register_intake_flip()
          self.register_intake()
          self.register_shooter()
-         self.register_climb_flip()
          self.register_climb()
          self.register_amper_flip()
 

@@ -44,8 +44,8 @@ class Tasks2:
         
         return decorator
 
-    def timed(self,**kwargs):
-        run_time = kwargs["run_time"]
+    def timed_task(self,**kwargs):
+        duration = kwargs["duration"]
 
         def after():
             self.timer.reset()
@@ -57,12 +57,12 @@ class Tasks2:
         #         after()
         #     after = x
         
-        return self.taskify(lambda : self.timer.get() >= run_time, after = after)
+        return self.taskify(lambda : self.timer.get() >= duration, after = after)
     
-    def positioned(self, **kwargs):
-        local_unit = 1/self.subsystems.drive.drive.conversion
+    def position_task(self, **kwargs):
+        local_unit = 1 / self.subsystems.drive.drive.conversion
         distance = kwargs["distance"]
-        run_time = kwargs["run_time"]
+        duration = kwargs["duration"]
         def after():
             self.timer.reset()
             self.subsystems.drive.drive.set_position(0)
@@ -71,6 +71,6 @@ class Tasks2:
                 kwargs["after"]()
 
         
-        task_condition = lambda: almost_equal(self.subsystems.drive.drive.get_position() * local_unit, distance, 0.7) or self.timer.get() >= run_time
+        task_condition = lambda: almost_equal(self.subsystems.drive.drive.get_position() * local_unit, distance, 0.7) or self.timer.get() >= duration
         return self.taskify(task_condition, after = after)
            

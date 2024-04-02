@@ -31,6 +31,7 @@ class Arpeggio(wpilib.TimedRobot):
         SmartDashboard.putStringArray("Auto List", AutonList)
         self.garabage_iteration = 0
         self.subsystems.intake_control.motor.set_position(0)
+        self.subsystems.amper.position_motor.set_position(0)
         # camera  = CameraServer.startAutomaticCapture()      
         # camera.setResolution(10, 10)
     def teleopInit(self) -> None:
@@ -38,12 +39,14 @@ class Arpeggio(wpilib.TimedRobot):
         self.robot_container.teleop_lock.unlock()    
         self.subsystems.drive.drive.set_mode(MotorModes.position)
         self.subsystems.drive.drive.set_position(0)  
+        self.subsystems.amper.position_motor.set_position(0)
         self.timer.restart()
         self.tasks = Tasks2(self.timer,self.subsystems)
     def autonomousInit(self) -> None:
         super().autonomousInit()
         self.robot_container.teleop_lock.lock()
         self.subsystems.intake_control.motor.set_position(0)
+        self.subsystems.amper.position_motor.set_position(0)
         self.subsystems.gyro.reset()
         # self.subsystems.drive.drive.set_mode(MotorModes.position)
         # self.subsystems.drive.drive.set_position(0)
@@ -61,12 +64,13 @@ class Arpeggio(wpilib.TimedRobot):
     def disabledInit(self) -> None:
         super().disabledInit()
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
+
     def teleopPeriodic(self):
-        # self.garabage_iteration = self.garabage_iteration + 1 % 100
-        # if(not (self.garabage_iteration % 100)):
-        #     gc.collect()
-        # self.robot_container.process()
-        print(self.subsystems.amper.position_motor.get_position())
+        self.garabage_iteration = self.garabage_iteration + 1 % 100
+        if(not (self.garabage_iteration % 100)):
+            gc.collect()
+        self.robot_container.process()
+        # print(self.subsystems.amper.position_motor.get_position())
         
         
         # self.subsystems.drive.drive.move(Vector(-6*math.pi,0, 0))

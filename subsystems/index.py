@@ -28,12 +28,11 @@ class SubSystems:
         self.shooter = ShooterSubSystem([wpilib.Spark(1), wpilib.Spark(0)])
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb, pi * 64, MotorModes.static_brake))
-        self.climb_control = ClimbControlSubSystem(wpilib.Spark(3))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.intake = IntakeSubSystem([wpilib.Spark(2)])
         self.intake_control = IntakeControlSubSystem(self.intake_control,self.intake_follow_motor)
-        self.amper = AmperSubSystem(Talon5533(9, pi * 64, MotorModes.velocity))
-        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control, self.climb_control, self.amper]
+        self.amper = AmperSubSystem(Talon5533(9, pi * 64, MotorModes.voltage))
+        self.sub_indexes = [self.limelight, self.drive, self.climb, self.gyro, self.shooter, self.intake, self.intake_control, self.amper]
 
     def setup(self, func, condition: bool, requirements, *args):
         if not any(map(lambda x: not x.can_run, requirements)) and condition:
