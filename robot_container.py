@@ -39,7 +39,7 @@ class RobotContainer:
         Actions that flip the amper up and down
         """
         self.action_map.register_action("amper_flip_up", self.teleop_lock.lockify(lambda: self.xbox.getLeftBumper()))
-        self.action_map.register_action("amper_flip_down", self.teleop_lock.lockify(lambda: not self.xbox.getLeftBumper()))
+        self.action_map.register_action("amper_flip_down", self.teleop_lock.lockify(lambda: self.xbox.getAButton()))
         self.action_map.register_action("amper_flip_stop", self.teleop_lock.lockify(lambda: not (self.action_map.get_action_pressed("amper_flip_up") or self.action_map.get_action_pressed("amper_flip_down"))))
 
 
@@ -149,8 +149,8 @@ class RobotContainer:
         )
 
     def amp_shooter(self):
-        self.subsystems.shooter.motors[0].set(-0.40) # bottom, 0.38
-        self.subsystems.shooter.motors[1].set(-0.24) # top, 0.22
+        self.subsystems.shooter.motors[0].set(-0.36) # bottom, 0.38
+        self.subsystems.shooter.motors[1].set(-0.20) # top, 0.22
         #17.5in for shooter max
     def register_climb(self):
         """

@@ -10,7 +10,7 @@ class Amper:
     down = 1
 
 class Positions:
-    up = 4.8
+    up = 5.2
     down = 0
 
 class AmperSubSystem:
