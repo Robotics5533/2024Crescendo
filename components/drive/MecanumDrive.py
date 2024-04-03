@@ -28,11 +28,17 @@ class MecanumDrive(Drive):
         self.mode = mode
         for motor in self.motors:
             motor.set_mode(mode)
-            
+
+    def reset_pid(self):
+        for motor in self.motors:
+            if motor.position_controller:
+                motor.position_controller.reset()
+        
     def get_position(self):
         return sum(map(lambda x: abs(x.get_position()), self.motors)) / len(self.motors)
     
     def set_position(self, position: float):
+        print("RESET THE POSITION")
         for motor in self.motors:
             motor.set_position(position)
     

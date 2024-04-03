@@ -5,22 +5,22 @@ from autons.autons.OneTaxi import OneTaxi
 from autons.autons.OneTaxiLeft import OneTaxiLeft
 from autons.autons.OneTaxiRight import OneTaxiRight
 from autons.autons.Position.TwoPiece import TwoPiecePosition
+from autons.autons.Position.TwoPieceRight import TwoPieceRight
+from autons.autons.Position.TwoPieceLeft import TwoPieceLeft
 from autons.autons.ThreePieceBlueAmp import ThreePieceBlueAmp
 from autons.autons.ThreePieceBlueStage import ThreePieceBlueStage
 from autons.autons.TwoPiece import TwoPiece
-from autons.autons.TwoPieceLeft import TwoPieceLeft
-from autons.autons.TwoPieceRight import TwoPieceRight
 from subsystems.index import SubSystems
 
 
 AutonList = [
+"TwoPieceRight",
+"TwoPieceLeft",
      "OnePiece",
      "OneTaxi",
      "OneTaxiLeft",
      "OneTaxiRight",
      "TwoPiece",
-     "TwoPieceLeft",
-     "TwoPieceRight",
      "ThreePieceBlueStage",
      "ThreePieceBlueAmp",
      "ThreePieceRedStage",
@@ -30,6 +30,7 @@ AutonList = [
 ]
 
 def create_auton(subsystems: SubSystems, auton_name: str, timer):
+        print("CREATING THE AUTONS")
         match auton_name:
             case "OneTaxi":
                 return OneTaxi(subsystems, timer)
@@ -40,7 +41,7 @@ def create_auton(subsystems: SubSystems, auton_name: str, timer):
             case "TwoPiece":
                   return TwoPiecePosition(subsystems, timer)
             case "TwoPieceLeft":
-                  return TwoPieceLeft(subsystems, timer)
+                      return TwoPieceLeft(subsystems, timer)
             case "TwoPieceRight":
                   return TwoPieceRight(subsystems, timer)
             case "ThreePieceBlueStage":

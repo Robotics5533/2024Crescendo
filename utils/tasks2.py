@@ -12,6 +12,7 @@ class Tasks2:
 
         self.running_idx = 0
         self.command_idx = 0
+        print("running the init function of tasks2")
 
     def reset(self):
         self.running_idx = 0
@@ -20,14 +21,16 @@ class Tasks2:
         def decorated(*args,**kwargs):
             if self.command_idx != self.running_idx:
                 self.running_idx += 1
-                return
-            func(*args,**kwargs)
+            else:
             
-            if next():
-                self.command_idx += 1
-                after()
-            
-            self.running_idx += 1
+
+                func(*args,**kwargs)
+                
+                if next():
+                    self.increase_command_idx()
+                    after()
+                
+                self.running_idx += 1
         return decorated
 
 
@@ -59,6 +62,9 @@ class Tasks2:
         
         return self.taskify(lambda : self.timer.get() >= duration, after = after)
     
+    def increase_command_idx(self):
+        self.command_idx += 1
+
     def position_task(self, **kwargs):
         local_unit = 1 / self.subsystems.drive.drive.conversion
         distance = kwargs["distance"]
@@ -67,10 +73,14 @@ class Tasks2:
             self.timer.reset()
             self.subsystems.drive.drive.set_position(0)
             self.subsystems.drive.drive.set_averages(0)
+            self.subsystems.drive.drive.reset_pid()
+            print("we hit the target position!")
+            print(self.command_idx)
             if "after" in kwargs:
                 kwargs["after"]()
+            
 
         
-        task_condition = lambda: almost_equal(self.subsystems.drive.drive.get_position() * local_unit, distance, 0.7) or self.timer.get() >= duration
+        task_condition = lambda: almost_equal(self.subsystems.drive.drive.get_position() * local_unit, distance, 2.5) or self.timer.get() >= duration
         return self.taskify(task_condition, after = after)
            

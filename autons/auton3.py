@@ -19,30 +19,30 @@ class Auton3:
         duration = kwargs["duration"]
         speed = kwargs["speed"]
         direction = kwargs["direction"]
-        @self.tasks.timed_task(self.subsystems, speed, duration = duration)
-        def shooter(subsystems: SubSystems, speed: float):
-            subsystems.shooter.shoot(speed * direction)
+        @self.tasks.timed_task(duration = duration)
+        def shooter(*args, **kwargs):
+            self.subsystems.shooter.shoot(speed * direction)
 
     def intake(self, **kwargs):
         duration = kwargs["duration"]
         speed = kwargs["speed"]
         direction = kwargs["direction"]
-        @self.tasks.timed_task(self.subsystems, speed, duration = duration)
-        def intake(subsystems: SubSystems, speed: float):
-            subsystems.intake.run(speed * direction)
+        @self.tasks.timed_task(duration = duration)
+        def intake(*args, **kwargs):
+            self.subsystems.intake.run(speed * direction)
 
     def stop(self):
-        @self.tasks.timed_task(self.subsystems, duration = 0.05)
-        def stop(subsystems: SubSystems):
-            subsystems.shooter.shoot(0)
-            subsystems.intake.run(0)
-            subsystems.intake_control.run(0)
+        @self.tasks.timed_task(duration = 0.05)
+        def stop(*args, **kwargs):
+            self.subsystems.shooter.shoot(0)
+            self.subsystems.intake.run(0)
+            self.subsystems.intake_control.run(0)
 
 
     def drive(self, **kwargs):
-        duration = kwargs["duration"]
-        distance = kwargs["distance"]
+        duration = kwargs["duration"] if "duration" in kwargs else 999
         position = kwargs["position"]
+        distance = kwargs["distance"] if "distance" in kwargs else position.magnitude()
         brake = kwargs["brake"] if "brake" in kwargs else False
         @self.tasks.position_task(duration = duration, distance = distance)
         def drive(*args, **kwargs):
@@ -57,7 +57,11 @@ class Auton3:
         duration = kwargs["duration"]
         direction = kwargs["direction"]
         speed = kwargs["speed"] if "speed" in kwargs else 0.0035
-        @self.tasks.timed_task(self.subsystems, duration = duration)
-        def intake_control(subsystems: SubSystems):
+        @self.tasks.timed_task(duration = duration)
+        def intake_control(*args, **kwargs):
+            self.subsystems.intake_control.run(speed * direction)
 
-            subsystems.intake_control.run(speed * direction)
+    def reset(self, **kwargs):
+        @self.tasks.timed_task(duration = 0.05)
+        def reset_position(*args, **kwargs):
+            self.subsystems.drive.drive.set_position(0)

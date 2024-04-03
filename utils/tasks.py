@@ -32,6 +32,7 @@ class Tasks:
 
     def next(self):
         self.command_idx += 1
+        print("calling the next function!")
 
 
     def reset_time(self) -> None:

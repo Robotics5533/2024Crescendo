@@ -51,14 +51,15 @@ class Arpeggio(wpilib.TimedRobot):
         # self.subsystems.drive.drive.set_position(0)
         # self.timer.restart()
         # self.timer.start()
+        auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
+        self.auton = create_auton(self.subsystems, auton_name, self.timer)
+        
         self.timer.restart()
        
     
     def autonomousPeriodic(self):
         self.subsystems.drive.drive.set_mode(MotorModes.voltage)
-        auton_name = SmartDashboard.getString("Auto Selector", "TwoPiece")
-        auton = create_auton(self.subsystems, auton_name, self.timer)
-        auton.run()
+        self.auton.run()
 
     def disabledInit(self) -> None:
         super().disabledInit()
@@ -69,6 +70,7 @@ class Arpeggio(wpilib.TimedRobot):
         if(not (self.garabage_iteration % 100)):
             gc.collect()
         self.robot_container.process()
+        
         # print(self.subsystems.amper.position_motor.get_position())
         
         

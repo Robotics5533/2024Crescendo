@@ -7,7 +7,7 @@ from utils.math.algebra import linear_remap
 from utils.math.conversion import convert
 
 
-class TwoPiecePosition(Auton3):
+class TwoPieceLeft(Auton3):
     def __init__(self, subsystems: SubSystems, timer, tasks = None):
         super().__init__(subsystems, timer, tasks)
         self.subsystems = subsystems
@@ -15,7 +15,8 @@ class TwoPiecePosition(Auton3):
 
     def get_note(self):
 
-        note_distance = convert("3 ft", "in")
+        note_distance_there = convert("4.8 ft and 3 in", "in")
+        note_distance_back = convert("4.5 ft", "in")
         self.flip(direction = -1, duration = 0.45)
         self.flip(direction = 1, duration = 0.05, speed = 0)
 
@@ -23,7 +24,7 @@ class TwoPiecePosition(Auton3):
         self.intake(direction = 1, duration = 0.05, speed = Auton3.Speeds.intake)
 
         # Drive backwards to next note
-        self.drive(position = Vector(0, note_distance, 0))
+        self.drive(position = Vector(0, note_distance_there, 0))
         self.drive(position = Vector(0, 0, 0), brake = True, duration = 0.05)
 
         # Flip in intake
@@ -34,7 +35,7 @@ class TwoPiecePosition(Auton3):
         self.intake(speed = 0, direction = 0, duration = 0.05)
 
         # Drive back with note
-        self.drive(position = Vector(0, -note_distance, 0))
+        self.drive(position = Vector(0, -note_distance_back, 0))
         self.drive(position = Vector(0, 0, 0), duration = 0.05, brake = True)
     
     def shoot_note(self):
@@ -45,12 +46,9 @@ class TwoPiecePosition(Auton3):
 
 
     def initate(self):
+        angle = 105
         # Start running shooter
-        self.shoot(speed = 100, direction = 1, duration = 0.05)
-        
-        # # Do a little jump back
-        self.drive(position = Vector(0, 8, 0))
-        self.drive(position = Vector(0, 0, 0), brake = True)
+        self.shoot(speed = 100, direction = 1, duration = 0.75)
 
         # # Start running intake
         self.intake(speed = Auton3.Speeds.intake, direction = -1, duration = 0.35)
@@ -58,14 +56,23 @@ class TwoPiecePosition(Auton3):
         
         self.stop()
 
+        self.drive(position = Vector(0, 0, angle), distance = (angle * 11.145) / 55)
+        self.drive(position = Vector(0, 0, 0), duration = 0.05, brake = True)
+
+
+
         # Grab Second Note
         self.get_note()
 
-        # Shoot second note
+        self.drive(position = Vector(0, 0, -95), distance = (95 * 11.145) / 55)
+        self.drive(position = Vector(0, 0, 0), duration = 0.05, brake = True)
+
+        # # Shoot second note
         self.shoot_note()
 
     def run(self):
         self.initate()
+        print("CID", self.tasks.command_idx, "RID", self.tasks.running_idx)
         
         # # Taxi
         # self.drive(velocity = Vector(0, -0.9, self.subsystems.gyro.calculate(0)), duration = 0.75)

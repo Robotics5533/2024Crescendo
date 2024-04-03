@@ -21,7 +21,7 @@ class Talon5533:
 
         self.lazy_mode: bool = False
         self.rotating_average = RotatingAverage(1)
-        self.rotating_input_signal = RotatingAverage(1)
+        self.rotating_input_signal = RotatingAverage(50)
 
     def set(self, value):
         if self.mode == MotorModes.velocity:
@@ -35,10 +35,10 @@ class Talon5533:
                 self.lazy_mode = True
             
             self.lazy_mode = False
-            print(self.get_position() - value)
+            # print(self.get_position() - value)
             self.set_voltage(
                 clamp(
-                        self.position_controller.calculate(self.get_position(), value)
+                        self.position_controller.calculate(self.get_position(), value) * 2
                         ,-0.6
                         ,0.6
                         )
