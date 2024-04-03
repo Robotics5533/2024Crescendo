@@ -29,6 +29,12 @@ class SubSystems:
         self.limelight = VisionSubSystem()
         self.shooter = ShooterSubSystem([wpilib.Spark(1), wpilib.Spark(0)])
         self.drive = DriveSubSystem(Robot.Drive.mecanum)
+        
+        #the drive motors are tuned to not average their input signals,
+        #so we need to turn off their averaging
+        for m in self.drive.drive.motors:
+            m.rotating_input_signal.pass_through = True
+
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb, pi * 64, MotorModes.static_brake))
         self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
         self.intake = IntakeSubSystem([wpilib.Spark(2)])
