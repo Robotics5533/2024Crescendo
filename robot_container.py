@@ -224,13 +224,6 @@ class RobotContainer:
              #
              self.subsystems.drive.drive.speed_multiplier = 1
 
-        #  if self.stick.getRawButton(4):
-        #      angle = self.subsystems.gyro.gyro.getAngle() * -pi / 180
-        #      v = Vector(x, y, z).rotate(angle)
-        #      x = v.a
-        #      y = v.b
-        #      
-
 
          self.register_intake_flip()
          self.register_intake()

@@ -20,7 +20,7 @@ class AmperSubSystem:
         self.spinny_motor = wpilib.PWMSparkMax(3)
         self.can_run = True
         self.state = Amper.down
-        self.pid = PIDController(0.03, 0.0015, 0)
+        self.pid = PIDController(0.03, 0.0015, 0.0001  * 3)
         
         
     def update_state(self, state: bool):

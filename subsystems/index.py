@@ -36,7 +36,7 @@ class SubSystems:
             m.rotating_input_signal.pass_through = True
 
         self.climb = ClimbSubSystem(Talon5533(Robot.motors.climb, pi * 64, MotorModes.static_brake))
-        self.gyro = GyroSubSystem(navx.AHRS.create_i2c())
+        self.gyro = GyroSubSystem(self.drive)
         self.intake = IntakeSubSystem([wpilib.Spark(2)])
         self.intake_control = IntakeControlSubSystem(self.intake_control,self.intake_follow_motor)
         self.amper = AmperSubSystem(Talon5533(9, pi * 64, MotorModes.voltage))

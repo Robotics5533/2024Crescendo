@@ -35,10 +35,13 @@ class Arpeggio(wpilib.TimedRobot):
         # camera.setResolution(10, 10)
     def teleopInit(self) -> None:
         super().teleopInit()
+
         self.robot_container.teleop_lock.unlock()    
         self.subsystems.amper.position_motor.set_position(0)
+        self.subsystems.drive.drive.set_position(0)
         self.timer.restart()
         self.tasks = Tasks2(self.timer,self.subsystems)
+        self.subsystems.drive.drive.set_mode(MotorModes.voltage)
 
     def autonomousInit(self) -> None:
         super().autonomousInit()
@@ -46,7 +49,6 @@ class Arpeggio(wpilib.TimedRobot):
         self.subsystems.drive.drive.set_position(0)
         self.subsystems.intake_control.motor.set_position(0)
         self.subsystems.amper.position_motor.set_position(0)
-        self.subsystems.gyro.reset()
         # self.subsystems.drive.drive.set_mode(MotorModes.position)
         # self.subsystems.drive.drive.set_position(0)
         # self.timer.restart()
@@ -70,6 +72,28 @@ class Arpeggio(wpilib.TimedRobot):
         if(not (self.garabage_iteration % 100)):
             gc.collect()
         self.robot_container.process()
+
+        # if self.robot_container.stick.getRawButton(1):
+        #     self.subsystems.drive.drive.move(Vector(self.robot_container.stick.getX()/4,
+        #                                             self.robot_container.stick.getY()/4,
+        #                                             self.robot_container.stick.getZ()/4))
+        #     print("user input")
+        # else:
+        #     self.subsystems.drive.drive.move(Vector(self.robot_container.stick.getX()/4,
+        #                                             self.robot_container.stick.getY()/4,
+        #                                             self.subsystems.gyro.calculate(0)))
+        #     print("gyro code")
+        # print("error", self.subsystems.gyro.calculate(0))
+        # print("fl",self.subsystems.drive.drive.front_left_motor.get_position())
+        # print("fr",self.subsystems.drive.drive.front_right_motor.get_position())
+        # print("br",self.subsystems.drive.drive.back_right_motor.get_position())
+        # print("bl",self.subsystems.drive.drive.back_left_motor.get_position())
+
+        # self.subsystems.gyro.calculate(0)
+        # if self.robot_container.stick.getRawButton(1):
+        #     self.subsystems.drive.drive.move(Vector(self.robot_container.stick.getX() / 4, self.robot_container.stick.getY() / 4, 0))
+        # else:
+        #     self.subsystems.drive.drive.move(Vector(0, 0, 0))
         
         # print(self.subsystems.amper.position_motor.get_position())
         
